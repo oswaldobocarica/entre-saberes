@@ -18,3 +18,4 @@ Deploy:
 npm install
 npx wrangler deploy
 ```
+<!-- Cloudflare deploy trigger: 2026-09-28 -->
