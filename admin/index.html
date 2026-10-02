@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CMS Entre Saberes v4.0</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Merriweather:wght@300;400;700&family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@400;500;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
+<link rel="stylesheet" href="../experience.css?v=20261002-40"></head>
+<body class="cms-body">
+  <section id="loginView" class="cms-login">
+    <div class="cms-login-card">
+      <div class="eyebrow">Área restrita • v4.0</div>
+      <h1>Entre Saberes</h1>
+      <p>Gerencie publicações, imagens, documentos e categorias sem editar HTML.</p>
+      <form id="loginForm">
+        <label>E-mail<input id="email" type="email" autocomplete="username" required></label>
+        <label>Senha<input id="password" type="password" autocomplete="current-password" required></label>
+        <button class="button" type="submit">Entrar no painel</button>
+        <p id="loginMsg" class="status"></p>
+      </form>
+      <p><a href="../index.html">← Voltar ao portal</a></p>
+    </div>
+  </section>
+
+  <section id="panelView" hidden>
+    <div class="cms-shell">
+      <aside class="cms-sidebar">
+        <a class="cms-brand" href="../index.html">ENTRE SABERES</a>
+        <p id="who" class="cms-user"></p>
+        <nav>
+          <button data-view="dashboard" class="active">Dashboard</button>
+          <button data-view="publications">Publicações</button>
+          <button data-view="editor">Nova publicação</button>
+          <button data-view="conversions">Importar apostila</button><button id="commentsNav" data-view="comments" hidden>Coment&#225;rios</button>
+          <button data-view="media">Mídia e arquivos</button>
+          <button data-view="categories">Categorias</button>
+          <button data-view="courses">Cursos Livres</button>
+          <button data-view="students">Alunos e matrículas</button>
+          <button data-view="ejatec">Aulas</button>
+          <button id="activityResponsesNav" data-view="activity-responses">Respostas das atividades</button>
+          <button id="editorsNav" data-view="editors" hidden>Equipe editorial</button>
+          <button id="updatesNav" data-view="updates" hidden>Atualizações <span class="cms-nav-version">v4.0</span></button>
+          <a href="../index.html" target="_blank">Ver site ↗</a>
+          <a href="../diagnostico.html" target="_blank">Diagnóstico ↗</a>
+          <button id="logout">Sair</button>
+        </nav>
+      </aside>
+
+      <main class="cms-main">
+        <header class="cms-topbar">
+          <div><div class="eyebrow">CMS editorial</div><h2 id="pageTitle">Dashboard</h2></div>
+          <div class="cms-top-actions"><a id="contextReturn" class="button secondary" href="#" hidden>← Voltar ao conteúdo</a><button id="quickNew" class="button">+ Nova publicação</button></div>
+        </header>
+        <div id="globalMsg"></div>
+
+        <section id="view-dashboard" class="cms-view">
+          <div class="cms-stats">
+            <article><span>Publicações</span><strong id="statTotal">—</strong></article>
+            <article><span>Publicadas</span><strong id="statPublished">—</strong></article>
+            <article><span>Rascunhos</span><strong id="statDrafts">—</strong></article>
+            <article><span>Arquivos</span><strong id="statMedia">—</strong></article>
+          </div>
+          <div class="cms-panel cms-health-panel">
+            <div class="cms-list-head"><div><h3>Diagnóstico da sessão</h3><p>Validação em tempo real entre o login do portal e as permissões do Supabase.</p></div><button id="refreshHealth" class="button secondary" type="button">Verificar agora</button></div>
+            <div class="cms-health-grid">
+              <div><span>Conexão</span><strong id="healthConnection" class="cms-health-value">Verificando…</strong></div>
+              <div><span>Conta autenticada</span><strong id="healthEmail" class="cms-health-value">—</strong></div>
+              <div><span>Perfil editorial</span><strong id="healthRole" class="cms-health-value">—</strong></div>
+              <div><span>Edição de publicações</span><strong id="healthEdit" class="cms-health-value">—</strong></div>
+              <div><span>Exclusão</span><strong id="healthDelete" class="cms-health-value">—</strong></div>
+            </div>
+            <p id="healthDetail" class="cms-help-box">Verificando permissões…</p>
+          </div>
+          <div class="cms-panel">
+            <h3>Painel editorial</h3>
+            <p>Escreva como em um editor de texto, envie imagens, PDFs, Word, planilhas, áudio e outros arquivos, salve rascunhos e publique quando quiser.</p>
+            <div class="cms-actions"><button class="button" data-open-editor>Nova publicação</button><button class="button secondary" data-view-jump="media">Abrir biblioteca de mídia</button></div>
+          </div>
+        </section>
+
+        <section id="view-publications" class="cms-view" hidden>
+          <div class="cms-panel">
+            <div class="cms-list-head"><input id="postSearch" class="cms-input" type="search" placeholder="Pesquisar publicação..."><button class="button" data-open-editor>+ Nova</button></div>
+            <div class="cms-table-wrap"><table class="cms-table"><thead><tr><th>Título</th><th>Tipo</th><th>Status</th><th>Atualização</th><th>Ações</th></tr></thead><tbody id="postRows"></tbody></table></div>
+          </div>
+        </section>
+
+        <section id="view-editor" class="cms-view" hidden>
+          <form id="postForm">
+            <input type="hidden" id="postId">
+            <div class="cms-editor-layout">
+              <div class="cms-editor-main">
+                <div class="cms-panel">
+                  <div class="field-editor" data-style-field="title"><label>Título</label><div class="field-stylebar"><select data-style="font" aria-label="Fonte do título"></select><select data-style="size" aria-label="Tamanho do título"></select><select data-style="align" aria-label="Alinhamento do título"><option value="left">Esquerda</option><option value="center">Centralizado</option><option value="right">Direita</option></select><input data-style="color" type="color" value="#202a33" aria-label="Cor do título"></div><input id="postTitle" class="cms-title-input" required placeholder="Título da publicação"></div>
+                  <div class="field-editor" data-style-field="subtitle"><label>Subtítulo</label><div class="field-stylebar"><select data-style="font" aria-label="Fonte do subtítulo"></select><select data-style="size" aria-label="Tamanho do subtítulo"></select><select data-style="align" aria-label="Alinhamento do subtítulo"><option value="left">Esquerda</option><option value="center">Centralizado</option><option value="right">Direita</option></select><input data-style="color" type="color" value="#5c6872" aria-label="Cor do subtítulo"></div><input id="postSubtitle" class="cms-input cms-styled-field" placeholder="Subtítulo opcional"></div>
+                  <div class="field-editor" data-style-field="summary"><label>Resumo</label><div class="field-stylebar"><select data-style="font" aria-label="Fonte do resumo"></select><select data-style="size" aria-label="Tamanho do resumo"></select><select data-style="align" aria-label="Alinhamento do resumo"><option value="left">Esquerda</option><option value="center">Centralizado</option><option value="justify">Justificado</option></select><input data-style="color" type="color" value="#40515e" aria-label="Cor do resumo"></div><textarea id="postSummary" class="cms-input cms-styled-field" rows="4" placeholder="Resumo para cards e mecanismos de busca"></textarea></div>
+                  <div class="cms-editor-heading"><div><label>Conteúdo da publicação</label><p class="cms-help">Editor completo: escolha fonte, tamanho, títulos, negrito, itálico, alinhamento, listas, cores, links, imagens e arquivos.</p></div><span class="cms-badge ok">Editor visual</span></div>
+                  <div class="cms-editor-tools">
+                    <button type="button" id="insertMediaBtn" class="button secondary">📎 Inserir imagem/arquivo</button>
+                    <input id="inlineFile" type="file" hidden>
+                    <span class="cms-help">Imagens entram no texto; outros arquivos viram links para download.</span>
+                  </div>
+                  <div id="richEditor"></div><div id="richEditorFallback" class="cms-rich-fallback" contenteditable="true" hidden aria-label="Editor de conteúdo"></div><p id="editorEngineMsg" class="cms-help"></p>
+                </div>
+              </div>
+
+              <aside class="cms-editor-side">
+                <div class="cms-panel">
+                  <h3>Publicação</h3>
+                  <label>Status<select id="postStatus" class="cms-input"><option value="rascunho">Rascunho</option><option value="revisao">Em revisão</option><option value="publicado">Publicado</option><option value="arquivado">Arquivado</option></select></label>
+                  <label>Tipo<select id="postType" class="cms-input"><option value="artigo">Artigo</option><option value="artigo_cientifico">Artigo científico</option><option value="pesquisa">Pesquisa</option><option value="memoria">Memória</option><option value="historia_oral">História oral</option><option value="conto">Conto</option><option value="ensaio">Ensaio</option><option value="material_educacional">Material educacional</option><option value="divulgacao_cientifica">Divulgação científica</option></select></label>
+                  <label>Pesquisador(a) / autor(a)<input id="postAuthorName" class="cms-input" placeholder="Ex.: André Guedes Guarizo"><small class="cms-help">Nome que aparecerá no artigo e na referência ABNT.</small></label><label>Curso / programa<input id="postCourseName" class="cms-input" placeholder="Ex.: Gestão da Qualidade, Engenharia Mecânica"><small class="cms-help">Cria um vínculo navegável entre a publicação e o curso ou programa.</small></label>
+                  <label>Modalidade editorial<input id="postEditorialMode" class="cms-input" placeholder="Ex.: Brief Communication, Artigo original, Ensaio"><small class="cms-help">Texto curto exibido na identificação científica da publicação.</small></label>
+                  <label>Vínculo<select id="postAffiliationType" class="cms-input"><option value="independente">Pesquisador independente</option><option value="instituicao">Instituição / faculdade / periódico</option></select></label>
+                  <label id="institutionWrap">Instituição, faculdade ou periódico<input id="postInstitution" class="cms-input" placeholder="Ex.: Universidade de Franca, Braz. J. Nephrol."></label>
+                  <label>Mês/ano da edição<input id="postPeriod" class="cms-input" type="month"><small class="cms-help">Exibido como 08/2026. Se ficar vazio, o sistema usa a data da publicação.</small></label>
+                  <label class="cms-check"><input id="postFeatured" type="checkbox"> Destacar na página inicial</label>
+                  <label>Data e hora da publicação<input id="postPublishedAt" class="cms-input" type="datetime-local" step="60"><small class="cms-help">Você pode definir ou corrigir a data e o horário exibidos na publicação.</small></label>
+                  <div class="cms-actions vertical"><button class="button" type="submit">Salvar</button><button id="previewBtn" class="button secondary" type="button">Visualizar</button><button id="deleteBtn" class="button danger" type="button" hidden>Excluir</button><small class="cms-owner-delete-note">Exclusões são reservadas exclusivamente à conta proprietária do portal.</small></div>
+                  <p id="saveMsg" class="status"></p>
+                </div>
+
+                <div class="cms-panel">
+                  <h3>Imagem de capa</h3>
+                  <img id="coverPreview" class="cms-cover-preview" hidden alt="Prévia da capa">
+                  <input id="coverUrl" class="cms-input" placeholder="URL da imagem">
+                  <div class="cms-actions"><button id="coverUploadBtn" type="button" class="button secondary">Enviar imagem</button><input id="coverFile" type="file" accept="image/*" hidden></div>
+                </div>
+
+                <div class="cms-panel"><h3>Categorias</h3><div id="categoryChecks" class="cms-category-checks">Carregando…</div></div>
+                <div class="cms-panel"><h3>Palavras-chave</h3><input id="postKeywords" class="cms-input" placeholder="educação, memória, ciência"><small class="cms-help">Essas palavras alimentam a busca avançada do portal.</small></div><div class="cms-panel"><h3>Citação ABNT</h3><p class="cms-help">A citação é gerada automaticamente com autoria, título, data, endereço eletrônico e data de acesso.</p><div id="citationPreview" class="citation-preview">Salve a publicação para visualizar a referência.</div></div>
+              </aside>
+            </div>
+          </form>
+        </section>
+
+        <section id="view-media" class="cms-view" hidden>
+          <div class="cms-panel">
+            <div class="cms-list-head"><div><h3>Biblioteca de mídia</h3><p>Envie imagens, PDFs, DOCX, XLSX, PPTX, áudio, vídeo e outros arquivos.</p></div><label class="button">+ Enviar arquivos<input id="mediaUpload" type="file" multiple hidden></label></div>
+            <div id="uploadProgress" class="status"></div>
+            <div id="mediaGrid" class="cms-media-grid"></div>
+          </div>
+        </section>
+
+        <section id="view-categories" class="cms-view" hidden>
+          <div class="cms-panel">
+            <form id="categoryForm" class="cms-category-form"><input id="categoryName" class="cms-input" required placeholder="Nova categoria"><input id="categoryDescription" class="cms-input" placeholder="Descrição"><button class="button" type="submit">Adicionar</button></form>
+            <div id="categoryList" class="cms-category-list"></div>
+          </div>
+        </section>
+
+
+        <section id="view-courses" class="cms-view" hidden>
+          <div class="cms-panel">
+            <div class="cms-list-head"><div><h3>Cursos Livres</h3><p>Gerencie os Cursos Livres, módulos, aulas, atividades e materiais. O valor padrão atual é R$ 59,90.</p><p id="learningPermissionMsg" class="status"></p></div><span class="cms-badge ok">R$ 59,90</span></div>
+            <div class="cms-learning-grid">
+              <form id="courseForm" class="cms-learning-card">
+                <h4>Cadastrar curso</h4>
+                <input id="courseId" type="hidden">
+                <label>Título<input id="courseTitle" class="cms-input" required></label>
+                <label>Descrição<textarea id="courseDescription" class="cms-input" rows="5"></textarea></label>
+                <label>Carga horária<input id="courseHours" class="cms-input" type="number" min="1" value="10"></label>
+                <label>Imagem de capa (URL)<input id="courseImage" class="cms-input"></label>
+                <label>Status<select id="courseStatus" class="cms-input"><option value="rascunho">Rascunho</option><option value="publicado">Publicado</option><option value="arquivado">Arquivado</option></select></label>
+                <label class="cms-check"><input id="courseCertificate" type="checkbox" checked> Curso com certificado</label>
+                <div class="cms-actions"><button class="button" type="submit">Salvar curso</button><button id="courseClear" class="button secondary" type="button">Novo</button></div><p id="courseSaveMsg" class="status"></p>
+              </form>
+              <div class="cms-learning-card"><h4>Cursos cadastrados</h4><div id="courseList" class="cms-mini-list"></div></div>
+            </div>
+          </div>
+
+          <div class="cms-panel">
+            <div class="cms-learning-grid">
+              <form id="moduleForm" class="cms-learning-card">
+                <h4>Novo módulo</h4>
+                <label>Curso<select id="moduleCourse" class="cms-input" required></select></label>
+                <label>Título<input id="moduleTitle" class="cms-input" required></label>
+                <label>Descrição<textarea id="moduleDescription" class="cms-input" rows="3"></textarea></label>
+                <label>Ordem<input id="modulePosition" class="cms-input" type="number" value="1"></label>
+                <button class="button" type="submit">Criar módulo</button><p id="moduleSaveMsg" class="status"></p>
+              </form>
+              <form id="lessonForm" class="cms-learning-card">
+                <h4>Nova aula</h4>
+                <label>Módulo<select id="lessonModule" class="cms-input" required></select></label>
+                <label>Título<input id="lessonTitleAdmin" class="cms-input" required></label>
+                <label>Conteúdo<textarea id="lessonContentAdmin" class="cms-input cms-admin-textarea" placeholder="Texto da aula. Você pode usar HTML simples."></textarea></label>
+                <label>Vídeo / link externo<input id="lessonVideoAdmin" class="cms-input"></label>
+                <label>Ordem<input id="lessonPosition" class="cms-input" type="number" value="1"></label>
+                <label class="cms-check"><input id="lessonPublished" type="checkbox" checked> Aula publicada</label>
+                <button class="button" type="submit">Criar aula</button><p id="lessonSaveMsg" class="status"></p>
+              </form>
+            </div>
+          </div>
+
+          <div class="cms-panel">
+            <div class="cms-learning-grid">
+              <form id="activityForm" class="cms-learning-card">
+                <h4>Atividade da aula</h4>
+                <label>Aula<select id="activityLesson" class="cms-input" required></select></label>
+                <label>Título<input id="activityTitle" class="cms-input" required></label>
+                <label>Tipo<select id="activityType" class="cms-input"><option value="multiple_choice">Múltipla escolha</option><option value="true_false">Verdadeiro ou falso</option><option value="short_answer">Resposta curta</option><option value="essay">Discursiva</option></select></label>
+                <label>Pergunta<textarea id="activityQuestion" class="cms-input" rows="3"></textarea></label>
+                <label>Opções (uma por linha)<textarea id="activityOptions" class="cms-input" rows="4" placeholder="Opção A
+Opção B
+Opção C"></textarea></label>
+                <label>Resposta correta<input id="activityCorrect" class="cms-input"></label>
+                <button class="button" type="submit">Criar atividade</button><p id="activitySaveMsg" class="status"></p>
+              </form>
+              <form id="courseFileForm" class="cms-learning-card">
+                <h4>Material de aula protegido</h4>
+                <label>Aula<select id="courseFileLesson" class="cms-input" required></select></label>
+                <label>Título do material<input id="courseFileTitle" class="cms-input" required></label>
+                <label>Arquivo<input id="courseFileInput" class="cms-input" type="file" required></label>
+                <p class="cms-help-box">Este arquivo fica no bucket privado <strong>course-files</strong>. Somente administradores e alunos matriculados no curso conseguem acessá-lo.</p>
+                <button class="button" type="submit">Enviar material</button>
+                <p id="courseFileMsg" class="status"></p>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-students" class="cms-view" hidden>
+          <div class="cms-panel">
+            <div class="cms-list-head"><div><h3>Solicitações de acesso</h3><p>Confira o aluno, o curso pretendido e o pagamento antes de liberar.</p></div><a class="button secondary" href="../cursos.html" target="_blank">Ver catálogo ↗</a></div>
+            <div id="studentRequests"></div>
+          </div>
+          <div class="cms-panel"><h3>Matrículas ativas</h3><div id="activeEnrollments"></div></div>
+        </section>
+
+        <section id="view-ejatec" class="cms-view" hidden>
+          <div class="cms-panel">
+            <div class="cms-list-head"><div><h3>Aulas</h3><p>Crie aulas livremente e envie materiais didáticos pelo próprio CMS.</p><p id="ejatecPermissionMsg" class="status"></p></div><a class="button secondary" href="../aulas.html" target="_blank">Ver Aulas ↗</a></div>
+            <div class="cms-learning-grid">
+              <form id="ejatecForm" class="cms-learning-card">
+                <h4>Nova aula</h4>
+                <input id="ejatecId" type="hidden">
+                <label>Título<input id="ejatecTitle" class="cms-input" required></label>
+                <label>Disciplina<input id="ejatecDiscipline" class="cms-input"></label>
+                <label>Turma<input id="ejatecClass" class="cms-input"></label>
+                <label>Módulo<input id="ejatecModule" class="cms-input"></label>
+                <label>Data da aula<input id="ejatecDate" class="cms-input" type="date"></label>
+                <label>Objetivo<textarea id="ejatecObjective" class="cms-input" rows="3"></textarea></label>
+                <label>Conteúdo<textarea id="ejatecContent" class="cms-input cms-admin-textarea" placeholder="Conteúdo da aula. HTML simples é aceito."></textarea></label>
+                <label>Atividade<textarea id="ejatecActivity" class="cms-input" rows="4"></textarea></label>
+                <label>Status<select id="ejatecStatus" class="cms-input"><option value="rascunho">Rascunho</option><option value="publicado">Publicado</option><option value="arquivado">Arquivado</option></select></label>
+                <div class="cms-actions"><button class="button" type="submit">Salvar aula</button><button id="ejatecClear" class="button secondary" type="button">Nova</button></div><p id="ejatecSaveMsg" class="status"></p>
+              </form>
+              <div class="cms-learning-card"><h4>Aulas cadastradas</h4><div id="ejatecList" class="cms-mini-list"></div></div>
+            </div>
+          </div>
+          <div class="cms-panel">
+            <form id="ejatecMaterialForm">
+              <h3>Inserir material de aula</h3>
+              <div class="cms-learning-grid"><label>Aula<select id="ejatecMaterialLesson" class="cms-input" required></select></label><label>Título do material<input id="ejatecMaterialTitle" class="cms-input" required></label></div>
+              <div class="cms-file-row"><input id="ejatecMaterialFile" type="file" required><button class="button" type="submit">Enviar material</button></div>
+              <p class="cms-help-box">Você tem permissão editorial para inserir PDFs, apresentações, planilhas, imagens, vídeos, áudios e outros materiais. O upload é protegido pelas políticas do Supabase e restrito a administrador/editor.</p>
+              <p id="ejatecMaterialMsg" class="status"></p>
+            </form>
+          </div>
+        </section>
+
+        <section id="view-activity-responses" class="cms-view" hidden>
+          <div class="cms-panel">
+            <div class="cms-list-head"><div><h3>Respostas das atividades</h3><p>Acompanhe a Aula 10: identificação do aluno, questões sorteadas, respostas, pontuação e atividades práticas.</p></div><button id="refreshActivityResponses" class="button secondary" type="button">Atualizar</button></div>
+            <div class="cms-learning-grid"><label>Pesquisar aluno ou telefone<input id="activityResponseSearch" class="cms-input" type="search" placeholder="Digite nome ou telefone"></label><label>Situação<select id="activityResponseStatus" class="cms-input"><option value="">Todas</option><option value="concluida">Concluídas</option><option value="andamento">Em andamento</option></select></label></div>
+            <p id="activityResponsesMsg" class="status"></p>
+            <div class="cms-table-wrap"><table class="cms-table"><thead><tr><th>Aluno</th><th>Telefone</th><th>Início</th><th>Situação</th><th>Resultado</th><th>Ações</th></tr></thead><tbody id="activityResponseRows"></tbody></table></div>
+          </div>
+          <div id="activityResponseDetail" class="cms-panel" hidden><div class="cms-list-head"><div><h3 id="activityDetailTitle">Detalhes da atividade</h3><p id="activityDetailMeta"></p></div><button id="closeActivityDetail" class="button secondary" type="button">Fechar detalhes</button></div><div id="activityDetailBody"></div></div>
+        </section>
+
+        <section id="view-editors" class="cms-view" hidden>
+          <div class="cms-panel">
+            <div class="cms-list-head"><div><h3>Equipe editorial</h3><p>Habilite editores aos poucos, por e-mail. Somente a conta proprietária pode conceder ou retirar esse acesso.</p></div><span class="cms-badge ok">Proprietário</span></div>
+            <div class="cms-learning-grid">
+              <form id="editorAccessForm" class="cms-learning-card">
+                <h4>Habilitar editor</h4>
+                <label>Nome (opcional)<input id="editorAccessName" class="cms-input" placeholder="Nome que aparecerá no perfil"></label>
+                <label>E-mail da conta<input id="editorAccessEmail" class="cms-input" type="email" required placeholder="pessoa@exemplo.com"></label>
+                <button class="button" type="submit">Conceder acesso de editor</button>
+                <p id="editorAccessMsg" class="status"></p>
+              </form>
+              <div class="cms-learning-card">
+                <h4>Fluxo seguro</h4>
+                <p>1. Envie ao colaborador o link de cadastro.</p>
+                <p><a class="button secondary" href="../cadastro-colaborador.html" target="_blank">Abrir cadastro de colaborador ↗</a></p>
+                <p>2. Depois que a conta existir, informe o mesmo e-mail ao lado e conceda o perfil de editor.</p>
+                <p class="cms-help-box">Editores podem criar e editar conteúdos. A exclusão de qualquer conteúdo continua exclusiva de <strong>oswaldobocarica@gmail.com</strong>.</p>
+              </div>
+            </div>
+          </div>
+          <div class="cms-panel"><div class="cms-list-head"><div><h3>Editores habilitados</h3><p>Você pode retirar o acesso editorial sem apagar a conta da pessoa.</p></div><button id="refreshEditors" class="button secondary" type="button">Atualizar lista</button></div><div id="editorAccessList" class="cms-editor-access-list"><p>Carregando…</p></div></div>
+        </section>
+
+<section id="view-conversions" class="cms-view" hidden>
+ <div class="cms-panel"><div class="cms-list-head"><div><h3>Importar apostila para a web</h3><p>Envie o original, acompanhe a convers&#227;o, revise e publique como material educacional.</p></div><button id="convCheck" type="button" class="button secondary">Verificar conex&#227;o</button></div><div id="convService" class="es-service-state" role="status">Verificando os servi&#231;os...</div>
+ <form id="convUploadForm"><div class="es-admin-grid"><label>T&#237;tulo do material<input id="convTitle" class="cms-input" required minlength="2" maxlength="240" placeholder="Ex.: Fundamentos da Administra&#231;&#227;o"></label><label>Apostila original<input id="convFile" type="file" class="cms-input" accept=".pdf,.docx,.pptx" required></label><label>Leitura do PDF<select id="convOCR" class="cms-input"><option value="auto">Autom&#225;tica &#8212; usar OCR onde necess&#225;rio</option><option value="off">PDF com texto &#8212; n&#227;o usar OCR</option><option value="scan">PDF escaneado &#8212; for&#231;ar OCR nas p&#225;ginas</option></select></label><div><strong>Limites desta vers&#227;o</strong><p>PDF, DOCX e PPTX de at&#233; 30 MB. HTML final de at&#233; 8 MB. Divida apostilas extensas por unidade. A convers&#227;o reorganiza o conte&#250;do; n&#227;o garante reprodu&#231;&#227;o id&#234;ntica da diagrama&#231;&#227;o.</p></div></div><label class="es-consent"><input id="convRights" type="checkbox" required><span>Tenho autoriza&#231;&#227;o para converter e publicar este material e revisarei o resultado antes da publica&#231;&#227;o.</span></label><p><button id="convSubmit" class="button" type="submit" disabled>Enviar e converter</button></p><progress id="convProgress" hidden aria-label="Envio em andamento"></progress><p id="convUploadStatus" role="status"></p></form></div>
+ <div class="cms-panel"><div class="cms-list-head"><div><h3>Minhas importa&#231;&#245;es</h3><p>O hist&#243;rico fica na sua conta. Ap&#243;s o envio e o in&#237;cio da tarefa, a convers&#227;o n&#227;o depende de manter esta aba aberta.</p></div><button id="convRefresh" class="button secondary" type="button">Atualizar hist&#243;rico</button></div><div id="convJobs"></div><div class="es-pager"><button id="convPrev" class="button secondary" type="button" disabled>Anterior</button><button id="convNext" class="button secondary" type="button" disabled>Pr&#243;xima</button></div><input id="convRetryFile" type="file" accept=".pdf,.docx,.pptx" hidden></div>
+ <section id="convReview" class="cms-panel" hidden aria-labelledby="convReviewHeading"><div class="cms-list-head"><h3 id="convReviewHeading">Revis&#227;o do material</h3><button id="convOriginal" type="button" class="button secondary">Abrir original para comparar &#8599;</button></div><div id="convWarnings"></div><div class="es-admin-grid"><label>T&#237;tulo<input id="convEditTitle" class="cms-input" maxlength="240" required></label><label>Autor(a) do material<input id="convAuthor" class="cms-input" maxlength="200" required></label><label>Curso / programa<input id="convCourse" class="cms-input" maxlength="240"></label><label>Resumo<textarea id="convSummary" class="cms-input" rows="3" maxlength="4000"></textarea></label></div>
+ <div class="es-review-toolbar" aria-label="Edi&#231;&#227;o do material"><button id="convVisualTab" class="button secondary" type="button" aria-pressed="true">Editor visual</button><button id="convSourceTab" class="button secondary" type="button" aria-pressed="false">C&#243;digo HTML</button><button id="convPreviewBtn" class="button secondary" type="button">Pr&#233;-visualizar</button><button id="convExportHTML" class="button secondary" type="button">Baixar HTML</button></div><div id="convFormatBar" class="es-review-toolbar"><select id="convBlock" aria-label="Estilo do bloco"><option value="p">Par&#225;grafo</option><option value="h2">T&#237;tulo</option><option value="h3">Subt&#237;tulo</option><option value="blockquote">Cita&#231;&#227;o</option></select><button type="button" data-conv-format="bold"><strong>Negrito</strong></button><button type="button" data-conv-format="italic"><em>It&#225;lico</em></button><button type="button" data-conv-format="insertUnorderedList">Lista</button><button type="button" data-conv-format="createLink">Inserir link</button></div><div id="convVisual" class="rich-body es-conversion-editor" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Conte&#250;do convertido"></div><textarea id="convSource" class="cms-input es-html-source" hidden aria-label="C&#243;digo HTML do material"></textarea><iframe id="convPreview" class="es-conversion-preview" title="Pr&#233;-visualiza&#231;&#227;o segura do material" sandbox="" hidden></iframe>
+ <p><button id="convSave" class="button secondary" type="button">Salvar revis&#227;o</button></p><label class="es-consent"><input id="convReviewed" type="checkbox"><span>Comparei o resultado com o original e revisei textos, imagens, tabelas, autoria, refer&#234;ncias e exerc&#237;cios. O material est&#225; pronto para ser incorporado ao portal.</span></label><div class="es-job-actions"><button id="convDraft" class="button secondary" type="button" disabled>Criar publica&#231;&#227;o em rascunho</button><button id="convPublish" class="button" type="button" disabled>Publicar material educacional</button></div><p id="convReviewStatus" role="status"></p><div id="convPublishedLinks"></div>
+ </section>
+</section>
+<section id="view-comments" class="cms-view" hidden><div class="cms-panel"><div class="cms-list-head"><div><h3>Modera&#231;&#227;o de coment&#225;rios</h3><p>Somente coment&#225;rios aprovados aparecem nos textos. A exclus&#227;o &#233; reservada &#224; conta propriet&#225;ria.</p></div><button id="commentsRefresh" class="button secondary" type="button">Atualizar</button></div><label>Situa&#231;&#227;o<select id="commentsFilter" class="cms-input"><option value="pending">Aguardando aprova&#231;&#227;o</option><option value="approved">Aprovados</option><option value="rejected">Reprovados</option></select></label><p id="commentsAdminStatus" role="status"></p><div id="commentsAdminList"></div><div class="es-pager"><button id="commentsPrev" class="button secondary" type="button" disabled>Anterior</button><button id="commentsNext" class="button secondary" type="button" disabled>Pr&#243;xima</button></div></div></section>
+
+        <section id="view-updates" class="cms-view" hidden>
+          <div class="cms-panel">
+            <div class="cms-list-head">
+              <div><h3>Atualizações do sistema</h3><p>Histórico das alterações implantadas no Entre Saberes. Visível somente para administradores.</p></div>
+              <span class="cms-badge ok">Versão atual: v4.0</span>
+            </div>
+            <div id="updateLogList" class="cms-update-log"></div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </section>
+
+
+  <div id="updateModal" class="cms-update-modal" hidden role="dialog" aria-modal="true" aria-labelledby="updateModalTitle">
+    <div class="cms-update-modal-card">
+      <button id="closeUpdateModal" class="cms-update-close" type="button" aria-label="Fechar">×</button>
+      <div class="eyebrow">Atualização do sistema</div>
+      <h2 id="updateModalTitle">Entre Saberes v4.0</h2>
+      <p class="cms-update-lead">O portal recebeu uma nova atualização. Veja o que mudou antes de continuar.</p>
+      <div id="updateModalBody"></div>
+      <div class="cms-actions">
+        <button id="openAllUpdates" class="button secondary" type="button">Ver histórico completo</button>
+        <button id="ackUpdateModal" class="button" type="button">Entendi</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../config.js?v=20261002-40"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.16/dist/purify.min.js"></script>
+<script src="admin.js?v=20261002-40"></script>
+<script src="admin40.js?v=20261002-40"></script>
+<script src="../accessibility.js?v=20261002-40"></script></body>
+</html>
