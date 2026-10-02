@@ -10,6 +10,31 @@
     "not_found_handling": "none",
     "html_handling": "none"
   },
+  "containers": [
+    {
+      "class_name": "DoclingContainer",
+      "image": "./Dockerfile.docling",
+      "max_instances": 1,
+      "instance_type": "standard-2",
+      "constraints": {
+        "regions": ["SAM"]
+      }
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "DOCLING",
+        "class_name": "DoclingContainer"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1-docling",
+      "new_sqlite_classes": ["DoclingContainer"]
+    }
+  ],
   "triggers": {
     "crons": [
       "*/5 * * * *"
