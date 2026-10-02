@@ -233,6 +233,7 @@ export async function collectResults(env){
 }
 export class DoclingContainer extends DurableObject {
  ready;
+ constructor(ctx,env){super(ctx,env)}
  async fetch(request){
   const container=this.ctx.container;
   if(!container?.running)this.ready=undefined;
