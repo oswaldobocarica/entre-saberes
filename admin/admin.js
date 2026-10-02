@@ -454,10 +454,52 @@ document.addEventListener('click',async e=>{
 
 let aula10AdminRows=[];
 function fmtDate(v){if(!v)return '—';try{return new Date(v).toLocaleString('pt-BR')}catch{return v}}
-function renderActivityRows(){const tbody=$('#activityResponseRows');if(!tbody)return;const term=($('#activityResponseSearch')?.value||'').trim().toLowerCase(),st=$('#activityResponseStatus')?.value||'';const rows=aula10AdminRows.filter(r=>(!term||String(r.nome_aluno||'').toLowerCase().includes(term)||String(r.telefone||'').toLowerCase().includes(term))&&(!st||(st==='concluida'?!!r.finalizado_em:!r.finalizado_em)));tbody.innerHTML=rows.map(r=>`<tr><td><strong>${esc(r.nome_aluno||'—')}</strong></td><td>${esc(r.telefone||'—')}</td><td>${esc(fmtDate(r.iniciado_em))}</td><td>${r.finalizado_em?'<span class="cms-badge ok">Concluída</span>':'<span class="cms-badge">Em andamento</span>'}</td><td>${r.finalizado_em?`${esc(r.total_acertos??0)}/${esc(r.total_questoes??10)} • ${esc(r.percentual??0)}%`:'—'}</td><td><button class="button secondary" type="button" data-a10-detail="${esc(r.tentativa_externa)}">Ver respostas</button></td></tr>`).join('')||'<tr><td colspan="6">Nenhuma resposta encontrada.</td></tr>'}
+function renderActivityRows(){const tbody=$('#activityResponseRows');if(!tbody)return;const term=($('#activityResponseSearch')?.value||'').trim().toLowerCase(),st=$('#activityResponseStatus')?.value||'';const rows=aula10AdminRows.filter(r=>(!term||String(r.nome_aluno||'').toLowerCase().includes(term)||String(r.telefone||'').toLowerCase().includes(term))&&(!st||(st==='concluida'?!!r.finalizado_em:!r.finalizado_em)));tbody.innerHTML=rows.map(r=>`<tr><td><strong>${esc(r.nome_aluno||'—')}</strong></td><td>${esc(r.telefone||'—')}</td><td>${esc(fmtDate(r.iniciado_em))}</td><td>${r.finalizado_em?'<span class="cms-badge ok">Concluída</span>':'<span class="cms-badge">Em andamento</span>'}</td><td>${r.finalizado_em?`${esc(r.total_acertos??0)}/${esc(r.total_questoes??10)} • ${esc(r.percentual??0)}%`:'—'}</td><td><div class="cms-actions"><button class="button secondary" type="button" data-a10-detail="${esc(r.tentativa_externa)}">Ver respostas</button><button class="button secondary" type="button" data-a10-report="${esc(r.tentativa_externa)}">Gerar relatório</button></div></td></tr>`).join('')||'<tr><td colspan="6">Nenhuma resposta encontrada.</td></tr>'}
 async function loadActivityResponses(){const msg=$('#activityResponsesMsg');status(msg,'Carregando respostas...',true);const {data,error}=await sb.rpc('es_admin_aula10_attempts');if(error){aula10AdminRows=[];renderActivityRows();status(msg,'Não foi possível carregar. Execute a MIGRACAO_V39_NAVEGACAO_RESPOSTAS_SEGURANCA.sql no Supabase. Detalhe: '+error.message);return}aula10AdminRows=Array.isArray(data)?data:[];status(msg,`${aula10AdminRows.length} participação(ões) localizada(s).`,true);renderActivityRows()}
+async function generateStudentActivityReport(id){
+  const {data,error}=await sb.rpc('es_admin_aula10_attempt_detail',{p_tentativa_id:id});
+  if(error){notice('Não foi possível gerar o relatório: '+error.message,'error');return}
+  const d=data||{},a=d.attempt||{},ans=Array.isArray(d.respostas)?d.respostas:[];
+  const fmt=v=>{if(!v)return '—';try{return new Date(v).toLocaleString('pt-BR')}catch{return String(v)}};
+  const safe=v=>esc(v??'');
+  const statusText=a.finalizado_em?'Concluída':'Em andamento';
+  const score=a.finalizado_em?`${safe(a.total_acertos??0)}/${safe(a.total_questoes??ans.length)} (${safe(a.percentual??0)}%)`:'—';
+  const answers=ans.length?ans.map(q=>`
+    <tr>
+      <td>${safe(q.ordem)}</td>
+      <td>${safe(q.enunciado||'')}</td>
+      <td>${safe(q.resposta||'—')}</td>
+      <td>${safe(q.resposta_correta||'—')}</td>
+      <td>${q.acertou===true?'Correta':q.acertou===false?'Incorreta':'—'}</td>
+    </tr>`).join(''):'<tr><td colspan="5">Nenhuma resposta registrada.</td></tr>';
+  const html=`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Relatório de atividades — ${safe(a.nome_aluno||'Aluno')}</title>
+  <style>
+  *{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:#1f2d38;margin:0;background:#fff}main{max-width:980px;margin:32px auto;padding:0 28px}h1{font-family:Georgia,serif;font-size:28px;margin:0 0 6px}h2{font-family:Georgia,serif;font-size:19px;margin:28px 0 10px}.meta{color:#5d6a73;margin-bottom:22px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 22px;background:#f5f7f8;border:1px solid #d9e0e4;border-radius:12px;padding:18px}.item strong{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:#65737d;margin-bottom:4px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{border:1px solid #d6dde1;padding:8px;vertical-align:top;text-align:left}th{background:#f2f5f6}.box{border:1px solid #d9e0e4;border-radius:10px;padding:14px;margin:10px 0;white-space:pre-wrap}.footer{margin-top:36px;padding-top:12px;border-top:1px solid #d9e0e4;font-size:12px;color:#66737c}.no-print{display:flex;gap:10px;margin-bottom:20px}.btn{border:1px solid #cbd5db;border-radius:999px;padding:9px 14px;background:#1d2d38;color:white;cursor:pointer}.btn.secondary{background:white;color:#1d2d38}@media(max-width:700px){main{padding:0 14px}.grid{grid-template-columns:1fr}table{font-size:11px}th,td{padding:6px}}@media print{.no-print{display:none}main{max-width:none;margin:0;padding:0}body{font-size:11pt}h1{font-size:22pt}table{font-size:9pt}}
+  </style></head><body><main>
+  <div class="no-print"><button class="btn" onclick="window.print()">Imprimir / Salvar PDF</button><button class="btn secondary" onclick="window.close()">Fechar</button></div>
+  <h1>Relatório de atividades realizadas por aluno</h1>
+  <div class="meta">Entre Saberes — registro individual da Aula 10</div>
+  <section class="grid">
+    <div class="item"><strong>Aluno</strong>${safe(a.nome_aluno||'—')}</div>
+    <div class="item"><strong>Telefone</strong>${safe(a.telefone||'—')}</div>
+    <div class="item"><strong>Início</strong>${safe(fmt(a.iniciado_em))}</div>
+    <div class="item"><strong>Conclusão</strong>${safe(fmt(a.finalizado_em))}</div>
+    <div class="item"><strong>Situação</strong>${safe(statusText)}</div>
+    <div class="item"><strong>Resultado</strong>${score}</div>
+  </section>
+  <h2>Questões e respostas</h2>
+  <table><thead><tr><th>#</th><th>Questão</th><th>Resposta do aluno</th><th>Resposta correta</th><th>Resultado</th></tr></thead><tbody>${answers}</tbody></table>
+  <h2>Atividades práticas</h2>
+  <div class="box"><strong>Atividade prática 1 — E-mail EJA</strong><br>${safe(a.atividade_email||'Não registrada.')}</div>
+  <div class="box"><strong>Atividade prática 2 — Ouvidoria</strong><br>${safe(a.atividade_ouvidoria||'Não registrada.')}</div>
+  <div class="footer">Relatório gerado em ${safe(new Date().toLocaleString('pt-BR'))} pelo CMS Entre Saberes.</div>
+  </main></body></html>`;
+  const w=window.open('','_blank','noopener,noreferrer');
+  if(!w){notice('O navegador bloqueou a abertura do relatório. Permita pop-ups para este site.','error');return}
+  w.document.open();w.document.write(html);w.document.close();
+}
 async function openActivityDetail(id){const box=$('#activityResponseDetail'),body=$('#activityDetailBody');box.hidden=false;body.innerHTML='<p>Carregando detalhes…</p>';box.scrollIntoView({behavior:'smooth',block:'start'});const {data,error}=await sb.rpc('es_admin_aula10_attempt_detail',{p_tentativa_id:id});if(error){body.innerHTML=`<div class="notice error">${esc(error.message)}</div>`;return}const d=data||{},a=d.attempt||{},ans=Array.isArray(d.respostas)?d.respostas:[];$('#activityDetailTitle').textContent=a.nome_aluno||'Detalhes da atividade';$('#activityDetailMeta').textContent=`${a.telefone||''} • início ${fmtDate(a.iniciado_em)}${a.finalizado_em?' • finalizada '+fmtDate(a.finalizado_em):''}`;body.innerHTML=`<div class="cms-response-summary"><strong>Resultado: ${esc(a.total_acertos??0)}/${esc(a.total_questoes??ans.length)} • ${esc(a.percentual??0)}%</strong></div><div class="cms-response-list">${ans.map(q=>`<article class="cms-response-item ${q.acertou===true?'correct':q.acertou===false?'wrong':''}"><div class="cms-response-qhead"><strong>Questão ${esc(q.ordem)}</strong><span>${q.acertou===true?'✓ Acertou':q.acertou===false?'✕ Errou':'Sem correção'}</span></div><p>${esc(q.enunciado||'')}</p><p><b>Resposta do aluno:</b> ${esc(q.resposta||'—')}</p>${q.resposta_correta?`<p><b>Resposta correta:</b> ${esc(q.resposta_correta)}</p>`:''}${q.explicacao?`<p><b>Comentário:</b> ${esc(q.explicacao)}</p>`:''}</article>`).join('')}</div><div class="cms-learning-grid"><article class="cms-learning-card"><h4>Atividade prática 1 — E-mail EJA</h4><p class="cms-response-text">${esc(a.atividade_email||'Não registrada.')}</p></article><article class="cms-learning-card"><h4>Atividade prática 2 — Ouvidoria</h4><p class="cms-response-text">${esc(a.atividade_ouvidoria||'Não registrada.')}</p></article></div>`}
-$('#refreshActivityResponses')?.addEventListener('click',loadActivityResponses);$('#activityResponseSearch')?.addEventListener('input',renderActivityRows);$('#activityResponseStatus')?.addEventListener('change',renderActivityRows);$('#closeActivityDetail')?.addEventListener('click',()=>{$('#activityResponseDetail').hidden=true});document.addEventListener('click',e=>{const b=e.target.closest('[data-a10-detail]');if(b)openActivityDetail(b.dataset.a10Detail)});
+$('#refreshActivityResponses')?.addEventListener('click',loadActivityResponses);$('#activityResponseSearch')?.addEventListener('input',renderActivityRows);$('#activityResponseStatus')?.addEventListener('change',renderActivityRows);$('#closeActivityDetail')?.addEventListener('click',()=>{$('#activityResponseDetail').hidden=true});document.addEventListener('click',e=>{const detail=e.target.closest('[data-a10-detail]');if(detail){openActivityDetail(detail.dataset.a10Detail);return}const report=e.target.closest('[data-a10-report]');if(report)generateStudentActivityReport(report.dataset.a10Report)});
 
 boot();
 
