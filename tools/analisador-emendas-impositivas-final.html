@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Analisador de Emendas Impositivas — Câmara Municipal de Franca</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.0/tesseract.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{
+ --navy:#12365b;--blue:#2f648f;--sky:#eaf3fb;--cream:#fffaf0;--gold:#c69a43;
+ --ink:#1d2b38;--mut:#66727f;--line:#d8e0e8;--card:#fff;--ok:#2f7d5a;
+ --warn:#a46f18;--bad:#a84242;--soft:#f4f7fa;--purple:#6a5d8f;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#eef4f8 0,#f7f4ed 100%);color:var(--ink);font:15px/1.48 Inter,Segoe UI,Arial,sans-serif}
+header{background:linear-gradient(135deg,#102e50,#1e527d);color:#fff;border-bottom:4px solid var(--gold);padding:26px 5vw 22px;box-shadow:0 8px 28px #17324d22}
+header h1{margin:0;font:700 29px/1.15 Georgia,serif;letter-spacing:.2px}
+header p{max-width:1000px;margin:8px 0 0;color:#dce9f5}
+.wrap{max-width:1260px;margin:0 auto;padding:18px}
+.hero{background:linear-gradient(120deg,#fffdf8,#f6fbff);border:1px solid #d9e4ed;border-left:6px solid var(--gold);border-radius:14px;padding:17px 20px;margin-bottom:14px;box-shadow:0 10px 30px #18324c12}
+.hero b{color:var(--navy);font-family:Georgia,serif;font-size:18px}
+.hero p{margin:6px 0 0;color:#425363}
+.panel{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 8px 28px #1e38500d}
+.panel h2{margin:0 0 10px;font:700 19px Georgia,serif;color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+label{display:block;margin-bottom:4px;color:#526170;font-size:12px;font-weight:700}
+input,select,textarea{width:100%;border:1px solid #cfd9e2;border-radius:8px;padding:9px 10px;background:#fff;color:var(--ink);font:14px Segoe UI,Arial,sans-serif}
+input:focus,select:focus,textarea:focus{outline:3px solid #8fbde633;border-color:#5d8db5}
+textarea{resize:vertical}.wide{grid-column:1/-1}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+button{border:0;border-radius:9px;padding:9px 13px;font:700 13px Segoe UI,Arial,sans-serif;cursor:pointer}
+.btn{background:var(--navy);color:#fff}.btn:hover{background:#1b4e78}
+.btn.alt{background:#fff;color:var(--navy);border:1px solid #afc2d3}.btn.alt:hover{background:#edf5fb}
+.btn.gold{background:#b8872b;color:#fff}.btn.danger{background:#fff0f0;color:#8e3434;border:1px solid #efc4c4}
+.drop{border:2px dashed #6f9abb;background:#fafdff;border-radius:14px;padding:26px;text-align:center;cursor:pointer;transition:.18s}
+.drop.over{background:#e8f4ff;transform:scale(1.005)}.drop b{display:block;color:var(--navy);font-size:18px}.drop span{color:var(--mut)}
+.status{font-size:13px;color:var(--mut);margin-top:8px}
+.progress{height:10px;background:#e7edf2;border-radius:8px;overflow:hidden;margin-top:7px}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#4b81ab,#c69a43);transition:width .2s}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px;margin:12px 0}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px}.kpi b{display:block;color:var(--navy);font-size:21px}.kpi span{font-size:12px;color:var(--mut)}
+.card{background:#fff;border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:12px;padding:13px;margin:10px 0;box-shadow:0 7px 20px #1e38500b}
+.card.ok{border-left-color:var(--ok)}.card.warn{border-left-color:var(--gold)}.card.bad{border-left-color:var(--bad)}
+.head{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;cursor:pointer}.head h3{margin:0;color:var(--navy);font:700 17px Georgia,serif}
+.meta{font-size:12px;color:var(--mut);margin-top:3px}.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.chip{font-size:11px;padding:4px 8px;border-radius:999px;background:#eaf2f8;color:#244e6f}.chip.ok{background:#e6f4ed;color:#286c4e}.chip.warn{background:#fff3dc;color:#8b5c0c}.chip.bad{background:#fdeaea;color:#8e3434}
+.sec{border-top:1px solid #e5ebf0;margin-top:12px;padding-top:12px}.sec h4{margin:0 0 8px;color:#304d65}
+.alert{padding:8px 10px;border-left:4px solid;margin:6px 0;border-radius:5px;font-size:13px}.alert.ok{background:#eaf6ef;border-color:var(--ok);color:#285e48}.alert.warn{background:#fff7e5;border-color:var(--gold);color:#7d5a13}.alert.bad{background:#fdeeee;border-color:var(--bad);color:#7b3030}
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:5px 14px}.checks label{display:flex;gap:7px;font-weight:500;color:var(--ink);align-items:flex-start}.checks input{width:auto;margin-top:3px}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{padding:7px 8px;border-bottom:1px solid #e3e9ee;text-align:left;vertical-align:top}th{background:#eaf1f7;color:#2b4d68;font-weight:800}tr:last-child td{border-bottom:0}
+.scroll{overflow-x:auto}
+.identity{background:#f7fafc;border:1px solid #dbe4eb;border-radius:10px;padding:10px}
+.nexus{display:grid;grid-template-columns:1fr;gap:6px}.nx{display:grid;grid-template-columns:190px 1fr 105px;gap:8px;padding:7px;background:#f8fafc;border-radius:8px}.nx b{color:#36546d}
+.footer-note{font-size:12px;color:var(--mut);margin-top:10px}
+.modal{position:fixed;inset:0;background:#0c2035cc;display:grid;place-items:center;padding:16px;z-index:100}.modal[hidden]{display:none}.modalbox{max-width:720px;width:100%;background:#fff;border-radius:18px;padding:22px;box-shadow:0 28px 80px #0005}.modalbox h2{font-family:Georgia,serif;color:var(--navy);margin-top:0}
+.analyst-card{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.analyst-card label{border:1px solid #d4dee7;border-radius:12px;padding:12px;cursor:pointer;font-size:13px}.analyst-card input{width:auto}.analyst-card label:has(input:checked){background:#eef6fc;border-color:#5b88ac}
+.small{font-size:11px;color:var(--mut)}.hidden{display:none!important}
+@media(max-width:760px){.wrap{padding:9px}.analyst-card{grid-template-columns:1fr}.nx{grid-template-columns:1fr}.head{flex-direction:column}header h1{font-size:23px}.bar button{flex:1 1 45%}}
+@media print{body{background:#fff}.noprint,.drop,.bar,.status,.progress,.modal{display:none!important}.panel,.card{box-shadow:none;break-inside:avoid}.wrap{max-width:none}.card .body{display:block!important}}
+</style>
+</head>
+<body>
+<header>
+<h1>Analisador de Emendas Impositivas · Câmara Municipal de Franca</h1>
+<p>Leitura documental orientada por Ofício Administrativo, identificação segura da entidade beneficiária, nexo do objeto, validações externas e consolidação comparativa.</p>
+</header>
+
+<div class="wrap">
+<section class="hero">
+<b>O Legislativo Francano enxergando quem transforma a sociedade.</b>
+<p>Associações e Fundações do Terceiro Setor materializam, diariamente, respostas concretas a necessidades coletivas. A análise responsável das emendas deve permitir ao Legislativo Francano compreender essas organizações, seus objetos e sua capacidade de entrega, buscando o <strong>Ótimo do Estado</strong>: eficiência, eficácia e efetividade, sempre com legalidade, equidade e oportunidade, para uma sociedade mais justa e fraterna.</p>
+</section>
+
+<section class="panel">
+<h2>1. Contexto da análise</h2>
+<div class="grid">
+<div><label>Responsável pela análise</label><select id="analyst"></select></div>
+<div><label>Procedimento</label><input id="pi" value="PI nº 117/2026"></div>
+<div><label>Exercício</label><input id="exercise" value="LOA 2027"></div>
+<div><label>Tipo de análise</label><select id="mode"><option value="vereador">Completa por vereador</option><option value="individual">Individual por OA</option><option value="geral">Consolidação geral</option></select></div>
+</div>
+<div class="footer-note">A autoria do relatório fica vinculada ao responsável selecionado. A seleção não substitui manifestações técnicas de outros setores quando forem juridicamente necessárias.</div>
+</section>
+
+<section class="panel noprint">
+<h2>2. Ingestão dos documentos</h2>
+<div id="drop" class="drop"><b>Solte aqui PDFs, DOCX ou imagens</b><span>PDF pesquisável é indexado diretamente. Páginas sem camada textual são separadas para OCR seletivo.</span><input id="files" type="file" accept=".pdf,.docx,image/*" multiple hidden></div>
+<div class="bar">
+<button class="btn alt" id="folder">Importar pasta por vereador</button><input id="folderFiles" type="file" webkitdirectory multiple hidden>
+<button class="btn alt" id="ocr">Executar OCR pendente</button>
+<button class="btn alt" id="manual">+ OA manual</button>
+<button class="btn" id="save">Salvar sessão</button>
+<button class="btn alt" id="load">Carregar sessão</button>
+<button class="btn gold" id="report">Gerar relatório comparativo</button>
+<button class="btn alt" id="xlsx">Exportar Excel</button>
+<button class="btn alt" onclick="window.print()">Imprimir</button>
+</div>
+<div id="status" class="status">Selecione o analista e carregue a documentação.</div><div id="prog" class="progress" hidden><i></i></div>
+</section>
+
+<div id="kpis" class="kpis"></div>
+<div id="comparative"></div>
+<div id="cards"></div>
+</div>
+
+<div id="welcome" class="modal">
+<div class="modalbox">
+<h2>Quem realizará a análise?</h2>
+<p>Escolha um único responsável. O nome, a unidade e o enfoque técnico serão incorporados ao relatório final.</p>
+<div class="analyst-card" id="analystCards"></div>
+<div class="bar"><button class="btn" id="start">Iniciar análise</button></div>
+</div>
+</div>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+const ANALYSTS=[
+ {id:"ana",name:"Ana Virgínia Caetano Alves Eleutério",unit:"Departamento Financeiro",focus:"análise contábil, classificação orçamentária, custeio × capital, memória de cálculo e compatibilidade financeira"},
+ {id:"paula",name:"Maria Paula Japaulo",unit:"Controle Interno",focus:"integridade documental, identidade cadastral, riscos, nexo, consistência e controles"},
+ {id:"fernanda",name:"Maria Fernanda Bordini Novato",unit:"Departamento Jurídico",focus:"constituição jurídica, representação, Lei 13.019/2014, impedimentos e adequação jurídica"}
+];
+const DOCS=[
+ "Ofício da entidade / requerimento","Cartão CNPJ / situação cadastral","Estatuto social e alterações",
+ "Ata de eleição e posse","Documento do representante legal","Comprovante de endereço",
+ "Plano de trabalho / pré-plano","Memória de cálculo","Pesquisa de preços / cotações",
+ "Cronograma físico-financeiro","Relatório de atividades / capacidade operacional",
+ "Certidões fiscais, trabalhistas e FGTS","Inscrição em conselho/cadastro setorial",
+ "CEIS / CNEP / certidão correcional","Declaração de antinepotismo","Conta bancária específica",
+ "Compatibilidade PPA/LDO/LOA","Classificação contábil/orçamentária","Prestação de contas / transparência"
+];
+let state={analyst:"",pi:"PI nº 117/2026",exercise:"LOA 2027",items:[],uid:0};
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm=s=>(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim();
+const digits=s=>(s||"").replace(/\D/g,"");
+const money=s=>parseFloat(String(s||"").replace(/[^\d,]/g,"").replace(",", "."))||0;
+const brl=n=>(n||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const CNPJ_RE=/\b\d{2}\.?\d{3}\.?\d{3}\/??\d{4}-?\d{2}\b/g;
+
+function cnpjOk(v){
+ const c=digits(v); if(c.length!==14||/^(\d)\1+$/.test(c))return false;
+ const calc=n=>{let p=n-7,s=0;for(let i=0;i<n;i++){s+=(+c[i])*p--;if(p<2)p=9}const r=s%11;return r<2?0:11-r};
+ return calc(12)==+c[12]&&calc(13)==+c[13];
+}
+function fmtCNPJ(v){const c=digits(v);return c.length===14?c.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,"$1.$2.$3/$4-$5"):v||""}
+function first(text,re){const m=(text||"").match(re);return m?(m[1]||m[0]).trim():""}
+function detectOA(t){return first(t,/(?:of[ií]cio administrativo|\bOA)\s*(?:n[ºo.]*)?\s*[:\-]?\s*(\d{1,4}\s*\/\s*2026)/i)}
+function detect(text){
+ const cnpj=first(text,/\b\d{2}\.?\d{3}\.?\d{3}\/??\d{4}-?\d{2}\b/);
+ const valor=first(text,/R\$\s*([\d.]+,\d{2})/);
+ return {
+  oa:detectOA(text),
+  ver:first(text,/(?:vereador(?:\(a\))?|parlamentar)\s*(?:proponente|autor|indicante)?\s*[:\-]\s*([^\n]{3,80})/i),
+  razao:first(text,/(?:raz[aã]o social(?: da OSC)?|nome empresarial)\s*[:\-]\s*([^\n\[\]]{4,120})/i),
+  fantasia:first(text,/(?:nome fantasia|t[ií]tulo do estabelecimento)\s*[:\-]\s*([^\n]{2,100})/i),
+  cnpj, endereco:first(text,/(?:endere[cç]o(?: da)? sede|logradouro)\s*[:\-]\s*([^\n]{5,150})/i),
+  rep:first(text,/(?:representante legal|presidente)\s*[:\-]\s*([^\n]{3,90})/i),
+  sec:first(text,/secretaria(?: municipal)?(?: gestora| executora)?[^:\n]{0,35}:\s*([^\n]{3,100})/i),
+  valor:valor?("R$ "+valor):"",
+  objeto:first(text,/(?:objeto(?: da emenda)?|descri[cç][aã]o do objeto)\s*[:\-]\s*([^\n]{20,500})/i),
+  area:first(text,/(?:[aá]rea(?: de atua[cç][aã]o)?|[aá]rea da)\s*[:\-]\s*([^\n]{3,100})/i),
+  desp:/\b(?:investimento|capital|GND\s*4)\b/i.test(text)?"Capital":/\b(?:custeio|corrente|GND\s*3)\b/i.test(text)?"Custeio":"",
+  natureza:first(text,/(?:natureza da despesa|classifica[cç][aã]o econ[oô]mica)[^\n:]*[:\-]\s*([^\n]{3,120})/i)
+ };
+}
+function defaultItem(name,text,ocr=false,pages=[]){
+ const f=detect(text||"");
+ return {id:++state.uid,source:name,text:text||"",pages,ocr,open:true,f,
+  external:{mapa:"",mapaArea:"",mapaCnae:"",mapaUrl:"",cee:"",crce:"",ceeNome:"",ceeEndereco:"",ceeObs:""},
+  docs:Object.fromEntries(DOCS.map((d,i)=>[i,detectDoc(text,d)])),
+  analystNote:"",decision:"",confidence:"",thirdCnpjs:[]};
+}
+function detectDoc(text,label){
+ const n=norm(text), keys={
+  0:["oficio","requerimento"],1:["comprovante de inscricao","situacao cadastral","cnpj"],2:["estatuto","ato constitutivo"],
+  3:["ata de eleicao","ata de posse"],4:["rg","cpf","representante legal"],5:["comprovante de endereco","endereco da sede"],
+  6:["plano de trabalho","pre plano"],7:["memoria de calculo"],8:["cotacao","pesquisa de precos","orcamento"],
+  9:["cronograma fisico financeiro","cronograma"],10:["relatorio de atividades","capacidade operacional","experiencia"],
+  11:["certidao","fgts","regularidade fiscal"],12:["conselho","cadastro setorial"],13:["ceis","cnep","correcional"],
+  14:["nepotismo"],15:["conta bancaria","conta especifica"],16:["ppa","ldo","loa"],17:["natureza da despesa","classificacao contabil"],18:["prestacao de contas","transparencia"]
+ };
+ return (keys[DOCS.indexOf(label)]||[]).some(k=>n.includes(k));
+}
+function splitByOA(pageTexts,fileName){
+ const groups=[]; let cur=null;
+ pageTexts.forEach((t,i)=>{
+  const oa=detectOA(t), c=(t.match(CNPJ_RE)||[]).find(cnpjOk);
+  if(oa){cur={oa,pages:[],text:""};groups.push(cur)}
+  if(!cur&&c){cur={oa:"",pages:[],text:""};groups.push(cur)}
+  if(!cur){cur={oa:"",pages:[],text:""};groups.push(cur)}
+  cur.pages.push(i+1); cur.text+="\n"+t;
+ });
+ return groups.map((g,j)=>{const it=defaultItem(groups.length>1?fileName+" · bloco "+(j+1):fileName,g.text,false,g.pages);if(g.oa&&!it.f.oa)it.f.oa=g.oa;return it});
+}
+async function extractPDF(file){
+ const ab=await file.arrayBuffer(), pdf=await pdfjsLib.getDocument({data:new Uint8Array(ab)}).promise, n=pdf.numPages;
+ const pages=new Array(n), scans=[]; let next=0, done=0;
+ const workers=Math.min(Math.max(2,(navigator.hardwareConcurrency||4)-1),8,n);
+ setProgress(true,0,"Extraindo texto de "+n+" páginas...");
+ async function runner(){
+  for(;;){
+   const i=next++; if(i>=n)break;
+   const pg=await pdf.getPage(i+1), tc=await pg.getTextContent();
+   let t=""; for(const x of tc.items)t+=x.str+(x.hasEOL?"\n":" ");
+   pages[i]=t; if(t.replace(/\s/g,"").length<45)scans.push(i);
+   done++; if(done%8===0||done===n)setProgress(true,100*done/n,"Indexando: "+done+" / "+n+" páginas");
+   pg.cleanup();
+  }
+ }
+ await Promise.all(Array.from({length:workers},runner)); pdf.destroy();
+ return {pages,scans};
+}
+let ocrWorkers=[];
+async function ensureOCR(n){
+ while(ocrWorkers.length<n)ocrWorkers.push(await Tesseract.createWorker("por"));
+ return ocrWorkers.slice(0,n);
+}
+async function ocrPDFPages(item,file,pageIndexes){
+ const ab=await file.arrayBuffer(), pdf=await pdfjsLib.getDocument({data:new Uint8Array(ab)}).promise;
+ const ws=await ensureOCR(Math.min(4,pageIndexes.length||1)); let next=0,done=0; const out={};
+ await Promise.all(ws.map(async w=>{
+  while(next<pageIndexes.length){
+   const idx=pageIndexes[next++], pg=await pdf.getPage(idx+1), vp=pg.getViewport({scale:1.55});
+   const cv=document.createElement("canvas");cv.width=vp.width;cv.height=vp.height;
+   await pg.render({canvasContext:cv.getContext("2d"),viewport:vp}).promise;
+   out[idx]=(await w.recognize(cv)).data.text||""; done++;
+   setProgress(true,100*done/pageIndexes.length,"OCR: "+done+" / "+pageIndexes.length+" páginas");
+   pg.cleanup();
+  }
+ }));
+ pdf.destroy(); item.text+="\n"+pageIndexes.map(i=>out[i]||"").join("\n"); item.ocr=true; refreshDetected(item);
+}
+function refreshDetected(it){
+ const d=detect(it.text); Object.keys(d).forEach(k=>{if(!it.f[k]&&d[k])it.f[k]=d[k]});
+ DOCS.forEach((x,i)=>{if(!it.docs[i]&&detectDoc(it.text,x))it.docs[i]=true});
+ const own=digits(it.f.cnpj), all=[...new Set((it.text.match(CNPJ_RE)||[]).map(digits).filter(x=>x.length===14))];
+ it.thirdCnpjs=all.filter(x=>x!==own);
+}
+async function handle(files){
+ files=[...files]; if(!files.length)return;
+ for(const file of files){
+  try{
+   setStatus("Lendo "+file.name+"...");
+   if(/\.pdf$/i.test(file.name)){
+    const r=await extractPDF(file), parts=splitByOA(r.pages,file.name);
+    parts.forEach(it=>{it._file=file;it._scan=r.scans.filter(i=>it.pages.includes(i+1));refreshDetected(it);state.items.push(it)});
+   }else if(/\.docx$/i.test(file.name)){
+    const r=await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()});const it=defaultItem(file.name,r.value,false,[]);refreshDetected(it);state.items.push(it);
+   }else if(file.type.startsWith("image/")){
+    const w=(await ensureOCR(1))[0],txt=(await w.recognize(file)).data.text||"";const it=defaultItem(file.name,txt,true,[1]);refreshDetected(it);state.items.push(it);
+   }
+  }catch(e){setStatus("Erro em "+file.name+": "+e.message)}
+ }
+ setProgress(false);setStatus(state.items.length+" blocos/OAs identificados. Revise o vínculo processual, identidade e nexo.");render();
+}
+function setProgress(on,p=0,msg=""){const el=$("#prog");el.hidden=!on;el.querySelector("i").style.width=Math.max(0,Math.min(100,p))+"%";if(msg)setStatus(msg)}
+function setStatus(s){$("#status").textContent=s}
+function analyst(){return ANALYSTS.find(a=>a.id===state.analyst)||ANALYSTS[1]}
+
+function tokenSet(s){return new Set(norm(s).split(" ").filter(x=>x.length>3&&!["para","com","sem","uma","entidade","recursos","recurso","objeto","emenda"].includes(x)))}
+function similarity(a,b){const A=tokenSet(a),B=tokenSet(b);if(!A.size||!B.size)return null;let h=0;A.forEach(x=>{if(B.has(x))h++});return h/A.size}
+function section(text,keys,span=1500){const raw=(text||"").replace(/\s+/g," "),n=norm(raw);let o="";keys.forEach(k=>{const i=n.indexOf(norm(k));if(i>=0)o+=" "+raw.slice(Math.max(0,i-200),Math.min(raw.length,i+span))});return o}
+function identity(it){
+ const f=it.f,ex=it.external;
+ const issues=[]; if(!f.oa)issues.push("Ofício Administrativo não identificado");
+ if(!f.ver)issues.push("Vereador autor não identificado");
+ if(!f.cnpj||!cnpjOk(f.cnpj))issues.push("CNPJ beneficiário ausente ou inválido");
+ if(!f.razao)issues.push("Razão social não determinada");
+ if(!f.endereco)issues.push("Endereço completo não determinado");
+ if(ex.cee==="div")issues.push("Divergência no Cadastro Estadual/CRCE");
+ if(ex.mapa==="div")issues.push("Divergência no Mapa das OSC");
+ return {ok:!issues.length,issues};
+}
+function nexus(it){
+ const f=it.f,obj=f.obj||"",plan=section(it.text,["plano de trabalho","metas","objeto"]),mem=section(it.text,["memoria de calculo","cotacao","pesquisa de precos","orcamento"]),inst=section(it.text,["estatuto","finalidade","relatorio de atividades","capacidade operacional"]);
+ const vals=[
+  ["Objeto × plano de trabalho",similarity(obj,plan)],
+  ["Objeto × memória/cotações",similarity(obj,mem)],
+  ["Objeto × finalidade/atividade",similarity(obj,inst+" "+it.external.mapaArea+" "+it.external.mapaCnae)]
+ ];
+ const known=vals.filter(x=>x[1]!==null); const avg=known.length?known.reduce((a,x)=>a+x[1],0)/known.length:null;
+ const status=avg===null?"NÃO DEMONSTRADO":avg>=.55?"DEMONSTRADO":avg>=.25?"PARCIAL":"NÃO DEMONSTRADO";
+ const conf=known.length===3&&it.external.mapa==="ok"&&it.external.cee==="ok"?"ALTA":known.length>=2?"MÉDIA":"BAIXA";
+ return {vals,status,conf};
+}
+function readiness(it){
+ const id=identity(it),nx=nexus(it),doc=Object.values(it.docs).filter(Boolean).length;
+ if(!id.ok||nx.status==="NÃO DEMONSTRADO")return "bad";
+ if(nx.status==="PARCIAL"||doc<DOCS.length*.7)return "warn";
+ return "ok";
+}
+function adversarial(it){
+ const id=identity(it),nx=nexus(it),missing=DOCS.filter((_,i)=>!it.docs[i]);
+ return {
+  baseline:"A documentação permite afirmar, com rastreabilidade, que o OA "+(it.f.oa||"não identificado")+" destina recursos à pessoa jurídica correta para um objeto compatível e executável?",
+  steelman:(!id.ok?"A identidade processual/cadastral ainda contém lacunas. ":"")+(nx.status!=="DEMONSTRADO"?"O conjunto documental ainda não demonstra de modo forte a conexão material entre objeto, plano, custos e atuação institucional.":"Mesmo com nexo demonstrado, finalidade estatutária não prova, sozinha, capacidade material de execução."),
+  premortem:"A análise poderá falhar se houver endereço ou representação desatualizados, fornecedor confundido com beneficiária, documento apenas detectado por palavra-chave, memória de cálculo sem correspondência com metas ou fonte externa desatualizada.",
+  blindspot:missing.length?"Ainda não comprovado: "+missing.slice(0,5).join("; ")+(missing.length>5?"…":""):"Verificar ainda duplicidade de financiamento, local efetivo da execução e capacidade operacional proporcional ao objeto.",
+  unknown:"Fatos: dados textualmente localizados e validações registradas. Inferências: correspondência lexical do nexo. Desconhecido: tudo que não conste nos autos ou não tenha sido confirmado nas fontes externas."
+ };
+}
+function validateStatus(it){
+ const id=identity(it),nx=nexus(it);
+ if(!id.ok)return "SANEAMENTO CADASTRAL/PROCESSUAL";
+ if(nx.status==="NÃO DEMONSTRADO")return "SANEAMENTO MATERIAL";
+ if(nx.status==="PARCIAL")return "APTA COM RESSALVA";
+ return "APTA À CONTINUIDADE DA ANÁLISE";
+}
+function render(){
+ state.pi=$("#pi")?.value||state.pi;state.exercise=$("#exercise")?.value||state.exercise;
+ $("#analyst").value=state.analyst;
+ const total=state.items.reduce((a,it)=>a+money(it.f.valor),0),ok=state.items.filter(x=>readiness(x)==="ok").length,warn=state.items.filter(x=>readiness(x)==="warn").length,bad=state.items.filter(x=>readiness(x)==="bad").length;
+ $("#kpis").innerHTML=state.items.length?[
+  ["OAs/blocos",state.items.length],["Valor analisado",brl(total)],["Aptos",ok],["Com ressalva",warn],["Saneamento",bad]
+ ].map(x=>`<div class="kpi"><b>${x[1]}</b><span>${x[0]}</span></div>`).join(""):"";
+ $("#comparative").innerHTML=state.items.length?comparativeHTML():"";
+ $("#cards").innerHTML=state.items.length?state.items.map((it,i)=>cardHTML(it,i)).join(""):`<div class="panel"><div class="alert warn">Nenhuma emenda carregada.</div></div>`;
+ bindDynamic();
+}
+function comparativeHTML(){
+ return `<section class="panel"><h2>Quadro comparativo das indicações</h2><div class="scroll"><table><thead><tr><th>OA</th><th>Vereador</th><th>Entidade</th><th>CNPJ</th><th>Objeto</th><th>Valor</th><th>Identidade</th><th>Nexo</th><th>Mapa OSC</th><th>CEE/CRCE</th><th>Situação</th></tr></thead><tbody>${state.items.map(it=>{
+  const id=identity(it),nx=nexus(it);return `<tr><td>${esc(it.f.oa||"—")}</td><td>${esc(it.f.ver||"—")}</td><td>${esc(it.f.razao||"—")}</td><td>${esc(fmtCNPJ(it.f.cnpj)||"—")}</td><td>${esc(it.f.obj||"—")}</td><td>${esc(it.f.valor||"—")}</td><td>${id.ok?"Confirmada":"Pendente"}</td><td>${nx.status}<br><span class="small">confiança ${nx.conf}</span></td><td>${extLabel(it.external.mapa)}</td><td>${extLabel(it.external.cee)}</td><td><b>${validateStatus(it)}</b></td></tr>`}).join("")}</tbody></table></div></section>`;
+}
+function extLabel(v){return v==="ok"?"Compatível":v==="div"?"Divergência":v==="notfound"?"Não localizada":"Pendente"}
+function field(it,k,label,ph="",wide=false){return `<div class="${wide?"wide":""}"><label>${label}</label><input data-id="${it.id}" data-f="${k}" value="${esc(it.f[k]||"")}" placeholder="${esc(ph)}"></div>`}
+function cardHTML(it,i){
+ const cl=readiness(it),id=identity(it),nx=nexus(it),adv=adversarial(it),docn=Object.values(it.docs).filter(Boolean).length;
+ return `<section class="card ${cl}">
+ <div class="head" data-toggle="${it.id}"><div><h3>${i+1}. ${esc(it.f.oa||"OA não identificado")} · ${esc(it.f.razao||"Entidade não identificada")}</h3><div class="meta">${esc(it.source)}${it.pages?.length?" · páginas "+it.pages[0]+"–"+it.pages[it.pages.length-1]:""}</div><div class="chips"><span class="chip">${esc(it.f.ver||"vereador pendente")}</span><span class="chip">${esc(it.f.valor||"valor pendente")}</span><span class="chip ${cnpjOk(it.f.cnpj)?"ok":"bad"}">CNPJ ${cnpjOk(it.f.cnpj)?"válido":"a validar"}</span><span class="chip ${cl}">${validateStatus(it)}</span></div></div><div><b>${docn}/${DOCS.length}</b><div class="small">documentos detectados</div></div></div>
+ <div class="body ${it.open?"":"hidden"}">
+ <div class="sec"><h4>Vínculo processual — Ofício Administrativo</h4><div class="grid">
+ ${field(it,"oa","Ofício Administrativo","OA nº 000/2026")}${field(it,"ver","Vereador autor da emenda")}${field(it,"valor","Valor","R$ 0,00")}${field(it,"sec","Secretaria gestora/executora")}
+ ${field(it,"objeto","Objeto da proposta","Descrição certa e determinada",true)}</div>
+ ${!it.f.oa?'<div class="alert bad">Nenhuma análise pode ser concluída sem o Ofício Administrativo estar identificado e vinculado ao vereador autor.</div>':""}</div>
+
+ <div class="sec"><h4>Identidade cadastral da beneficiária</h4><div class="identity"><div class="grid">
+ ${field(it,"cnpj","CNPJ beneficiário","00.000.000/0000-00")}${field(it,"razao","Razão social oficial")}${field(it,"fantasia","Nome fantasia / comercial")}${field(it,"rep","Representante legal")}
+ ${field(it,"endereco","Endereço completo da sede","logradouro, número, complemento, bairro, município, UF, CEP",true)}${field(it,"area","Área de atuação")}${field(it,"desp","Classificação","Custeio ou Capital")}${field(it,"natureza","Natureza da despesa")}
+ </div>${id.issues.map(x=>`<div class="alert bad">${esc(x)}</div>`).join("")}
+ ${it.thirdCnpjs?.length?`<div class="alert warn"><b>CNPJs de terceiros/fornecedores encontrados:</b> ${it.thirdCnpjs.map(fmtCNPJ).join(" · ")}. Eles não substituem o CNPJ beneficiário.</div>`:""}</div></div>
+
+ <div class="sec"><h4>Validações externas</h4><div class="grid">
+ <div><label>Mapa das OSC</label><select data-id="${it.id}" data-ext="mapa"><option value="">Pendente</option><option value="ok" ${it.external.mapa==="ok"?"selected":""}>Localizada e compatível</option><option value="div" ${it.external.mapa==="div"?"selected":""}>Localizada com divergência</option><option value="notfound" ${it.external.mapa==="notfound"?"selected":""}>Não localizada</option></select></div>
+ <div><label>Área/subárea — Mapa OSC</label><input data-id="${it.id}" data-ext="mapaArea" value="${esc(it.external.mapaArea)}"></div>
+ <div><label>CNAE/atividade — Mapa OSC</label><input data-id="${it.id}" data-ext="mapaCnae" value="${esc(it.external.mapaCnae)}"></div>
+ <div><label>Cadastro Estadual / CRCE</label><select data-id="${it.id}" data-ext="cee"><option value="">Pendente</option><option value="ok" ${it.external.cee==="ok"?"selected":""}>Certificado/dados compatíveis</option><option value="div" ${it.external.cee==="div"?"selected":""}>Divergência cadastral</option><option value="notfound" ${it.external.cee==="notfound"?"selected":""}>Não localizada/certificada</option></select></div>
+ <div><label>Nº CRCE / certificado</label><input data-id="${it.id}" data-ext="crce" value="${esc(it.external.crce)}"></div>
+ <div><label>Razão social no CEE</label><input data-id="${it.id}" data-ext="ceeNome" value="${esc(it.external.ceeNome)}"></div>
+ <div class="wide"><label>Endereço no CEE</label><input data-id="${it.id}" data-ext="ceeEndereco" value="${esc(it.external.ceeEndereco)}"></div>
+ <div class="wide"><label>Observações cadastrais</label><textarea rows="2" data-id="${it.id}" data-ext="ceeObs">${esc(it.external.ceeObs)}</textarea></div>
+ </div><div class="bar"><button class="btn alt" data-open="mapa" data-id="${it.id}">Consultar Mapa das OSC</button><button class="btn alt" data-open="cee" data-id="${it.id}">Consultar Cadastro Estadual / CRCE</button></div>
+ <div class="footer-note">A consulta externa deve ser registrada pelo analista. O sistema não presume que uma base externa esteja atualizada e não realiza scraping silencioso.</div></div>
+
+ <div class="sec"><h4>Checklist documental</h4><div class="checks">${DOCS.map((d,j)=>`<label><input type="checkbox" data-id="${it.id}" data-doc="${j}" ${it.docs[j]?"checked":""}><span>${esc(d)}</span></label>`).join("")}</div></div>
+
+ <div class="sec"><h4>Nexo do objeto × documentação</h4><div class="nexus">${nx.vals.map(v=>`<div class="nx"><b>${v[0]}</b><span>${v[1]===null?"evidência insuficiente":Math.round(v[1]*100)+"% de correspondência lexical"}</span><strong>${v[1]===null?"PENDENTE":v[1]>=.55?"FORTE":v[1]>=.25?"PARCIAL":"FRACO"}</strong></div>`).join("")}</div><div class="alert ${nx.status==="DEMONSTRADO"?"ok":nx.status==="PARCIAL"?"warn":"bad"}"><b>${nx.status}</b> · confiança ${nx.conf}. Presença documental não equivale a compatibilidade material.</div></div>
+
+ <div class="sec"><h4>Revisão adversarial</h4>
+ <div class="alert warn"><b>/BASELINE</b> — ${esc(adv.baseline)}</div>
+ <div class="alert warn"><b>/STEELMAN</b> — ${esc(adv.steelman)}</div>
+ <div class="alert warn"><b>/PREMORTEM</b> — ${esc(adv.premortem)}</div>
+ <div class="alert warn"><b>/BLINDSPOT</b> — ${esc(adv.blindspot)}</div>
+ <div class="alert warn"><b>/UNKNOWN</b> — ${esc(adv.unknown)}</div></div>
+
+ <div class="sec"><h4>Análise do responsável</h4><div class="alert ok"><b>${esc(analyst().name)}</b> · ${esc(analyst().unit)}<br><span class="small">Enfoque: ${esc(analyst().focus)}</span></div><textarea rows="5" data-id="${it.id}" data-note="1" placeholder="Fundamentação, ressalvas e providências...">${esc(it.analystNote)}</textarea></div>
+ <details class="sec"><summary>Texto pesquisável extraído</summary><textarea rows="14" readonly>${esc(it.text.slice(0,50000))}</textarea></details>
+ <div class="bar"><button class="btn danger" data-remove="${it.id}">Remover este bloco</button>${it._scan?.length?`<button class="btn alt" data-ocritem="${it.id}">OCR das ${it._scan.length} páginas sem texto</button>`:""}</div>
+ </div></section>`;
+}
+function bindDynamic(){
+ $$("[data-toggle]").forEach(x=>x.onclick=()=>{const it=get(+x.dataset.toggle);it.open=!it.open;render()});
+ $$("[data-f]").forEach(x=>x.onchange=()=>{const it=get(+x.dataset.id);it.f[x.dataset.f]=x.value;refreshDetected(it);render()});
+ $$("[data-ext]").forEach(x=>x.onchange=()=>{const it=get(+x.dataset.id);it.external[x.dataset.ext]=x.value;render()});
+ $$("[data-doc]").forEach(x=>x.onchange=()=>{get(+x.dataset.id).docs[x.dataset.doc]=x.checked;render()});
+ $$("[data-note]").forEach(x=>x.onchange=()=>{get(+x.dataset.id).analystNote=x.value});
+ $$("[data-remove]").forEach(x=>x.onclick=()=>{state.items=state.items.filter(i=>i.id!==+x.dataset.remove);render()});
+ $$("[data-open]").forEach(x=>x.onclick=()=>openExternal(x.dataset.open,get(+x.dataset.id)));
+ $$("[data-ocritem]").forEach(x=>x.onclick=async()=>{const it=get(+x.dataset.ocritem);if(it._file&&it._scan?.length){await ocrPDFPages(it,it._file,it._scan);it._scan=[];setProgress(false);render()}});
+}
+function get(id){return state.items.find(x=>x.id===id)}
+function openExternal(kind,it){
+ const c=digits(it.f.cnpj);if(c&&navigator.clipboard)navigator.clipboard.writeText(c).catch(()=>{});
+ const url=kind==="mapa"?"https://mapaosc.ipea.gov.br/filtro":"https://www.cadastrodeentidades.sp.gov.br/CertificadoPublico.aspx";
+ window.open(url,"_blank","noopener");setStatus(c?"CNPJ copiado: "+fmtCNPJ(c)+". Cole na consulta externa.":"Informe o CNPJ beneficiário antes da consulta.");
+}
+function reportHTML(){
+ const a=analyst(),items=state.items,total=items.reduce((s,x)=>s+money(x.f.valor),0);
+ const rows=items.map((it,i)=>{const nx=nexus(it),id=identity(it);return `<tr><td>${i+1}</td><td>${esc(it.f.oa||"—")}</td><td>${esc(it.f.ver||"—")}</td><td>${esc(it.f.razao||"—")}<br>${esc(fmtCNPJ(it.f.cnpj)||"")}</td><td>${esc(it.f.obj||"—")}</td><td>${esc(it.f.valor||"—")}</td><td>${id.ok?"Confirmada":"Pendente"}</td><td>${nx.status} (${nx.conf})</td><td>${extLabel(it.external.mapa)}</td><td>${extLabel(it.external.cee)}</td><td><b>${validateStatus(it)}</b></td></tr>`}).join("");
+ const details=items.map(it=>`<h3>${esc(it.f.oa||"OA não identificado")} · ${esc(it.f.razao||"Entidade não identificada")}</h3><p><b>Vereador:</b> ${esc(it.f.ver||"—")} · <b>CNPJ:</b> ${esc(fmtCNPJ(it.f.cnpj)||"—")} · <b>Valor:</b> ${esc(it.f.valor||"—")}<br><b>Objeto:</b> ${esc(it.f.obj||"—")}<br><b>Resultado:</b> ${validateStatus(it)} · <b>Nexo:</b> ${nexus(it).status}, confiança ${nexus(it).conf}.</p>${it.analystNote?`<p><b>Registro do analista:</b> ${esc(it.analystNote)}</p>`:""}`).join("");
+ return `<!doctype html><meta charset="utf-8"><title>Relatório de análise de emendas</title><style>body{font:13px/1.48 Arial;max-width:1180px;margin:24px auto;color:#1d2b38}h1,h2,h3{font-family:Georgia;color:#12365b}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #ccd6df;padding:6px;vertical-align:top}th{background:#eaf1f7}p{text-align:justify}@media print{tr{break-inside:avoid}}</style>
+ <h1>CÂMARA MUNICIPAL DE FRANCA<br>RELATÓRIO DE ANÁLISE DOCUMENTAL DE EMENDAS IMPOSITIVAS</h1>
+ <p><b>Procedimento:</b> ${esc($("#pi").value)} · <b>Exercício:</b> ${esc($("#exercise").value)} · <b>Emitido em:</b> ${new Date().toLocaleDateString("pt-BR")}<br><b>Responsável pela análise:</b> ${esc(a.name)} · ${esc(a.unit)}<br><b>Enfoque técnico:</b> ${esc(a.focus)}</p>
+ <p>Foram consolidados ${items.length} Ofícios Administrativos/blocos, no valor total identificado de ${brl(total)}. A análise automatizada é instrumento de apoio à instrução e não substitui a conferência humana nem as manifestações legalmente atribuídas aos setores competentes.</p>
+ <h2>1. Quadro comparativo</h2><table><tr><th>Nº</th><th>OA</th><th>Vereador</th><th>Entidade/CNPJ</th><th>Objeto</th><th>Valor</th><th>Identidade</th><th>Nexo</th><th>Mapa OSC</th><th>CEE/CRCE</th><th>Situação</th></tr>${rows}</table>
+ <h2>2. Análises individualizadas</h2>${details}
+ <h2>3. Premissas de controle</h2><p>Documento localizado não significa, por si só, nexo demonstrado. O CNPJ beneficiário deve ser distinguido dos CNPJs de fornecedores e terceiros. Razão social, endereço e representação devem ser coerentes com os documentos e com as validações externas registradas. O Ofício Administrativo constitui a âncora processual da indicação.</p>
+ <p><br><br>_________________________________________<br><b>${esc(a.name)}</b><br>${esc(a.unit)}</p>`;
+}
+function saveSession(){
+ const clean=JSON.parse(JSON.stringify(state,(k,v)=>k==="_file"?undefined:v));localStorage.setItem("emendas_final_franca",JSON.stringify(clean));setStatus("Sessão salva neste navegador.");
+}
+function loadSession(){try{const s=JSON.parse(localStorage.getItem("emendas_final_franca"));if(!s)return setStatus("Nenhuma sessão salva.");state=s;state.items.forEach(x=>{x.external=x.external||{};x.docs=x.docs||{};x.open=false});syncTop();render();setStatus("Sessão carregada.")}catch(e){setStatus("Erro ao carregar: "+e.message)}}
+function syncTop(){$("#analyst").value=state.analyst;$("#pi").value=state.pi||"PI nº 117/2026";$("#exercise").value=state.exercise||"LOA 2027"}
+function exportXLSX(){
+ const rows=state.items.map((it,i)=>{const nx=nexus(it);return {"Nº":i+1,"Ofício Administrativo":it.f.oa,"Vereador":it.f.ver,"Entidade":it.f.razao,"Nome fantasia":it.f.fantasia,"CNPJ":fmtCNPJ(it.f.cnpj),"Endereço":it.f.endereco,"Objeto":it.f.obj,"Área":it.f.area,"Classificação":it.f.desp,"Natureza":it.f.natureza,"Valor":money(it.f.valor),"Secretaria":it.f.sec,"Mapa OSC":extLabel(it.external.mapa),"Área Mapa":it.external.mapaArea,"CNAE Mapa":it.external.mapaCnae,"CEE/CRCE":extLabel(it.external.cee),"CRCE":it.external.crce,"Nexo":nx.status,"Confiança":nx.conf,"Situação":validateStatus(it),"Analista":analyst().name,"Observações":it.analystNote}});
+ const ws=XLSX.utils.json_to_sheet(rows);const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Comparativo");XLSX.writeFile(wb,"analise_emendas_franca.xlsx");
+}
+function setup(){
+ $("#analyst").innerHTML=ANALYSTS.map(a=>`<option value="${a.id}">${esc(a.name)} — ${esc(a.unit)}</option>`).join("");
+ $("#analystCards").innerHTML=ANALYSTS.map((a,i)=>`<label><input type="radio" name="a" value="${a.id}" ${i===1?"checked":""}><b>${esc(a.name)}</b><br><span class="small">${esc(a.unit)}<br>${esc(a.focus)}</span></label>`).join("");
+ $("#start").onclick=()=>{state.analyst=$('input[name="a"]:checked').value;$("#welcome").hidden=true;syncTop();render()};
+ $("#analyst").onchange=e=>{state.analyst=e.target.value;render()};
+ $("#pi").onchange=e=>state.pi=e.target.value;$("#exercise").onchange=e=>state.exercise=e.target.value;
+ $("#drop").onclick=()=>$("#files").click();$("#files").onchange=e=>handle(e.target.files);
+ $("#drop").ondragover=e=>{e.preventDefault();$("#drop").classList.add("over")};$("#drop").ondragleave=()=>$("#drop").classList.remove("over");$("#drop").ondrop=e=>{e.preventDefault();$("#drop").classList.remove("over");handle(e.dataTransfer.files)};
+ $("#folder").onclick=()=>$("#folderFiles").click();$("#folderFiles").onchange=e=>handle([...e.target.files].filter(f=>/\.(pdf|docx|png|jpe?g)$/i.test(f.name)));
+ $("#manual").onclick=()=>{const it=defaultItem("(cadastro manual)","");state.items.push(it);render()};
+ $("#ocr").onclick=async()=>{for(const it of state.items.filter(x=>x._file&&x._scan?.length)){await ocrPDFPages(it,it._file,it._scan);it._scan=[]}setProgress(false);render();setStatus("OCR seletivo concluído.")};
+ $("#save").onclick=saveSession;$("#load").onclick=loadSession;$("#xlsx").onclick=exportXLSX;
+ $("#report").onclick=()=>{const w=window.open("","_blank");if(!w)return setStatus("O navegador bloqueou a janela do relatório.");w.document.write(reportHTML());w.document.close()};
+ state.analyst="paula";syncTop();render();
+}
+setup();
+</script>
+</body>
+</html>
