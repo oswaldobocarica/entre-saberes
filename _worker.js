@@ -1,7 +1,7 @@
 import { DurableObject } from "cloudflare:workers";
 /* Entre Saberes 4.0. Server module: never include service credentials in browser files.
    Runtime: Cloudflare Workers/Pages with ASSETS, Web Crypto and HTMLRewriter. */
-export const VERSION='4.0';
+export const VERSION='4.1.1';
 const MAX_UPLOAD=30*1024*1024, MAX_HTML=8*1024*1024;
 const DEFAULT_URL='https://aundupwnaoveahudttku.supabase.co';
 const DEFAULT_KEY='sb_publishable_rPBcx4j5q77Q7swXv0ZvkQ_AyySgQ9z';
