@@ -1,4 +1,6 @@
 const cfg=window.ENTRE_SABERES_CONFIG;
+const AUTH_STORAGE_KEY='entre-saberes-cms-auth-v19';
+const AUTH_RECOVERY_RELOAD_KEY='entre-saberes-auth-recovery-reloaded';
 // Compatibilidade de autenticação: evita bloqueios de sessão entre abas/navegador.
 const authLock=async (_name,_acquireTimeout,fn)=>await fn();
 const sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey,{
@@ -6,7 +8,7 @@ const sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey
     persistSession:true,
     autoRefreshToken:true,
     detectSessionInUrl:false,
-    storageKey:'entre-saberes-cms-auth-v19',
+    storageKey:AUTH_STORAGE_KEY,
     lock:authLock
   }
 });
@@ -19,7 +21,7 @@ let backendPermissions={checked:false,authenticated:false,email:'',papel:'',can_
 let currentEditingPost=null;
 function canDeleteAnything(){return backendPermissions.checked===true && backendPermissions.can_delete===true;}
 
-const SYSTEM_VERSION='4.0';
+const SYSTEM_VERSION='4.1.1';
 const SYSTEM_UPDATES=[
   {version:'4.0',date:'02/10/2026',title:'Leitura adaptativa e fluxo editorial integrado',items:['Corrigida a largura disponivel ao lado do menu e a navegacao em monitores verticais.','Controle de texto de 50% a 200%, com passo de 1 ponto percentual.','Importacao de apostilas com historico, revisao e publicacao; requer configuracao dos servicos.','Comentarios com aprovacao, reprovacao e exclusao protegidas no servidor.','Compartilhamento social e acesso visivel a pesquisa SciELO, com cobertura bibliografica explicitada.','Mantidas as publicacoes, cursos e respostas de atividades das versoes anteriores.']},
   {version:'3.9',date:'30/09/2026',title:'Navegação, acessibilidade, respostas e pesquisa SciELO',items:['Padronizada a trilha de pão no alto das páginas e criado o botão Voltar ao topo no canto inferior direito.','Adicionados controles A−, A e A+ para redimensionamento persistente do texto e revisadas proporções tipográficas e responsividade.','Criado painel administrativo de respostas da Aula 10, com questões sorteadas, respostas, resultado e atividades práticas.','Criada pesquisa SciELO integrada, preservando a navegação do Entre Saberes.','Reforçada a proteção do painel administrativo com validação de perfil antes da abertura e encerramento automático por inatividade.']},
@@ -153,14 +155,34 @@ function resetAdminIdle(){if(adminIdleTimer)clearTimeout(adminIdleTimer);if(!cur
 ['pointerdown','keydown','touchstart','scroll'].forEach(ev=>window.addEventListener(ev,resetAdminIdle,{passive:true}));
 try{if(sessionStorage.getItem('entre-saberes-admin-timeout')==='1'){sessionStorage.removeItem('entre-saberes-admin-timeout');setTimeout(()=>status($('#loginMsg'),'Sessão administrativa encerrada por segurança após 30 minutos sem atividade.'),50)}}catch{}
 
+function clearLocalAuthState(){
+  try{
+    localStorage.removeItem(AUTH_STORAGE_KEY);
+    const projectRef=String(cfg?.supabaseUrl||'').match(/^https:\/\/([^.]+)\.supabase\.co/i)?.[1]||'';
+    for(let i=localStorage.length-1;i>=0;i--){
+      const key=localStorage.key(i)||'';
+      if(key===AUTH_STORAGE_KEY || (projectRef && key.includes(projectRef) && /auth|supabase/i.test(key))) localStorage.removeItem(key);
+    }
+  }catch{}
+}
+
 async function boot(){
   try{
     const result=await Promise.race([sb.auth.getSession(),timeout(6000)]);
     const session=result?.data?.session||null;
+    try{sessionStorage.removeItem(AUTH_RECOVERY_RELOAD_KEY)}catch{}
     if(session) openPanel(session.user); else showLogin();
   }catch(err){
+    clearLocalAuthState();
+    let alreadyReloaded=false;
+    try{alreadyReloaded=sessionStorage.getItem(AUTH_RECOVERY_RELOAD_KEY)==='1'}catch{}
+    if(!alreadyReloaded){
+      try{sessionStorage.setItem(AUTH_RECOVERY_RELOAD_KEY,'1')}catch{}
+      location.replace(location.href);
+      return;
+    }
     showLogin();
-    status($('#loginMsg'),'Sessão anterior não pôde ser restaurada. Entre novamente.');
+    status($('#loginMsg'),'Sessão local expirada e limpa. Seus conteúdos não foram alterados. Faça login novamente.');
   }
 }
 
@@ -169,6 +191,7 @@ $('#loginForm').addEventListener('submit',async e=>{
   const el=$('#loginMsg');
   const email=$('#email').value.trim();
   const password=$('#password').value;
+  clearLocalAuthState();
   status(el,'Entrando…',true);
   try{
     const result=await Promise.race([
