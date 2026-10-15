@@ -66,3 +66,24 @@
 
 /* v3.9 — respostas das atividades */
 .cms-response-summary{padding:16px 18px;border-radius:14px;background:#eaf5ef;color:#176b3a;margin-bottom:16px}.cms-response-list{display:grid;gap:12px;margin:16px 0 24px}.cms-response-item{border:1px solid #d9e3e7;border-radius:14px;padding:16px;background:#fff}.cms-response-item.correct{border-left:5px solid #27804f}.cms-response-item.wrong{border-left:5px solid #c14a35}.cms-response-qhead{display:flex;justify-content:space-between;gap:12px;color:#173746}.cms-response-text{white-space:pre-wrap;line-height:1.65}.cms-table td{vertical-align:top}
+
+
+/* v4.1.1 improved — painel mais intuitivo e visualmente orientado */
+.cms-body{background:linear-gradient(145deg,#eef5f6 0%,#f8f3e8 48%,#f2eef9 100%)}
+.cms-sidebar{background:linear-gradient(180deg,#17394d 0%,#0f5f67 64%,#493f72 100%)}
+.cms-brand{color:#fff!important;letter-spacing:.08em}
+.cms-sidebar nav button,.cms-sidebar nav a{border-radius:12px;transition:transform .16s ease,background .16s ease}
+.cms-sidebar nav button:hover,.cms-sidebar nav a:hover{transform:translateX(3px);background:rgba(255,255,255,.11)}
+.cms-sidebar nav button.active{background:linear-gradient(90deg,rgba(255,255,255,.18),rgba(255,255,255,.08));box-shadow:inset 4px 0 0 #efb447}
+.cms-topbar{background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid rgba(23,57,77,.09)}
+.cms-stats article:nth-child(1){border-top:4px solid #0f7a7d}
+.cms-stats article:nth-child(2){border-top:4px solid #d89a2b}
+.cms-stats article:nth-child(3){border-top:4px solid #6e5aa8}
+.cms-stats article:nth-child(4){border-top:4px solid #145b78}
+.cms-panel{border-color:#d6e2e4;box-shadow:0 12px 32px rgba(23,57,77,.07)}
+.cms-health-panel{background:linear-gradient(135deg,#fbffff,#fffaf0)}
+.cms-login{background:
+radial-gradient(circle at 15% 20%,rgba(216,154,43,.22),transparent 26%),
+radial-gradient(circle at 85% 10%,rgba(15,122,125,.24),transparent 28%),
+linear-gradient(135deg,#17394d,#0f5f67 60%,#493f72)}
+.cms-login-card{box-shadow:0 26px 70px rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.14)}

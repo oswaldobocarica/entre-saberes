@@ -1,7 +1,7 @@
 import { DurableObject } from "cloudflare:workers";
 /* Entre Saberes 4.0. Server module: never include service credentials in browser files.
    Runtime: Cloudflare Workers/Pages with ASSETS, Web Crypto and HTMLRewriter. */
-export const VERSION='4.0';
+export const VERSION='4.1.1-improved';
 const MAX_UPLOAD=30*1024*1024, MAX_HTML=8*1024*1024;
 const DEFAULT_URL='https://aundupwnaoveahudttku.supabase.co';
 const DEFAULT_KEY='sb_publishable_rPBcx4j5q77Q7swXv0ZvkQ_AyySgQ9z';
@@ -209,20 +209,7 @@ async function adminComments(request,env,url,actor){
  return json({comments:rows,has_more:rows.length===30,offset,can_delete:actor.is_owner});
 }
 function stripMarkup(s){return String(s||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim()}
-export function normalizeCrossref(item){return {title:stripMarkup(item.title?.[0]||'Sem t\u00edtulo'),authors:(item.author||[]).slice(0,16).map(a=>[a.given,a.family].filter(Boolean).join(' ')),journal:stripMarkup(item['container-title']?.[0]||''),year:item.published?.['date-parts']?.[0]?.[0]||item.issued?.['date-parts']?.[0]?.[0]||null,doi:String(item.DOI||''),url:item.DOI?'https://doi.org/'+encodeURI(item.DOI):null,abstract:stripMarkup(item.abstract||'').slice(0,1200)}}
-async function scielo(request,env,url,ctx){
- if(request.method!=='GET')fail(405,'M\u00e9todo n\u00e3o permitido.');
- const q=plain(url.searchParams.get('q')||'',240,2),page=pageOffset(url.searchParams.get('page')||0,99);
- const keyURL=new URL('/api/scielo',url.origin);keyURL.searchParams.set('q',q);keyURL.searchParams.set('page',page);
- const cache=globalThis.caches?.default,cacheKey=new Request(keyURL);if(cache){const hit=await cache.match(cacheKey);if(hit)return hit}
- const endpoint=new URL('https://api.crossref.org/prefixes/10.1590/works');endpoint.searchParams.set('query',q);endpoint.searchParams.set('rows','10');endpoint.searchParams.set('offset',String(page*10));if(env.CROSSREF_CONTACT_EMAIL)endpoint.searchParams.set('mailto',env.CROSSREF_CONTACT_EMAIL);
- const r=await timedFetch(endpoint,{headers:{accept:'application/json','user-agent':'EntreSaberes/4.0 (research metadata; https://oswaldobocarica.com.br)'}},20000);
- if(!r.ok)fail(502,'A fonte bibliogr\u00e1fica est\u00e1 indispon\u00edvel. Use a busca oficial SciELO.','research_unavailable');
- const data=await parseJSON(r,4*1024*1024),m=data.message;if(!Array.isArray(m?.items))fail(502,'Resposta bibliogr\u00e1fica inesperada.');
- const response=json({source:'Crossref',scope:'Metadados do prefixo DOI 10.1590; cobertura parcial, n\u00e3o representa toda a Rede SciELO.',query:q,page,total:m['total-results']||0,items:m.items.map(normalizeCrossref),has_more:(page+1)*10<(m['total-results']||0)&&page<99},200,{'cache-control':'public,max-age=600'});
- if(cache&&ctx?.waitUntil)ctx.waitUntil(cache.put(cacheKey,response.clone()));return response;
-}
-const ALIASES=new Map(['cursos','cursos-pagos','aulas','teens-tech','senhores-professores','otica-do-estado','buscar','biblioteca','memorias','pesquisa','pesquisa-scielo','sobre','certificado','login-aluno','meus-cursos','article','aula','curso','categoria','autor','programa','arquivo','cadastro-aluno','cadastro-colaborador','validar-certificado'].map(s=>['/'+s,'/'+s+'.html']));ALIASES.set('/','/index.html');ALIASES.set('/index','/index.html');ALIASES.set('/validar-certificado','/certificado.html');ALIASES.set('/eja-tec','/aulas.html');ALIASES.set('/admin','/admin/index.html');ALIASES.set('/admin/','/admin/index.html');
+const ALIASES=new Map(['cursos','cursos-pagos','aulas','teens-tech','senhores-professores','otica-do-estado','buscar','biblioteca','memorias','pesquisa','sobre','certificado','login-aluno','meus-cursos','article','aula','curso','categoria','autor','programa','arquivo','cadastro-aluno','cadastro-colaborador','validar-certificado'].map(s=>['/'+s,'/'+s+'.html']));ALIASES.set('/','/index.html');ALIASES.set('/index','/index.html');ALIASES.set('/validar-certificado','/certificado.html');ALIASES.set('/eja-tec','/aulas.html');ALIASES.set('/admin','/admin/index.html');ALIASES.set('/admin/','/admin/index.html');
 function secure(response,path){const h=new Headers(response.headers);h.set('x-content-type-options','nosniff');h.set('referrer-policy','strict-origin-when-cross-origin');h.set('permissions-policy','camera=(), microphone=(), geolocation=()');h.set('x-frame-options','SAMEORIGIN');h.set('x-entre-saberes-version',VERSION);
  if(path.startsWith('/admin'))h.set('content-security-policy',"default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'self' blob:; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'");
  if(/html|javascript|text\/css/.test(h.get('content-type')||''))h.set('cache-control','no-store,max-age=0');return new Response(response.body,{status:response.status,headers:h})}
@@ -264,10 +251,7 @@ export class DoclingContainer extends DurableObject {
 export default {async fetch(request,env,ctx){const url=new URL(request.url);
  try{
   if(!['GET','HEAD'].includes(request.method)&&request.headers.get('origin')!==url.origin)fail(403,'Origem da solicita\u00e7\u00e3o n\u00e3o autorizada.','origin_rejected');
-  if(url.pathname==='/api/health'||url.pathname==='/api/config'){if(request.method!=='GET')fail(405,'M\u00e9todo n\u00e3o permitido.');return json(capabilities(env))}
-  if(url.pathname==='/api/scielo')return await scielo(request,env,url,ctx);
-  if(url.pathname==='/api/scielo-proxy')fail(410,'A consulta agora utiliza /pesquisa-scielo. A reprodu\u00e7\u00e3o integral de sites externos foi desativada.');
-  if(url.pathname==='/api/comments')return await comments(request,env,url);
+  if(url.pathname==='/api/health'||url.pathname==='/api/config'){if(request.method!=='GET')fail(405,'M\u00e9todo n\u00e3o permitido.');return json(capabilities(env))}  if(url.pathname==='/api/comments')return await comments(request,env,url);
   if(url.pathname.startsWith('/api/admin/')||url.pathname.startsWith('/api/conversions')){
    const actor=await authenticate(request,env);
    if(url.pathname==='/api/admin/session'&&request.method==='GET')return json({...capabilities(env),database_checked:true,access:actor});
