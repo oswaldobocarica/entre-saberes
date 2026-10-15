@@ -1,3 +1,4 @@
+import { DurableObject } from "cloudflare:workers";
 /* Entre Saberes 4.0. Server module: never include service credentials in browser files.
    Runtime: Cloudflare Workers/Pages with ASSETS, Web Crypto and HTMLRewriter. */
 export const VERSION='4.0';
@@ -23,7 +24,7 @@ class HttpError extends Error{constructor(status,message,code='request_error'){s
 const fail=(s,m,c)=>{throw new HttpError(s,m,c)};
 function database(env){const raw=env.SUPABASE_URL||DEFAULT_URL;const u=new URL(raw);if(u.protocol!=='https:')fail(503,'Configura\u00e7\u00e3o do banco inv\u00e1lida.');return u.origin}
 function serviceReady(env){return !!env.SUPABASE_SERVICE_ROLE_KEY}
-function converterReady(env){return serviceReady(env)&&!!env.DOCLING_URL&&!!env.DOCLING_API_KEY}
+function converterReady(env){return serviceReady(env)&&(!!env.DOCLING||(!!env.DOCLING_URL&&!!env.DOCLING_API_KEY))}
 function commentsReady(env){return serviceReady(env)&&String(env.COMMENTS_IP_SALT||'').length>=32&&(!env.TURNSTILE_SECRET_KEY||!!env.TURNSTILE_SITE_KEY)}
 function json(value,status=200,headers={}){return new Response(JSON.stringify(value),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-entre-saberes-version':VERSION,...headers}})}
 async function textLimited(source,limit){
@@ -74,9 +75,21 @@ async function checkMagic(source,ext){
  if(ext==='pdf'?!pdf:!zip)fail(400,'O conte\u00fado do arquivo n\u00e3o corresponde ao formato informado.');
 }
 async function docling(env,path,{method='GET',body}={}){
- if(!converterReady(env))fail(503,'Configure o servi\u00e7o Docling e sua chave no Cloudflare.','converter_not_configured');
- const base=new URL(env.DOCLING_URL);if(base.protocol!=='https:'||base.username||base.password||base.search||base.hash)fail(503,'DOCLING_URL deve ser uma base HTTPS sem credenciais.');
- const r=await timedFetch(env.DOCLING_URL.replace(/\/+$/,'')+path,{method,headers:{'X-Api-Key':env.DOCLING_API_KEY,'content-type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)},30000);
+ if(!converterReady(env))fail(503,'O conversor Docling ainda n\u00e3o est\u00e1 dispon\u00edvel no servidor.','converter_not_configured');
+ const payload=body===undefined?undefined:JSON.stringify(body);
+ let r;
+ if(env.DOCLING){
+  try{
+   const stub=env.DOCLING.getByName('entre-saberes-docling');
+   const target=new URL(path,'http://container');
+   r=await stub.fetch(target,{method,headers:{'content-type':'application/json'},body:payload});
+  }catch{
+   fail(502,'O conversor interno n\u00e3o respondeu. Aguarde a inicializa\u00e7\u00e3o e tente novamente.','upstream_unavailable');
+  }
+ }else{
+  const base=new URL(env.DOCLING_URL);if(base.protocol!=='https:'||base.username||base.password||base.search||base.hash)fail(503,'DOCLING_URL deve ser uma base HTTPS sem credenciais.');
+  r=await timedFetch(env.DOCLING_URL.replace(/\/+$/,'')+path,{method,headers:{'X-Api-Key':env.DOCLING_API_KEY,'content-type':'application/json'},body:payload},30000);
+ }
  if(!r.ok){if(r.status===404)fail(502,'A tarefa expirou ou a rota Docling n\u00e3o existe. Verifique a vers\u00e3o/configura\u00e7\u00e3o do conversor.','converter_task_missing');if(r.status===401||r.status===403)fail(503,'A chave de acesso ao Docling foi recusada.','converter_auth');if(r.status===422)fail(502,'A configura\u00e7\u00e3o enviada n\u00e3o corresponde ao esquema do Docling instalado. Consulte /docs no servidor.','converter_schema');fail(502,'O Docling n\u00e3o concluiu a opera\u00e7\u00e3o.','converter_error');}
  return parseJSON(r,24*1024*1024);
 }
@@ -218,6 +231,36 @@ export async function collectResults(env){
  const pending=await rest(env,'es40_document_jobs?status=eq.processing&select=*&order=last_polled_at.asc.nullsfirst&limit=5');
  for(const job of pending){try{await pollJob(env,job)}catch(e){if(e.status===413||['converter_task_missing','empty_conversion'].includes(e.code))await patchJob(env,job.id,{status:'error',error_message:e.message}).catch(()=>{});}}
 }
+export class DoclingContainer extends DurableObject {
+ ready;
+ constructor(ctx,env){super(ctx,env)}
+ async fetch(request){
+  const container=this.ctx.container;
+  if(!container?.running)this.ready=undefined;
+  this.ready??=this.startAndWait().catch(error=>{this.ready=undefined;throw error});
+  await this.ready;
+  const url=new URL(request.url);url.protocol='http:';url.host='container';
+  const forwarded=new Request(url,request);forwarded.headers.delete('host');
+  return container.getTcpPort(5001).fetch(forwarded);
+ }
+ async startAndWait(){
+  const container=this.ctx.container;
+  await container.setInactivityTimeout(5*60*1000);
+  if(!container.running)container.start();
+  const port=container.getTcpPort(5001);
+  let lastError;
+  for(let attempt=0;attempt<480;attempt++){
+   try{
+    const response=await port.fetch('http://container/docs');
+    if(response.ok)return;
+    lastError=new Error('Docling readiness '+response.status);
+   }catch(error){lastError=error}
+   await scheduler.wait(250);
+  }
+  throw new Error('Docling n\u00e3o ficou pronto no tempo esperado',{cause:lastError});
+ }
+}
+
 export default {async fetch(request,env,ctx){const url=new URL(request.url);
  try{
   if(!['GET','HEAD'].includes(request.method)&&request.headers.get('origin')!==url.origin)fail(403,'Origem da solicita\u00e7\u00e3o n\u00e3o autorizada.','origin_rejected');
