@@ -191,7 +191,8 @@ $('#loginForm').addEventListener('submit',async e=>{
   const el=$('#loginMsg');
   const email=$('#email').value.trim();
   const password=$('#password').value;
-  clearLocalAuthState();
+  // Nao apague a sessao persistida antes de cada tentativa: uma falha de rede
+  // nao deve destruir o acesso local valido ou forcar reautenticacao.
   status(el,'Entrando…',true);
   try{
     const result=await Promise.race([
@@ -199,7 +200,13 @@ $('#loginForm').addEventListener('submit',async e=>{
       timeout(12000)
     ]);
     const {data,error}=result||{};
-    if(error){status(el,'Não foi possível entrar: '+error.message);return}
+    if(error){
+      const networkFailure=/failed to fetch|network|fetch failed|load failed/i.test(error.message||'');
+      status(el,networkFailure
+        ? 'O servidor de autenticação não respondeu. Não é um erro de senha. A conexão com o Supabase precisa ser recuperada antes do login.'
+        : 'Não foi possível entrar: '+error.message);
+      return;
+    }
     if(!data?.user){status(el,'Login realizado, mas o usuário não foi retornado.');return}
     status(el,'Acesso autorizado.',true);
     openPanel(data.user);
