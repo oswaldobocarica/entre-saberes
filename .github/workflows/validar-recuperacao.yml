@@ -1,6 +1,9 @@
 name: Homologar Entre Saberes (sem publicar)
 
 on:
+  push:
+    branches:
+      - recuperacao-neon-cloudflare
   workflow_dispatch:
 
 permissions:
@@ -11,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout da ramificacao escolhida
+      - name: Checkout da ramificacao isolada
         uses: actions/checkout@v4
       - name: Preparar Node.js
         uses: actions/setup-node@v4
@@ -19,14 +22,11 @@ jobs:
           node-version: '22'
       - name: Instalar dependencias
         run: npm install --no-audit --no-fund
-      - name: Validar testes do Worker
+      - name: Executar testes obrigatorios
+        run: npm test
+      - name: Validar sintaxe JavaScript do painel e Worker
         run: |
-          if [ -f tests/worker.test.mjs ]; then
-            npm test
-          else
-            echo 'Sem testes automatizados; verificacao de testes ignorada.'
-          fi
-      - name: Validar sintaxe JavaScript do painel
-        run: node --check admin/admin.js
+          node --check admin/admin.js
+          node --check _worker.js
       - name: Preparar pacote sem publicar no Cloudflare
         run: npx wrangler deploy --dry-run --outdir /tmp/entre-saberes-validation
