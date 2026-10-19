@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "source": "publicacoes_publicadas_recuperadas",
+  "updated": "2026-10-19",
+  "publications": [
+    {
+      "id": "a2da374f-2a30-4b22-92c0-b19f3e6179c7",
+      "slug": "apostila-do-curso-de-5s-876389",
+      "tipo": "material_educacional",
+      "resumo": "O documento apresenta o programa 5S, uma metodologia de origem japonesa baseada em cinco técnicas essenciais – Seiri (organização), Seiton (ordem), Seiso (limpeza), Seiketsu (padronização) e Shitsuke (disciplina) – que visam a estruturação e a melhoria do ambiente de trabalho. O material descreve detalhadamente cada um dos sensos, seus conceitos-chave, vantagens e a importância da implantação estruturada, que inclui etapas como sensibilização da alta administração, definição de gestor, treinamentos, elaboração de plano diretor, diagnóstico inicial e o “Dia da Grande Limpeza”. O 5S é apresentado como um plano estratégico que, ao ser incorporado à rotina, contribui para a conquista da Qualidade Total e para a filosofia Kaizen (melhoria contínua), promovendo mudanças comportamentais em todos os níveis hierárquicos e gerando benefícios como redução de custos, prevenção de acidentes, aumento da produtividade e melhoria das relações humanas.\nEste material pode substanciar o desenvolvimento das atividades dentro das organizações empresariais ao fornecer um roteiro prático e estruturado para a implementação do 5S, que atua como base para a gestão da qualidade, segurança do trabalho e produtividade. A aplicação dos cinco sensos permite eliminar desperdícios, organizar espaços e informações, reduzir riscos de acidentes, melhorar o clima organizacional e incentivar a criatividade e o trabalho em equipe. Ao estabelecer padrões e promover a autodisciplina, o 5S cria uma cultura de melhoria contínua, essencial para a competitividade e sustentabilidade empresarial. Além disso, o documento destaca a importância do envolvimento da liderança e do treinamento contínuo, aspectos fundamentais para o sucesso de qualquer iniciativa de mudança organizacional, tornando o 5S uma ferramenta estratégica para a excelência operacional e a qualidade de vida no trabalho.",
+      "status": "publicado",
+      "titulo": "Apostila do Curso de 5S",
+      "destaque": "t",
+      "subtitulo": "Programa 5S: Fundamentos, Metodologia e Aplicação para a Melhoria Contínua nas Organizações",
+      "autor_nome": "Administrador Oswaldo Boca Rica",
+      "curso_nome": null,
+      "imagem_capa": "https://aundupwnaoveahudttku.supabase.co/storage/v1/object/public/media/cms/capas/2026-09-21/1789992815623-Curso-de-5S.png",
+      "instituicao": null,
+      "publicado_em": "2026-09-20T12:14:00+00:00",
+      "vinculo_tipo": "independente",
+      "palavras_chave": "{\"Saúde e Segurança do Trabalho\"}",
+      "periodo_publicacao": null,
+      "modalidade_editorial": null
+    },
+    {
+      "id": "9889d4fc-2118-4de2-9e0c-fa3b7b2fa7f3",
+      "slug": "organizacoes-que-aprendem-e-organizacoes-que-permanecem-estagnadas-a-influencia-da-gestao-do-conhecimento-na-melhoria-co-004547",
+      "tipo": "artigo",
+      "resumo": "As organizações constroem conhecimentos diariamente por meio das experiências de seus gestores e trabalhadores, das decisões tomadas, dos problemas enfrentados e das soluções desenvolvidas ao longo de suas atividades. Entretanto, nem sempre esse conhecimento é compartilhado, registrado ou incorporado aos processos de trabalho. Em muitas empresas, experiências importantes permanecem concentradas em determinadas pessoas e podem ser perdidas quando elas se afastam da organização. Diante dessa realidade, este estudo analisa de que maneira a gestão do conhecimento influencia a aprendizagem organizacional e a melhoria contínua. A pesquisa possui abordagem qualitativa, caráter exploratório e natureza bibliográfica, fundamentando-se principalmente nas contribuições de Senge, Nonaka e Takeuchi, Davenport e Prusak, Garvin, Argyris e Schön, Deming e Imai. A análise considera a criação e o compartilhamento do conhecimento, a preservação da memória organizacional, o papel da liderança, a cultura de aprendizagem e a utilização das experiências na solução de problemas. Os resultados indicam que as organizações que valorizam os saberes de seus trabalhadores, promovem o diálogo, registram soluções e aprendem com seus erros apresentam melhores condições para aperfeiçoar seus processos e responder às mudanças. Em sentido contrário, a concentração do conhecimento, a resistência às transformações e a repetição de práticas sem avaliação podem favorecer a estagnação organizacional. Conclui-se que a gestão do conhecimento não se limita ao armazenamento de informações, mas constitui um processo humano e estratégico, capaz de transformar experiências individuais em aprendizagem coletiva e melhoria contínua.\nPalavras-chave: gestão do conhecimento; aprendizagem organizacional; melhoria contínua; liderança; cultura organizacional.",
+      "status": "publicado",
+      "titulo": "Organizações que aprendem e organizações que permanecem estagnadas: a influência da gestão do conhecimento na melhoria contínua.",
+      "destaque": "t",
+      "subtitulo": "Práticas de gestão do conhecimento como motor da melhoria contínua",
+      "autor_nome": "André Guedes Guarizo",
+      "curso_nome": "Pós-Graduação em Gestão Empresarial",
+      "imagem_capa": "https://aundupwnaoveahudttku.supabase.co/storage/v1/object/public/media/cms/capas/2026-09-21/1790016939165-Gemini_Generated_Image_16n5w316n5w316n5.jpg",
+      "instituicao": "Facuminas - Faculdade Facuminas Ltda",
+      "publicado_em": "2026-09-20T10:42:00+00:00",
+      "vinculo_tipo": "instituicao",
+      "palavras_chave": "{\"gestão do conhecimento; aprendizagem organizacional; melhoria contínua; liderança; cultura organizacional.\"}",
+      "periodo_publicacao": "2026-08",
+      "modalidade_editorial": "Tcc - Artigo"
+    },
+    {
+      "id": "4e0697c8-e47b-4899-bd77-f07dcdbf10ff",
+      "slug": "oswaldo-boca-rica-guariso",
+      "tipo": "memoria",
+      "resumo": "Oswaldo “Boca Rica” Guariso construiu seus saberes pela experiência, pela observação, pela convivência e pela criatividade cotidiana. Sua trajetória entre a vida rural, a cidade, a cultura paulista e as viagens pelo Brasil representa um patrimônio de memória, conhecimento empírico e transmissão cultural.",
+      "status": "publicado",
+      "titulo": "Oswaldo “Boca Rica” Guariso: saberes de uma vida entre a roça, a cidade e os caminhos do Brasil",
+      "destaque": "t",
+      "subtitulo": "Memória, inventividade, cultura popular e conhecimento empírico transmitido entre gerações",
+      "autor_nome": "Administrador Oswaldo Boca Rica",
+      "curso_nome": null,
+      "imagem_capa": "/avatar1.jpg",
+      "instituicao": null,
+      "publicado_em": "2026-09-18T09:30:00+00:00",
+      "vinculo_tipo": "independente",
+      "palavras_chave": "{}",
+      "periodo_publicacao": null,
+      "modalidade_editorial": null
+    },
+    {
+      "id": "da0cba88-71a8-48e8-8b01-29e9402f5950",
+      "slug": "para-alem-da-formacao-utilitaria-filosofia-e-teologia-como-pilares-para-uma-educacao-integral-e-com-sentido-no-seculo-xx-687258",
+      "tipo": "artigo",
+      "resumo": "Este trabalho analisa o papel da Filosofia e da Teologia como fundamentos para uma educação integral no século XXI, contrastando esse paradigma com o modelo utilitarista dominante nas instituições educacionais contemporâneas. A pesquisa, de natureza qualitativa, exploratória e bibliográfica, discute como a formação humanística, reflexiva e espiritual pode oferecer caminhos para superar reducionismos técnicos e pragmáticos. Ao dialogar com pensadores como Aristóteles, Tomás de Aquino, Paulo Freire, Morin, Guardini e autores contemporâneos que tratam da crise de sentido na educação, o estudo evidencia que a integração entre razão crítica (Filosofia) e busca de sentido (Teologia) possibilita uma formação que contempla ética, transcendência, interioridade e responsabilidade social. Os resultados indicam que práticas educativas fundamentadas nesses pilares fortalecem a construção da autonomia, da consciência moral e da dignidade humana. Assim, a articulação entre Filosofia e Teologia revela-se essencial para a renovação da docência e para a promoção de uma educação mais plena, ética e significativa.",
+      "status": "publicado",
+      "titulo": "Para Além da Formação Utilitária: Filosofia e Teologia como Pilares para uma Educação Integral e com Sentido no Século XXI",
+      "destaque": "t",
+      "subtitulo": "Uma reflexão sobre formação humana, pensamento crítico, ética e transcendência na educação contemporânea",
+      "autor_nome": "André Guedes Guarizo",
+      "curso_nome": "Especialização em Docência em Filosofia e Teologia",
+      "imagem_capa": "https://aundupwnaoveahudttku.supabase.co/storage/v1/object/public/media/cms/capas/2026-09-24/1790271925208-ChatGPT-Image-24-de-set-de-2026-14_44_59.png",
+      "instituicao": "Facuminas - Faculdade Facuminas Ltda",
+      "publicado_em": "2026-01-13T10:12:00+00:00",
+      "vinculo_tipo": "instituicao",
+      "palavras_chave": "{\"educação integral; formação humanística; Filosofia; Teologia; sentido da educação; docência universitária.\"}",
+      "periodo_publicacao": "2026-01",
+      "modalidade_editorial": "Tcc - Artigo"
+    },
+    {
+      "id": "3b24ee34-8500-4a0b-9953-d144b7192489",
+      "slug": "producao-sustentabilidade-e-consumismo-uma-reflexao-sobre-a-responsabilidade-ecologica-399172",
+      "tipo": "artigo",
+      "resumo": "Produção ecológica, sustentabilidade e consumismo são questões relevantes que têm ganhado destaque a cada dia, a pandemia de Covid-19 ressaltou a importância de uma produção sustentável e responsável, levando-nos a refletir sobre os prós e contras de um mundo globalizado. É necessário adotar práticas conscientes de produção, utilizar tecnologias limpas e promover políticas públicas que incentivem a sustentabilidade. A conscientização e educação ambiental são fundamentais, assim como o estabelecimento de metas claras para que isso se torne possível. Integrando esse escopo, a inovação tecnológica pode promover a sustentabilidade, devendo ser integrada a políticas amplas com responsabilidades compartilhadas. É possível buscar uma produção mais sustentável, respeitando os limites do nosso planeta? Para responder este quesito, foi realizada uma abordagem exploratória em relação ao levantamento bibliográfico, de caráter descritivo com o objetivo de aprimoramento das ideias e hipóteses, tendo um planejamento mais flexível, conforme instrui Gil (2002), vindo à luz dessa abordagem responder que é preciso valorizar a cultura local e promover educação ambiental, alinhada às diretrizes educacionais de todas as etapas de ensino, promovendo civilidade e consciência ecológica às nossas crianças.",
+      "status": "publicado",
+      "titulo": "Produção, sustentabilidade e consumismo: uma reflexão sobre a responsabilidade ecológica",
+      "destaque": "f",
+      "subtitulo": "O papel de cada um no futuro do planeta",
+      "autor_nome": "André Guedes Guarizo",
+      "curso_nome": "Graduação em Gestão Empresarial",
+      "imagem_capa": "https://aundupwnaoveahudttku.supabase.co/storage/v1/object/public/media/cms/capas/2026-09-23/1790187495057-Gemini_Generated_Image_rcv3trcv3trcv3tr.jpg",
+      "instituicao": "FATEC Dr. Thomaz Novelino (Franca)",
+      "publicado_em": "2023-06-23T22:04:00+00:00",
+      "vinculo_tipo": "instituicao",
+      "palavras_chave": "{}",
+      "periodo_publicacao": "2023-06",
+      "modalidade_editorial": "Trabalhos de Conclusão de Curso"
+    },
+    {
+      "id": "57296d27-6d88-4f1d-a24f-511f864b611a",
+      "slug": "orcamento-publico-em-uma-visao-simplificada-838278",
+      "tipo": "artigo",
+      "resumo": "O orçamento público constitui um dos principais instrumentos de planejamento e gestão da Administração Pública, sendo responsável por organizar a previsão das receitas e a fixação das despesas governamentais. Sua elaboração permite direcionar os recursos disponíveis ao atendimento das necessidades da sociedade, observando critérios de racionalidade, planejamento e responsabilidade na utilização dos recursos públicos. O processo orçamentário envolve a participação dos Poderes Executivo e Legislativo e está estruturado principalmente por meio do Plano Plurianual (PPA), da Lei de Diretrizes Orçamentárias (LDO) e da Lei Orçamentária Anual (LOA). Além disso, a elaboração e a execução do orçamento devem respeitar princípios como unidade, universalidade e anualidade. Nesse contexto, o orçamento também desempenha relevante função de transparência e controle, permitindo o acompanhamento da destinação dos recursos arrecadados pelo Estado e fortalecendo a atuação fiscalizatória do Poder Legislativo e dos Tribunais de Contas.",
+      "status": "publicado",
+      "titulo": "Orçamento Público em  uma visão Simplificada",
+      "destaque": "f",
+      "subtitulo": "Uma abordagem introdutória sobre princípios orçamentários, planejamento governamental e fiscalização dos recursos públicos",
+      "autor_nome": "André Guedes Guarizo",
+      "curso_nome": "Capacitação em Orçamento Público",
+      "imagem_capa": "https://aundupwnaoveahudttku.supabase.co/storage/v1/object/public/media/cms/capas/2026-09-21/1790019405053-ChatGPT-Image-21-de-set-de-2026-16_36_12.png",
+      "instituicao": null,
+      "publicado_em": "2015-06-20T23:45:00+00:00",
+      "vinculo_tipo": "independente",
+      "palavras_chave": "{\"Orçamento Público; Administração Pública; Planejamento Governamental; PPA; LDO; LOA; Controle dos Gastos Públicos.\"}",
+      "periodo_publicacao": "2015-06",
+      "modalidade_editorial": "Redação de Curso de Extensão"
+    }
+  ],
+  "categories": [
+    {
+      "id": "8d5a565f-a14e-442d-956e-68b37ccd984e",
+      "nome": "Saberes e Memorias",
+      "slug": "saberes-e-memorias",
+      "descricao": "Memoria, historia oral, experiencia e conhecimentos transmitidos entre geracoes."
+    },
+    {
+      "id": "3d677331-850b-422c-a9d0-63fbfb47fc0b",
+      "nome": "Educacao",
+      "slug": "educacao",
+      "descricao": "Educacao, ensino, aprendizagem e praticas pedagogicas."
+    },
+    {
+      "id": "ef2f9bd8-45de-4e4d-87bd-0e8aaa7c71dd",
+      "nome": "Ciencia e Pesquisa",
+      "slug": "ciencia-e-pesquisa",
+      "descricao": "Pesquisa, producao cientifica e divulgacao do conhecimento."
+    },
+    {
+      "id": "331c3e2b-119d-4d8a-9e4f-c814f2b0495d",
+      "nome": "Humanidades",
+      "slug": "humanidades",
+      "descricao": "Historia, filosofia, sociologia, antropologia e cultura."
+    },
+    {
+      "id": "fd6f43ea-12d2-4834-a567-c1c09aa8a84f",
+      "nome": "Sociedade e Politicas Publicas",
+      "slug": "sociedade-e-politicas-publicas",
+      "descricao": "Sociedade, cidadania, governanca e politicas publicas."
+    },
+    {
+      "id": "a145fd1a-6581-465c-bd2a-349c25d045e6",
+      "nome": "Gestao e Organizacoes",
+      "slug": "gestao-e-organizacoes",
+      "descricao": "Gestao, processos, conhecimento e desenvolvimento organizacional."
+    },
+    {
+      "id": "a441f0da-bb37-421f-a0e5-647b40560c24",
+      "nome": "Engenharia e Tecnologia",
+      "slug": "engenharia-e-tecnologia",
+      "descricao": "Engenharia, tecnologia, seguranca, producao e inovacao."
+    },
+    {
+      "id": "eb68d838-0b90-41d6-a56d-692122436caa",
+      "nome": "Historias e Contos",
+      "slug": "historias-e-contos",
+      "descricao": "Narrativas, literatura, memoria e producao cultural."
+    },
+    {
+      "id": "b57d04ff-0bce-497d-bd47-b9d176187d30",
+      "nome": "Teens Tech",
+      "slug": "teens-tech",
+      "descricao": "Jovens autores, ciencia, tecnologia, criatividade, pesquisas, projetos e videos curtos."
+    }
+  ],
+  "publication_categories": [
+    {
+      "publication_id": "a2da374f-2a30-4b22-92c0-b19f3e6179c7",
+      "category_id": "a441f0da-bb37-421f-a0e5-647b40560c24"
+    },
+    {
+      "publication_id": "9889d4fc-2118-4de2-9e0c-fa3b7b2fa7f3",
+      "category_id": "3d677331-850b-422c-a9d0-63fbfb47fc0b"
+    },
+    {
+      "publication_id": "9889d4fc-2118-4de2-9e0c-fa3b7b2fa7f3",
+      "category_id": "a145fd1a-6581-465c-bd2a-349c25d045e6"
+    },
+    {
+      "publication_id": "da0cba88-71a8-48e8-8b01-29e9402f5950",
+      "category_id": "ef2f9bd8-45de-4e4d-87bd-0e8aaa7c71dd"
+    },
+    {
+      "publication_id": "da0cba88-71a8-48e8-8b01-29e9402f5950",
+      "category_id": "3d677331-850b-422c-a9d0-63fbfb47fc0b"
+    }
+  ]
+}
