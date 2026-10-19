@@ -37,16 +37,22 @@ function renderLoadError(host,title,message,detail=''){
 async function loadArticle(){
   const host=document.querySelector('#articleHost'); if(!host)return;
   try{
-    if(!cfg||!cfg.supabaseUrl||!cfg.supabasePublishableKey||!window.supabase) throw new Error('Configuração do Supabase não foi carregada.');
-    const sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey);
     const q=new URLSearchParams(location.search),id=q.get('id'),slug=q.get('slug'),preview=q.get('preview')==='1';
+    if(preview){renderLoadError(host,'Prévia indisponível','A recuperação pública exibe somente conteúdos já publicados. Rascunhos continuam protegidos.');return}
     if(!id&&!slug){renderLoadError(host,'Publicação não encontrada','O endereço não contém o identificador da publicação.');return}
-    let req=sb.from('publications').select('*');
-    if(id)req=req.eq('id',id); else req=req.eq('slug',slug);
-    if(!preview)req=req.eq('status','publicado');
-    const {data,error}=await req.maybeSingle();
-    if(error){console.error('Erro ao carregar publicação:',error);renderLoadError(host,'Não foi possível carregar esta publicação','O portal conseguiu abrir a página, mas o Supabase recusou ou não conseguiu concluir a leitura.',error.message||String(error));return}
-    if(!data){renderLoadError(host,'Publicação não encontrada','O conteúdo pode estar em revisão, arquivado ou ainda não publicado.');return}
+    let resolvedId=id;
+    if(!resolvedId&&slug){
+      const response=await fetch('recuperacao-publica/index.json',{cache:'no-store'});
+      if(!response.ok)throw new Error('Índice público indisponível ('+response.status+').');
+      const index=await response.json();
+      resolvedId=(index.publications||[]).find(p=>p.slug===slug&&p.status==='publicado')?.id;
+    }
+    if(!/^[a-f0-9-]{36}$/i.test(resolvedId||'')){renderLoadError(host,'Publicação não encontrada','O conteúdo solicitado não consta no acervo público recuperado.');return}
+    const response=await fetch('recuperacao-publica/publications/'+encodeURIComponent(resolvedId)+'.json',{cache:'no-store'});
+    if(response.status===404){renderLoadError(host,'Publicação não encontrada','O documento não está disponível no acervo público recuperado.');return}
+    if(!response.ok)throw new Error('Documento indisponível ('+response.status+').');
+    const data=await response.json();
+    if(data.id!==resolvedId||data.status!=='publicado'){renderLoadError(host,'Publicação indisponível','Este conteúdo não está autorizado para exibição pública.');return}
     document.title=`${data.titulo||'Publicação'} — Entre Saberes`;
     const crumb=document.querySelector('#crumbCurrent'); if(crumb)crumb.textContent=data.titulo||'Publicação';
     host.dataset.publicationId=data.id;host.dataset.publicationStatus=data.status||'';
