@@ -1,0 +1,39 @@
+name: Validar producao sem recursos pagos (nao publica)
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  seguranca:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Bloquear contêineres, cron e serviços pagos
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import {readFileSync} from 'node:fs';
+          import assert from 'node:assert/strict';
+          const config=JSON.parse(readFileSync('wrangler.jsonc','utf8'));
+          assert.equal(config.name,'calm-voice-5d27');
+          assert.equal(config.containers,undefined,'Containers Cloudflare não autorizados.');
+          assert.equal(config.triggers,undefined,'Cron Cloudflare não autorizado.');
+          assert.equal(config.durable_objects,undefined,'Durable Objects de Docling ainda sem homologação de custo.');
+          assert.equal(config.migrations,undefined);
+          assert.equal(config.assets.binding,'ASSETS');
+          console.log('Configuração de produção sem Containers ou cron aprovada.');
+          NODE
+      - name: Validar sintaxe e build do Worker sem publicar
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-audit --no-fund
+          node --check _worker.js
+          npx wrangler deploy --dry-run --config wrangler.jsonc --outdir /tmp/es-producao-segura
