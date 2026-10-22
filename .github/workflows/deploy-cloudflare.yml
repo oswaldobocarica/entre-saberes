@@ -2,6 +2,12 @@ name: Deploy Entre Saberes to Cloudflare
 
 on:
   workflow_dispatch:
+    inputs:
+      confirmar_publicacao:
+        description: "Autorizo publicar em producao apos homologacao e backup (sem servicos pagos)"
+        type: boolean
+        required: true
+        default: false
 
 concurrency:
   group: entre-saberes-production
@@ -26,8 +32,37 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Validar autorizacao, credencial e custo zero ANTES do deploy
+        shell: bash
+        env:
+          CONFIRMADO: ${{ inputs.confirmar_publicacao }}
+        run: |
+          set -euo pipefail
+          if [ "$CONFIRMADO" != "true" ]; then
+            echo "::error::Publicacao bloqueada: confirme explicitamente a homologacao antes de executar o deploy."
+            exit 1
+          fi
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ "${#CLOUDFLARE_API_TOKEN}" -lt 20 ] ||
+             [[ "$CLOUDFLARE_API_TOKEN" =~ [[:space:]] ]] ||
+             [[ "$CLOUDFLARE_API_TOKEN" == Bearer\ * ]]; then
+            echo "::error::A credencial CLOUDFLARE_API_TOKEN esta ausente ou mal formatada. Renove o segredo no GitHub Settings (nunca publique o token no chat)."
+            exit 1
+          fi
+          node --input-type=module <<'NODE'
+          import {readFileSync} from 'node:fs';
+          const c=JSON.parse(readFileSync('wrangler.jsonc','utf8'));
+          if(c.name!=='calm-voice-5d27')throw Error('Nome de Worker de producao inesperado.');
+          if(c.containers?.length||c.triggers?.crons?.length||c.durable_objects?.bindings?.some(x=>x.name==='DOCLING')){
+            throw Error('Deploy bloqueado: configuracao contem container ou agendamento nao autorizado.');
+          }
+          console.log('Configuracao segura: sem Containers ou cron, destino de producao explicitamente identificado.');
+          NODE
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+
+      - name: Verificar credencial Cloudflare antes de tentar publicar
+        run: npx wrangler whoami
+
 
       - name: Validate Worker tests
         shell: bash
