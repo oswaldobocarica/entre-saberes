@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Aprenda a usar inteligência artificial com responsabilidade: biblioteca de 90 comandos, exemplos de prompts e simulados Boca Rica.">
+  <title>Entendendo a Inteligência Artificial — Entre Saberes</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css?v=20261002-40">
+  <style>
+    .ai-shell{--ai-navy:#10243d;--ai-gold:#c6a15b;--ai-cream:#fbf7ed}
+    .ai-hero{background:linear-gradient(115deg,#0c1e35,#183956 76%,#244760);color:#fff;padding:clamp(52px,7vw,90px) 0;border-bottom:5px solid var(--ai-gold)}
+    .ai-hero .eyebrow{color:#f0dba9;letter-spacing:.12em}
+    .ai-hero h1{color:#fff;max-width:900px;font-size:clamp(32px,4.6vw,64px);line-height:1.12;margin:15px 0 20px}
+    .ai-hero p{max-width:760px;color:#e7edf3;font-size:clamp(17px,1.8vw,21px);line-height:1.65}
+    .ai-jump{display:flex;flex-wrap:wrap;gap:12px;margin-top:27px}
+    .ai-hero .ai-jump a{display:inline-block;text-decoration:none;border-radius:9px;padding:13px 19px;font-weight:700;background:#f2ddb2;color:#19314d}
+    .ai-hero .ai-jump a.ai-secondary{background:transparent;border:1px solid #cad7e3;color:white}
+    .ai-content{background:var(--ai-cream)}
+    .ai-inner{padding-top:56px;padding-bottom:64px}
+    .ai-eyebrow{color:#826329;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:800}
+    .ai-section-title{font-size:clamp(24px,3vw,35px);line-height:1.2;margin:9px 0 10px;color:var(--ai-navy)}
+    .ai-section-lead{max-width:760px;color:#445366;line-height:1.65;margin:0 0 26px}
+    .ai-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+    .ai-card{background:#fff;border:1px solid #e8ddc8;border-radius:15px;padding:clamp(22px,3vw,32px);box-shadow:0 8px 25px #10243d0d;display:flex;flex-direction:column}
+    .ai-pill{width:max-content;background:#f6ecda;color:#65491a;border-radius:50px;padding:7px 11px;font-size:12px;font-weight:800;letter-spacing:.04em}
+    .ai-card h3{font-size:clamp(21px,2.5vw,29px);margin:18px 0 12px;line-height:1.2;color:var(--ai-navy)}
+    .ai-card p{color:#425265;line-height:1.65;margin:0 0 15px}
+    .ai-card ul{padding-left:20px;margin:0 0 23px;color:#33465a;line-height:1.9}
+    .ai-card .ai-link{align-self:flex-start;margin-top:auto;background:#163b60;color:#fff;text-decoration:none;border-radius:10px;padding:13px 19px;font-weight:800;display:inline-block}
+    .ai-link:hover,.ai-link:focus-visible{background:#265678;text-decoration:underline}
+    .ai-note{color:#607085!important;font-size:14px;margin:0 0 20px!important}
+    .ai-how{padding-top:60px}
+    .ai-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+    .ai-step{padding:25px;border:1px solid #e0d5c1;border-radius:12px;background:#fff}
+    .ai-step b{display:inline-block;background:#193c60;color:#fff;width:39px;height:39px;line-height:39px;text-align:center;border-radius:50%;margin-bottom:12px}
+    .ai-step h3{font-size:19px;color:#10243d;margin:7px 0 9px}
+    .ai-step p{margin:0;line-height:1.6;color:#425265}
+    .ai-guide{margin-top:36px;background:#f4efe4;border-left:4px solid var(--ai-gold);border-radius:0 12px 12px 0;padding:24px 28px}
+    .ai-guide h3{margin:0 0 8px;color:#213953}
+    .ai-guide p{margin:0;line-height:1.65;color:#3e4f62}
+    .ai-guide code{background:#fff;padding:2px 5px;border-radius:4px}
+    @media(max-width:780px){.ai-grid,.ai-steps{grid-template-columns:1fr}.ai-hero{padding:46px 0}.ai-inner{padding-top:40px}.ai-card{padding:22px}}
+    @media print{.ai-hero{background:white;color:black}.ai-hero h1,.ai-hero p{color:black}.ai-jump{display:none}.ai-content{background:white}.ai-card,.ai-step{break-inside:avoid;box-shadow:none}}
+  </style>
+</head>
+<body class="ai-shell">
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">ENTRE SABERES</a>
+    <nav class="nav-links" aria-label="Menu da seção"><a href="index.html">Início</a><a href="aulas.html">Aulas</a><a href="biblioteca.html">Biblioteca</a><a href="entendendo-inteligencia-artificial.html" aria-current="page">Entendendo a IA</a></nav>
+  </div>
+</header>
+<main id="conteudo-principal">
+<section class="ai-hero"><div class="container">
+  <div class="eyebrow">Oswaldo Boca Rica · Entre Saberes · Tecnologia e Educação</div>
+  <h1>Entendendo a Inteligência Artificial</h1>
+  <p>Aprenda a formular boas perguntas, analisar respostas com senso crítico e transformar a inteligência artificial em apoio ao estudo, à pesquisa e à solução de problemas.</p>
+  <div class="ai-jump"><a href="#recursos">Explorar os recursos</a><a class="ai-secondary" href="#como-usar">Como começar</a></div>
+</div></section>
+<div class="ai-content"><div class="container ai-inner">
+  <section id="recursos" aria-labelledby="ai-recursos-titulo">
+    <div class="ai-eyebrow">Ferramentas de aprendizagem</div>
+    <h2 class="ai-section-title" id="ai-recursos-titulo">Do comando à prática</h2>
+    <p class="ai-section-lead">Escolha a biblioteca para experimentar estratégias de prompt ou acesse o SIMULA Boca Rica para praticar interpretação, raciocínio e autonomia de aprendizagem.</p>
+    <div class="ai-grid">
+      <article class="ai-card">
+        <span class="ai-pill">90 comandos · 9 categorias</span>
+        <h3>Biblioteca Inteligente de Comandos</h3>
+        <p>Catálogo completo de instruções para explorar possibilidades da inteligência artificial com clareza e método.</p>
+        <ul><li>Pesquise por assunto, código ou finalidade.</li><li>Filtre por análise, docência, escrita, estratégia, programação e mais.</li><li>Copie prompts prontos e adapte ao seu objetivo.</li><li>Consulte ou imprima o material.</li></ul>
+        <a class="ai-link" href="inteligencia-artificial/biblioteca-comandos.html">Abrir a biblioteca de comandos →</a>
+      </article>
+      <article class="ai-card">
+        <span class="ai-pill">Banco de 246 questões · duas etapas</span>
+        <h3>Simulados — SIMULA Boca Rica</h3>
+        <p>Treinamento interdisciplinar para o Ensino Médio. A prova inicial sorteia 82 questões; a segunda etapa retoma as questões erradas ou não respondidas.</p>
+        <ul><li>Primeira tentativa com prazo de três horas.</li><li>Segunda tentativa com prazo de duas horas.</li><li>Devolutiva individualizada e revisão dos erros.</li><li>Exercícios de leitura, interpretação e pensamento crítico.</li></ul>
+        <p class="ai-note">Os simulados avaliam conteúdos escolares gerais; não são provas específicas de inteligência artificial. Os resultados permanecem neste navegador e não são enviados automaticamente ao professor.</p>
+        <a class="ai-link" href="simulados/boca-rica/index.html">Acessar os simulados →</a>
+      </article>
+    </div>
+  </section>
+  <section class="ai-how" id="como-usar" aria-labelledby="ai-como-titulo">
+    <div class="ai-eyebrow">Roteiro de estudo</div>
+    <h2 class="ai-section-title" id="ai-como-titulo">Três passos para aprender com IA</h2>
+    <p class="ai-section-lead">Mais importante do que decorar códigos é compreender o problema e avaliar criticamente o resultado.</p>
+    <div class="ai-steps">
+      <article class="ai-step"><b>1</b><h3>Defina o objetivo</h3><p>Explique o contexto, o assunto, o público, o resultado esperado e os limites da tarefa.</p></article>
+      <article class="ai-step"><b>2</b><h3>Escolha uma estratégia</h3><p>Experimente instruções como <strong>/BASELINE</strong>, <strong>/UNKNOWN</strong>, <strong>/EVIDENCE</strong> e <strong>/QUIZ</strong>, sempre acompanhadas de uma descrição clara.</p></article>
+      <article class="ai-step"><b>3</b><h3>Confira e pratique</h3><p>Verifique fatos e fontes, compare alternativas e pratique sua própria interpretação nos simulados.</p></article>
+    </div>
+    <aside class="ai-guide"><h3>Comandos de prompt não são funções oficiais</h3><p>Os códigos iniciados por barra (<code>/</code>) são convenções didáticas. Seu efeito depende das instruções que você escrever e da ferramenta utilizada. Não compartilhe dados pessoais de terceiros, documentos sigilosos ou informações sensíveis sem autorização; confirme informações importantes em fontes confiáveis.</p></aside>
+  </section>
+</div></div>
+</main>
+<footer class="footer"><div class="container"><div class="brand">ENTRE SABERES</div><p>Oswaldo Boca Rica · Conhecimento em diálogo.</p><small>Conteúdo educativo. A IA apoia o aprendizado; não substitui a avaliação crítica.</small></div></footer>
+<script src="sidebar.js?v=20261023-ia"></script>
+<script src="accessibility.js?v=20261023-ia"></script>
+</body>
+</html>
