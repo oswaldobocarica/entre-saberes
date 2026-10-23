@@ -1,0 +1,1329 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Simula Campeão · Entre Saberes</title><style>
+:root{--ink:#172c3d;--gold:#b98020;--paper:#f7f4ec;--line:#d7dace;--green:#21634f}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 system-ui,sans-serif}header{background:var(--ink);color:white;padding:22px max(22px,calc((100vw - 1100px)/2));display:flex;justify-content:space-between;align-items:center}header a{color:#f2ce85}main{max-width:1100px;margin:auto;padding:35px 22px 70px}h1{font-size:clamp(2.3rem,5vw,4rem);line-height:1.08;margin:20px 0}h2{line-height:1.3}h3{line-height:1.4}.eyebrow{text-transform:uppercase;letter-spacing:.15em;font-size:12px;font-weight:800;color:#916319}.muted{color:#50616b}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:clamp(20px,4vw,36px);margin:20px 0}.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:30px}.stats{display:flex;gap:25px;flex-wrap:wrap}.stats strong{display:block;font-size:28px}button,.button{font:inherit;font-weight:700;background:var(--ink);color:white;border:0;border-radius:9px;padding:14px 22px;cursor:pointer;display:inline-block;text-decoration:none}button:disabled{opacity:.4;cursor:not-allowed}button.secondary{background:#e9ece6;color:var(--ink)}input[type=text],input[type=email]{width:100%;padding:13px;border:1px solid #85949c;border-radius:8px;font:inherit;margin:6px 0 18px}label{display:block}small{font-size:13px}.toolbar{position:sticky;top:0;background:var(--ink);color:white;padding:12px 18px;border-radius:0 0 12px 12px;z-index:2;display:flex;justify-content:space-between;gap:15px;font-size:14px}.clock{font-size:22px;font-variant-numeric:tabular-nums}progress{width:100%;height:8px;accent-color:var(--gold)}.encourage{border-left:4px solid var(--gold);padding:12px 18px;background:#fff3d9;margin:20px 0}details{border:1px solid var(--line);border-radius:12px;padding:18px;background:white;margin:20px 0}summary{cursor:pointer;font-weight:700}.paragraph{max-width:80ch;margin:18px auto}.paragraph span{font-size:12px;color:#99721f;margin-right:9px;font-weight:bold}.option{display:flex;align-items:flex-start;gap:12px;border:1px solid #aab6bc;border-radius:10px;padding:16px;margin:12px 0;cursor:pointer}.option:has(input:checked){background:#edf4ef;border:2px solid var(--green);padding:15px}.option input{margin-top:8px;accent-color:var(--green)}.option b{color:#886018}.actions{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.notice{padding:15px;background:#fff0ca;border-radius:8px}.bar{height:16px;background:#e8ece7;border-radius:20px;overflow:hidden}.bar>i{display:block;background:var(--green);height:100%}.resultrow{display:grid;grid-template-columns:150px 1fr 60px;gap:14px;align-items:center;margin:14px 0;font-size:14px}.good{color:#176146}.bad{color:#984a25}footer{font-size:13px;border-top:1px solid var(--line);padding-top:25px}a{color:#285775}button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid #d79823;outline-offset:4px}[hidden]{display:none!important}@media(max-width:700px){.grid{grid-template-columns:1fr}.resultrow{grid-template-columns:110px 1fr 45px}header{font-size:13px}main{padding:20px 15px}.toolbar{font-size:12px}.clock{font-size:18px}}@media print{header,.toolbar,.actions,button,#encourage{display:none!important}body{background:white;font-size:11pt}main{max-width:none;padding:0}.card,details{break-inside:avoid;border:0;padding:8px}details>*{display:block!important}summary{display:block}h1{font-size:26pt}}
+</style></head><body><header><b>ENTRE SABERES / SIMULA</b><a href="/aulas.html">Voltar às aulas</a></header><main><div id="storageWarning" class="notice" hidden>O navegador não permitiu salvar a tentativa. Mantenha esta aba aberta; ao fechá-la, as respostas poderão ser perdidas.</div><div id="app"></div><footer><b>Material de treino · 1º ano do Ensino Médio</b><p>Contextos autorais e dados fictícios. Dificuldade proposta pelo autor, sem calibração estatística. A pontuação é de acertos simples, não utiliza a TRI e não equivale a uma nota do ENEM. O alinhamento à BNCC indica habilidades mobilizadas; não representa certificação oficial.</p><p>Referências: <a href="https://piracicaba.sp.gov.br/wp-content/uploads/2023/06/BNCC.pdf" target="_blank" rel="noopener">BNCC — Ensino Médio</a> · <a href="https://www.gov.br/saude/pt-br/vacinacao" target="_blank" rel="noopener">Ministério da Saúde — vacinação</a> · <a href="https://www.planalto.gov.br/ccivil_03/leis/l7716compilado.htm" target="_blank" rel="noopener">Lei nº 7.716/1989</a>.</p><p>Nome, e-mail e respostas ficam somente neste navegador. Não há envio de e-mail nem recebimento automático pelo professor. Em equipamento compartilhado, salve seu resultado e apague a tentativa ao terminar.</p></footer></main><script>
+const BANK=[
+  {
+    "name": "Matemática",
+    "title": "Duas formas de crescer e o custo de prever",
+    "paragraphs": [
+      "Uma cooperativa acompanha duas grandezas distintas. A quantidade armazenada no depósito A é modelada por A(t)=200·2ᵗ unidades, com t inteiro e não negativo. O instante t=0 corresponde ao início da observação, não ao final do primeiro mês. Os dados e empresas deste estudo são fictícios.",
+      "No depósito B, os registros mensais são 1000, 1050, 1100 unidades, começando também em t=0. A equipe propõe B(t)=1000+50t. Nesse modelo, a diferença entre dois meses consecutivos é constante; isso não significa que a variação percentual também seja constante.",
+      "Um gerente compara apenas os valores iniciais e afirma que B continuará maior. Outra analista compara as razões sucessivas de A e recomenda observar o momento em que as curvas se cruzam. Nenhum deles pode usar a posição inicial como prova sobre todo o futuro.",
+      "O depósito A tem capacidade física de 5000 unidades. A expressão exponencial é uma hipótese de crescimento enquanto persistirem as condições de abastecimento, demanda e armazenamento. Quando uma restrição é atingida, a conta pode continuar existindo, mas sua interpretação precisa ser revista.",
+      "Para estimar quando A atinge determinado nível positivo L, a equipe escreve t=log₂(L/200). Na escala logarítmica, log₂ A(t)=log₂ 200+t. Uma reta nesse gráfico não torna constante o acréscimo absoluto de unidades no gráfico original.",
+      "Uma auditoria registra que, em determinado mês, A ficou em 2400 unidades e, dois meses depois, em 5400. Para esse intervalo específico, será estimado um novo fator mensal constante. O modelo estimado para o intervalo não precisa coincidir com o fator da hipótese inicial.",
+      "O setor de compras também soma as quantidades previstas para B em t=0,1,2,3,4,5. A soma descreve seis registros mensais, e não o estoque existente em um único instante. Confundir estoque, fluxo e soma de registros pode gerar pedidos desnecessários.",
+      "Para a interpretação, adote log₂25≈4,644 e suponha que as comparações mensais sejam feitas apenas em instantes inteiros. Sempre informe o domínio da resposta e a hipótese utilizada. Precisão numérica não elimina incertezas sobre a permanência das condições do modelo."
+    ],
+    "skills": "Matemática • EM13MAT305 e EM13MAT507 • modelos logarítmicos e sequências discretas.",
+    "careers": "Analista financeiro compara crescimento composto e aportes fixos; profissional de logística testa capacidade; cientista de dados examina limites de projeções.",
+    "questions": [
+      {
+        "id": "1-1",
+        "stem": "Em que primeiro registro mensal A supera B, e qual comparação sustenta a decisão?",
+        "options": [
+          "Em t=3, pois 1600 supera 1150, após 800 ficar abaixo de 1100.",
+          "Em t=2, pois a taxa percentual de A já supera a de B.",
+          "Em t=4, pois a contagem precisa começar no primeiro mês completo.",
+          "Em t=5, pois somente então A supera o valor inicial de B cinco vezes.",
+          "Em t=3, pois a diferença mensal de A permanece em 200 unidades."
+        ],
+        "answer": 0,
+        "why": "Em t=2 temos A=800 e B=1100; em t=3, A=1600 e B=1150. A resposta requer comparar níveis no domínio inteiro, não apenas taxas.",
+        "use": "Na logística, compare a demanda e a oferta no mesmo mês antes de antecipar reposições.",
+        "level": "Difícil"
+      },
+      {
+        "id": "1-2",
+        "stem": "Entre t=0 e t=1 e entre t=1 e t=2, como variam os aumentos percentuais de B?",
+        "options": [
+          "Caem de 5% para aproximadamente 4,76%, embora o aumento absoluto seja 50.",
+          "Permanecem em 5%, porque a diferença entre registros é constante.",
+          "Sobem de 5% para aproximadamente 5,25%, pois a base aumenta.",
+          "Caem de 50% para aproximadamente 47,6%, porque a razão é 50.",
+          "Permanecem em 4,76%, pois o valor intermediário deve ser a base dos dois intervalos."
+        ],
+        "answer": 0,
+        "why": "As taxas são 50/1000 e 50/1050. A mesma adição dividida por bases crescentes produz percentuais menores; PA não significa taxa percentual constante.",
+        "use": "Em remuneração, um reajuste nominal fixo pesa menos proporcionalmente em bases maiores.",
+        "level": "Difícil"
+      },
+      {
+        "id": "1-3",
+        "stem": "Qual é a soma dos seis registros de B indicados no texto, e o que ela representa?",
+        "options": [
+          "6750 unidades, soma de observações que não equivale ao estoque final.",
+          "7500 unidades, estoque final acumulado ao longo dos seis meses.",
+          "6600 unidades, soma porque o sexto termo corresponde a t=4.",
+          "6750 unidades, estoque necessariamente disponível ao final de t=5.",
+          "7050 unidades, soma calculada começando o período em t=1."
+        ],
+        "answer": 0,
+        "why": "Os extremos são 1000 e 1250: S=6·(1000+1250)/2=6750. Somar estoques fotografados mensalmente não mede automaticamente produção acumulada ou estoque final.",
+        "use": "Contabilidade distingue saldos de estoque de entradas ocorridas durante o período.",
+        "level": "Difícil"
+      },
+      {
+        "id": "1-4",
+        "stem": "Ao planejar a capacidade de A, qual conclusão respeita o tempo contínuo estimado e os registros inteiros?",
+        "options": [
+          "O limiar é t≈4,644; t=5 é o primeiro registro previsto acima da capacidade.",
+          "O limiar é t≈4,644; t=4 é o primeiro registro acima, por arredondamento.",
+          "O limiar é t=25; o quociente 5000/200 já fornece o tempo em meses.",
+          "O limiar é t≈4,644; o modelo garante 6400 unidades armazenadas em t=5.",
+          "O limiar é t=5; uma solução fracionária não tem significado como estimativa."
+        ],
+        "answer": 0,
+        "why": "Resolver 200·2ᵗ=5000 dá log₂25≈4,644. Em t=4 há 3200 e em t=5 haveria 6400. A palavra previsto importa: a restrição impede tratar a projeção como armazenamento garantido.",
+        "use": "Engenharia de produção localiza o gargalo antes de ampliar capacidade.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "1-5",
+        "stem": "Para os dados auditados de 2400 e 5400 separados por dois meses, qual modelo local é consistente?",
+        "options": [
+          "Fator mensal 1,5, porque 2400·1,5²=5400.",
+          "Fator mensal 2,25, porque 5400/2400=2,25.",
+          "Fator mensal 1,625, pois metade do crescimento de 125% é 62,5%.",
+          "Fator mensal 1,25, pois o acréscimo total foi 125%.",
+          "Fator mensal 2, pois o texto inicial determina o comportamento de qualquer intervalo."
+        ],
+        "answer": 0,
+        "why": "Se r²=5400/2400=2,25, r=1,5. Dividir o percentual acumulado por dois confunde composição multiplicativa com crescimento simples.",
+        "use": "Finanças converte retornos acumulados em taxas equivalentes sem dividir percentuais indevidamente.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "1-6",
+        "stem": "Se log₂ A aumenta uma unidade a cada mês, que afirmação traduz corretamente esse dado para a escala original?",
+        "options": [
+          "A dobra a cada mês; os acréscimos absolutos crescem com o nível anterior.",
+          "A ganha uma unidade por mês; o logaritmo apenas muda a unidade do eixo.",
+          "A ganha log₂200 unidades por mês; esse termo determina a inclinação.",
+          "A dobra os acréscimos percentuais mensais; a taxa passa de 100% a 200%.",
+          "A ganha 200 unidades por mês; a ordenada inicial conserva a diferença."
+        ],
+        "answer": 0,
+        "why": "Uma diferença de 1 no logaritmo de base 2 corresponde a multiplicar o nível por 2. A taxa percentual permanece 100%, enquanto os acréscimos absolutos aumentam.",
+        "use": "Análise de dados usa escalas logarítmicas para separar fatores multiplicativos de diferenças.",
+        "level": "Superdifícil"
+      }
+    ]
+  },
+  {
+    "name": "Geografia",
+    "title": "A região que colhe mais e distribui de modo desigual",
+    "paragraphs": [
+      "Um observatório compara dois municípios fictícios de área agrícola equivalente. Em Aurora, 10% dos estabelecimentos controlam 70% da área; em Veredas, controlam 40%. Os dados descrevem distribuição de terras entre estabelecimentos, não distribuição de renda entre famílias.",
+      "Entre dois levantamentos, Aurora elevou em 30% sua produção de grãos, enquanto o emprego agrícola direto caiu 12%. A mecanização avançou e cresceu a contratação de transporte e manutenção fora das propriedades. Não foram fornecidos dados suficientes para medir todo o emprego da cadeia.",
+      "Em Veredas, pequenas unidades diversificadas vendem parte da produção a mercados locais e também compram sementes, equipamentos e serviços. A existência de relações com o mercado não determina, sozinha, o tamanho da propriedade nem o modo de organização do trabalho.",
+      "Uma estrada nova reduz o tempo até o porto, mas passa longe de várias comunidades rurais. O acesso a crédito depende de garantias que nem todos possuem. Assim, uma infraestrutura disponível no município pode produzir benefícios distribuídos de maneira desigual.",
+      "Um projeto de acesso à terra oferece lotes, mas inicialmente não prevê assistência técnica, água, armazenamento ou compradores. As famílias consultadas afirmam que a posse é importante, porém insuficiente para sustentar a produção e permanecer no território.",
+      "Durante uma seca, uma região exportadora manteve a receita de vendas e registrou alta no preço de alimentos locais. Não há informação sobre importações, estoques domésticos ou renda dos consumidores. Receita de exportação e acesso à alimentação são indicadores relacionados, mas distintos.",
+      "Uma cooperativa propõe armazenagem compartilhada, crédito adaptado e recuperação de nascentes. Outra proposta oferece somente equipamentos maiores. A escolha exige avaliar adequação à escala produtiva, recursos naturais, capacidade de pagamento e participação das comunidades.",
+      "O relatório conclui que produtividade, concentração fundiária e condições de trabalho devem ser analisadas conjuntamente. Crescimento de volume não demonstra, por si, redução de desigualdades. Comparações territoriais precisam manter claros o universo, a escala e o indicador utilizado."
+    ],
+    "skills": "Ciências Humanas • EM13CHS101 e EM13CHS103 • comparar indicadores e fundamentar interpretações territoriais.",
+    "careers": "Geógrafos e gestores territoriais cruzam indicadores; agrônomos dimensionam assistência; profissionais de logística avaliam acesso a mercados.",
+    "questions": [
+      {
+        "id": "2-1",
+        "stem": "Qual inferência é sustentada pela distribuição de terras apresentada?",
+        "options": [
+          "Aurora tem maior concentração nesse recorte, sem que isso determine sozinha a renda familiar.",
+          "Aurora tem renda familiar maior, porque área concentrada implica rendimento concentrado na mesma proporção.",
+          "Veredas tem distribuição igualitária, pois a maioria da área não pertence ao grupo de 10%.",
+          "Os dois têm a mesma concentração, porque a área agrícola total é equivalente.",
+          "Aurora tem produtividade superior, pois a participação na área mede rendimento por hectare."
+        ],
+        "answer": 0,
+        "why": "O mesmo grupo percentual de estabelecimentos concentra parcela maior da área em Aurora. Não foram informadas produtividade, renda ou a distribuição interna dos outros grupos.",
+        "use": "Planejamento territorial exige escolher indicadores compatíveis com a pergunta.",
+        "level": "Difícil"
+      },
+      {
+        "id": "2-2",
+        "stem": "O que os dados de produção e emprego de Aurora permitem afirmar?",
+        "options": [
+          "Produção e emprego direto tiveram trajetórias distintas; falta medir os empregos da cadeia.",
+          "A cadeia agrícola perdeu exatamente 12% de postos, acompanhando o emprego direto.",
+          "O emprego da cadeia cresceu 18%, pela diferença entre crescimento e redução registrados.",
+          "A produtividade por trabalhador caiu, pois a mecanização retirou pessoas da atividade.",
+          "O transporte compensou integralmente as perdas, já que foi contratado fora das propriedades."
+        ],
+        "answer": 0,
+        "why": "Os percentuais medem variáveis diferentes. O aumento de serviços externos não quantifica seus postos; somar 30% e −12% não produz saldo de emprego.",
+        "use": "Economistas do trabalho distinguem efeito direto, indireto e saldo líquido.",
+        "level": "Difícil"
+      },
+      {
+        "id": "2-3",
+        "stem": "Qual análise evita tratar a estrada nova como benefício uniforme?",
+        "options": [
+          "Cruzar redução do frete com localização das comunidades e condições de acesso ao crédito.",
+          "Comparar apenas a receita municipal antes e depois, atribuindo a diferença à estrada.",
+          "Medir extensão asfaltada e dividir igualmente o benefício entre todos os estabelecimentos.",
+          "Adotar o menor tempo ao porto como indicador suficiente de inclusão de pequenos produtores.",
+          "Classificar as famílias beneficiadas exclusivamente pelo tamanho de cada propriedade."
+        ],
+        "answer": 0,
+        "why": "Proximidade, frete e capacidade de financiar produção condicionam o uso efetivo da infraestrutura. Um indicador municipal agregado não revela automaticamente quem ganhou acesso.",
+        "use": "Logística e políticas públicas avaliam distribuição de benefícios, não só médias.",
+        "level": "Difícil"
+      },
+      {
+        "id": "2-4",
+        "stem": "No projeto de acesso à terra, qual proposta enfrenta a lacuna identificada sem negar a importância dos lotes?",
+        "options": [
+          "Articular acesso à terra, água, assistência, financiamento adequado e canais de venda.",
+          "Substituir a distribuição de lotes por crédito, mantendo inalterado o acesso à terra.",
+          "Condicionar toda assistência ao aumento imediato da produção exportável.",
+          "Distribuir equipamentos de grande porte igualmente, sem considerar escala ou manutenção.",
+          "Adotar o número de títulos emitidos como medida completa da permanência produtiva."
+        ],
+        "answer": 0,
+        "why": "O problema combina acesso fundiário e condições de reprodução econômica. Títulos são relevantes, mas não medem sozinhos a capacidade de permanecer e produzir.",
+        "use": "Gestão de projetos deve ligar entrega inicial a condições de funcionamento posterior.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "2-5",
+        "stem": "A manutenção de receita exportadora durante a seca autoriza qual conclusão sobre alimentação local?",
+        "options": [
+          "Nenhuma conclusão suficiente sobre acesso; preços, renda, estoques e oferta local também importam.",
+          "Acesso estável, pois receita externa preservada implica renda idêntica para os consumidores.",
+          "Acesso ampliado, pois produtos exportados necessariamente abastecem primeiro o mercado local.",
+          "Insegurança alimentar comprovada para todas as famílias, porque um preço local aumentou.",
+          "Queda da produção total comprovada, pois a seca impede manutenção física das exportações."
+        ],
+        "answer": 0,
+        "why": "Receita pode variar por volume e preço. Acesso à alimentação depende de condições adicionais. O relato não sustenta nem garantia de acesso nem diagnóstico universal de privação.",
+        "use": "Nutrição social e gestão pública cruzam preços, renda e disponibilidade antes de intervir.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "2-6",
+        "stem": "Qual desenho permitiria avaliar melhor se a armazenagem compartilhada reduz desigualdades de acesso?",
+        "options": [
+          "Comparar custos, perdas e participação por perfil de produtor antes e depois, considerando outros fatores.",
+          "Comparar o volume total armazenado antes e depois, tomando aumento como prova suficiente de equidade.",
+          "Medir apenas o número de máquinas, pois a capacidade nominal representa o acesso efetivo.",
+          "Usar a média de receita municipal, descartando diferenças entre participantes e não participantes.",
+          "Concentrar a avaliação nos exportadores maiores, usando-os como representação de todos os produtores."
+        ],
+        "answer": 0,
+        "why": "Equidade exige observar distribuição dos efeitos. A comparação temporal deve considerar mudanças externas e diferenças entre grupos; crescimento agregado pode ocultar exclusão.",
+        "use": "Avaliação de políticas utiliza indicadores desagregados e examina explicações alternativas.",
+        "level": "Superdifícil"
+      }
+    ]
+  },
+  {
+    "name": "Biologia",
+    "title": "Saúde entre o laboratório e o território",
+    "paragraphs": [
+      "Duas escolas fictícias recebem uma campanha de prevenção. Na Escola Sol, a adesão às atividades é alta, mas há abastecimento irregular de água e recipientes descobertos. Na Escola Rio, a infraestrutura é melhor, porém muitos estudantes relatam dificuldade para acessar informações confiáveis e serviços de saúde.",
+      "A equipe entende saúde como uma condição influenciada por dimensões físicas, mentais e sociais. Reduzir riscos exige observar o território e as oportunidades de cuidado, sem atribuir todo resultado à força de vontade individual. O estudo não fornece diagnóstico clínico de pessoas.",
+      "Uma oficina diferencia bactérias, fungos e protozoários, que são celulares, de vírus, que são acelulares. Esses agentes não têm a mesma estrutura nem a mesma relação com os organismos. O termo patógeno descreve capacidade de causar doença em um contexto, não todos os microrganismos indistintamente.",
+      "Outra oficina mostra que microrganismos podem participar de processos úteis, como fermentações, e de relações com o corpo. Dizer que uma espécie pode causar doença não autoriza concluir que toda forma microscópica seja prejudicial, nem que uma aplicação industrial a torne sempre inofensiva.",
+      "As vacinas preparam respostas imunológicas específicas e podem contribuir para reduzir impactos de determinadas infecções. Proteção, transmissão e gravidade são resultados distintos. Uma vacina não é um mecanismo universal de esterilização do ambiente, nem substitui todas as demais medidas preventivas.",
+      "Em um cenário fictício de vigilância, um bairro registra 40 notificações antes e 70 depois da ampliação de testagem. A equipe não sabe quantas pessoas eram testadas em cada período nem se os critérios permaneceram iguais. Notificações observadas e número real de infecções não são medidas intercambiáveis.",
+      "O programa aborda dengue, ligada a vírus e mosquitos vetores, e malária, causada por protozoários transmitidos por mosquitos vetores. Também discute prevenção de ISTs com informação, acesso a preservativos, vacinação quando aplicável e serviços de testagem e cuidado, sem estigmatizar grupos.",
+      "Para decidir ações, a equipe combina evidências laboratoriais, condições ambientais e barreiras sociais. Prefere avaliar indicadores específicos a prometer risco zero. Todas as situações são didáticas; decisões individuais de saúde requerem orientação dos serviços competentes."
+    ],
+    "skills": "Ciências da Natureza • EM13CNT207 • vulnerabilidades, prevenção e promoção do bem-estar.",
+    "careers": "Epidemiologistas interpretam registros; enfermeiros comunicam prevenção; profissionais de saneamento e biotecnologia ligam ambiente e saúde.",
+    "questions": [
+      {
+        "id": "3-1",
+        "stem": "Qual ação se ajusta à situação da Escola Sol sem reduzir a prevenção à vontade individual?",
+        "options": [
+          "Combinar informação com armazenamento seguro de água e enfrentamento das falhas de abastecimento.",
+          "Repetir a campanha informativa e usar adesão declarada como medida suficiente de proteção.",
+          "Priorizar apenas o laboratório, pois a existência de vírus torna o ambiente secundário.",
+          "Avaliar somente hábitos individuais, pois abastecimento é assunto externo à prevenção.",
+          "Trocar ações ambientais por uma promessa de proteção completa após vacinação."
+        ],
+        "answer": 0,
+        "why": "A adesão não corrige sozinha infraestrutura e recipientes descobertos. O caso exige integrar ambiente, acesso e comportamento, sem responsabilização simplista.",
+        "use": "Saúde coletiva planeja intervenções considerando as condições reais de vida.",
+        "level": "Difícil"
+      },
+      {
+        "id": "3-2",
+        "stem": "Qual classificação corrige a afirmação de que todos os agentes discutidos são organismos celulares semelhantes?",
+        "options": [
+          "Vírus são acelulares; bactérias, fungos e protozoários são celulares e não formam um grupo estrutural único.",
+          "Vírus e bactérias são acelulares; fungos e protozoários são celulares.",
+          "Todos são celulares, mas apenas os vírus necessitam de ambiente para se reproduzir.",
+          "Bactérias e fungos têm a mesma organização celular, diferindo apenas no tamanho.",
+          "Protozoários são acelulares, enquanto vírus possuem células menores que bactérias."
+        ],
+        "answer": 0,
+        "why": "O texto diferencia estrutura celular e acelular. Bactérias são procarióticas; fungos e protozoários são eucarióticos. Microscópico não é uma categoria de organização celular única.",
+        "use": "Biotecnologia precisa identificar o agente antes de escolher procedimentos de análise.",
+        "level": "Difícil"
+      },
+      {
+        "id": "3-3",
+        "stem": "Uma comunicação sobre vacinação é cientificamente mais consistente quando afirma que ela:",
+        "options": [
+          "prepara respostas específicas e deve ser articulada às demais medidas indicadas para cada infecção.",
+          "elimina igualmente transmissão e gravidade, independentemente da vacina considerada.",
+          "substitui o cuidado ambiental quando produz memória imunológica detectável.",
+          "produz proteção inespecífica equivalente contra todos os agentes microscópicos.",
+          "age principalmente removendo do ambiente os agentes aos quais o estudante se expõe."
+        ],
+        "answer": 0,
+        "why": "Resposta específica não equivale a proteção universal ou eliminação ambiental. Efeitos variam conforme vacina, agente e desfecho; medidas complementares continuam relevantes.",
+        "use": "Comunicação em saúde distingue benefícios comprovados de promessas absolutas.",
+        "level": "Difícil"
+      },
+      {
+        "id": "3-4",
+        "stem": "O aumento de 40 para 70 notificações, após ampliar a testagem, permite concluir que:",
+        "options": [
+          "há aumento observado de registros, mas a variação real de infecções não pode ser isolada com esses dados.",
+          "a transmissão cresceu exatamente 75%, porque notificações e infecções têm a mesma cobertura.",
+          "a transmissão permaneceu estável, pois qualquer aumento de registros decorre da testagem.",
+          "o programa falhou, pois uma intervenção eficaz necessariamente reduz registros imediatamente.",
+          "a prevalência caiu, porque identificar casos sempre reduz instantaneamente o total de infectados."
+        ],
+        "answer": 0,
+        "why": "O crescimento registrado é 75%, mas mudou a capacidade de detecção. Sem denominadores e comparabilidade, não é possível atribuir esse crescimento integralmente à transmissão ou à testagem.",
+        "use": "Vigilância epidemiológica precisa separar mudanças de detecção de mudanças de ocorrência.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "3-5",
+        "stem": "Ao comparar dengue e malária, qual raciocínio distingue corretamente agente e vetor?",
+        "options": [
+          "Ambas podem envolver mosquitos vetores, mas seus agentes pertencem a categorias biológicas diferentes.",
+          "O mosquito é o agente etiológico de ambas, pois participa da transmissão.",
+          "O protozoário da malária é um vetor, enquanto o vírus da dengue é um hospedeiro.",
+          "A presença de vetor comum em sentido amplo implica a mesma espécie de agente.",
+          "A diferença entre vírus e protozoário dispensa considerar condições ambientais de transmissão."
+        ],
+        "answer": 0,
+        "why": "Vetor transporta o agente; não é sinônimo dele. Dengue envolve vírus e malária protozoários. A semelhança geral de transmissão por mosquito não torna agentes ou vetores específicos idênticos.",
+        "use": "Laboratório e controle ambiental atuam em partes diferentes da cadeia de transmissão.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "3-6",
+        "stem": "Qual avaliação do programa de ISTs evita estigma e produz evidência mais útil?",
+        "options": [
+          "Medir acesso, conhecimento e procura por serviços, interpretando notificações com a cobertura de testagem.",
+          "Comparar grupos por julgamentos morais e usar tais classificações para estimar risco.",
+          "Tratar ausência de sintomas relatados como prova suficiente de ausência de infecções.",
+          "Contar preservativos distribuídos como demonstração completa de prevenção efetiva.",
+          "Usar apenas redução de notificações, sem verificar se os serviços ficaram menos acessíveis."
+        ],
+        "answer": 0,
+        "why": "Indicadores de acesso e detecção ajudam a interpretar resultados. Distribuir insumos não comprova uso; reduzir registros pode refletir barreiras. Julgamentos morais não substituem evidência.",
+        "use": "Gestores e educadores em saúde avaliam serviços sem culpabilizar populações.",
+        "level": "Superdifícil"
+      }
+    ]
+  },
+  {
+    "name": "Física",
+    "title": "O elevador que engana a intuição",
+    "paragraphs": [
+      "Uma pessoa de massa 60 kg está sobre uma balança dentro de um elevador. Considere g=10 m/s², eixo vertical positivo para cima e contato permanente com a balança, salvo quando outra condição for explicitada. A balança mede a força normal e converte seu valor em uma indicação de massa usando esse g.",
+      "No trecho I, o elevador sobe com velocidade constante. No trecho II, continua subindo, mas sua velocidade diminui com aceleração de módulo 2 m/s². No trecho III, desce e diminui o módulo da velocidade, também com aceleração de módulo 2 m/s².",
+      "Sobre a pessoa, neste modelo, atuam verticalmente a força peso da Terra e a força normal da balança. A equação é N−mg=ma. O sentido da velocidade não determina, sozinho, o sentido da aceleração; frear durante a subida e frear durante a descida são situações diferentes.",
+      "Uma estudante desenha peso e normal com módulos iguais e os chama de ação e reação. Seu colega observa que as duas forças estão no mesmo corpo. Pares da terceira lei envolvem dois corpos em uma interação, mesmo quando os módulos de outras forças também coincidem.",
+      "Em um laboratório, uma caixa de 10 kg fica em piso horizontal. Uma força externa de 30 N aponta para cima, sem retirar a caixa do chão e sem aceleração vertical. O piso pode exercer contato, mas não precisa compensar sozinho todo o peso quando existe outra força vertical.",
+      "Em outro ensaio, duas forças horizontais perpendiculares de 6 N e 8 N atuam sobre um carrinho de 2 kg, sem outras forças horizontais. A equipe precisa representar direções antes de calcular a resultante. Somar apenas os módulos descreve outro arranjo de forças.",
+      "Em uma situação ideal de queda livre do elevador e da pessoa, ambos têm aceleração −g, desprezando resistência do ar. Essa hipótese é um modelo de análise, não uma instrução de experimentação. A interação gravitacional continua existindo durante a queda.",
+      "O relatório exige separar massa, peso, normal, velocidade e aceleração. A expressão peso aparente costuma designar a força de apoio medida, sem indicar que a massa da pessoa mudou. A conclusão deve ser compatível com o diagrama e com a segunda lei."
+    ],
+    "skills": "Ciências da Natureza • EM13CNT101 • representar interações e analisar mudanças de movimento.",
+    "careers": "Engenharia mecânica dimensiona forças; técnicos de manutenção interpretam sensores; ergonomia e segurança analisam apoios e acelerações.",
+    "questions": [
+      {
+        "id": "4-1",
+        "stem": "Qual leitura da balança é prevista no trecho II?",
+        "options": [
+          "48 kg, pois a aceleração é para baixo e a normal vale 480 N.",
+          "72 kg, pois o movimento para cima exige normal de 720 N.",
+          "60 kg, pois a massa real permanece 60 kg durante a frenagem.",
+          "48 kg, pois a gravidade diminui para 8 m/s² dentro do elevador.",
+          "72 kg, pois a frenagem aponta no mesmo sentido da velocidade."
+        ],
+        "answer": 0,
+        "why": "Na subida com velocidade diminuindo, a=−2. N=60·(10−2)=480 N; a indicação é 480/10=48 kg. A massa real e g não mudam.",
+        "use": "Sensores de carga precisam ser interpretados considerando acelerações do equipamento.",
+        "level": "Difícil"
+      },
+      {
+        "id": "4-2",
+        "stem": "No trecho III, como se comparam peso e normal?",
+        "options": [
+          "P=600 N e N=720 N, pois frear a descida requer aceleração para cima.",
+          "P=600 N e N=480 N, pois descer determina aceleração para baixo.",
+          "P=720 N e N=720 N, pois a gravidade cresce na frenagem.",
+          "P=600 N e N=600 N, pois desaceleração significa força resultante nula.",
+          "P=480 N e N=600 N, pois a balança mantém o valor do repouso."
+        ],
+        "answer": 0,
+        "why": "O elevador desce, mas o módulo da velocidade diminui: a aceleração é positiva. Assim N−600=60·2 e N=720 N.",
+        "use": "Engenharia de transporte diferencia sentido do movimento e sentido da força de frenagem.",
+        "level": "Difícil"
+      },
+      {
+        "id": "4-3",
+        "stem": "Qual é a normal sobre a caixa do laboratório?",
+        "options": [
+          "70 N, porque o apoio e a força externa dividem o equilíbrio do peso.",
+          "100 N, porque em piso horizontal a normal coincide com o peso.",
+          "130 N, porque toda força aplicada deve ser adicionada à normal.",
+          "30 N, porque a força externa determina diretamente a força de contato.",
+          "0 N, porque qualquer força para cima elimina o contato com o piso."
+        ],
+        "answer": 0,
+        "why": "Com aceleração vertical zero, N+30−100=0. A superfície é horizontal, mas existe outra força vertical; portanto N não é necessariamente igual ao peso.",
+        "use": "Projetos de apoio calculam todas as cargas antes de dimensionar a reação.",
+        "level": "Difícil"
+      },
+      {
+        "id": "4-4",
+        "stem": "Qual par representa corretamente a terceira lei para o peso da pessoa?",
+        "options": [
+          "Atração da Terra sobre a pessoa e atração da pessoa sobre a Terra.",
+          "Peso da pessoa e normal da balança sobre a pessoa.",
+          "Normal da balança e força resultante sobre a pessoa.",
+          "Peso da pessoa e força exercida pela pessoa sobre a balança.",
+          "Peso da pessoa e aceleração gravitacional da Terra sobre ela."
+        ],
+        "answer": 0,
+        "why": "O par pertence à mesma interação gravitacional e age em corpos distintos. Normal e peso podem se equilibrar, mas isso não os transforma em ação e reação.",
+        "use": "Análise de sistemas distingue forças internas entre corpos de forças no mesmo diagrama.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "4-5",
+        "stem": "Qual aceleração horizontal tem o carrinho do ensaio, em módulo?",
+        "options": [
+          "5 m/s², pois a resultante perpendicular tem módulo 10 N.",
+          "7 m/s², pois os módulos 6 e 8 devem ser somados.",
+          "1 m/s², pois forças em direções diferentes devem ser subtraídas.",
+          "10 m/s², pois o módulo da resultante já representa a aceleração.",
+          "4 m/s², pois apenas a maior força determina o movimento."
+        ],
+        "answer": 0,
+        "why": "A resultante é √(6²+8²)=10 N; dividir pela massa 2 kg dá 5 m/s². As direções impedem a soma escalar 14 N.",
+        "use": "Robótica e transporte usam componentes vetoriais para prever acelerações.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "4-6",
+        "stem": "Na hipótese de queda livre, qual descrição é consistente com N−mg=ma?",
+        "options": [
+          "N=0 e P=600 N; a ausência de apoio não significa ausência de gravidade.",
+          "N=0 e P=0; a falta de indicação da balança demonstra gravidade nula.",
+          "N=600 N e P=600 N; ambas acompanham a queda em equilíbrio.",
+          "N=−600 N e P=600 N; a balança passa a puxar a pessoa para baixo.",
+          "N=600 N e P=0; o contato substitui a interação gravitacional."
+        ],
+        "answer": 0,
+        "why": "Com a=−g, N−mg=−mg e N=0. O peso continua mg; a balança sem apoio não mede massa diretamente em qualquer condição dinâmica.",
+        "use": "Formação técnica interpreta leituras nulas sem confundir falta de contato com falta de força gravitacional.",
+        "level": "Superdifícil"
+      }
+    ]
+  },
+  {
+    "name": "Química",
+    "title": "A massa que parece desaparecer",
+    "paragraphs": [
+      "Um laboratório escolar trabalha com sistemas fechados e abertos. No sistema fechado, a reação produz gás, mas nada entra ou sai. No aberto, parte do gás deixa o recipiente. As balanças medem massas de sistemas delimitados, e não acompanham automaticamente tudo que foi disperso no ambiente.",
+      "Para uma reação fictícia entre X e Y, 12 g de X reagem completamente com 8 g de Y, formando 20 g de um único composto. As amostras são puras e a proporção de combinação permanece a mesma nos ensaios. Reagente que sobra não é incorporado ao produto.",
+      "Um novo ensaio mistura 18 g de X e 8 g de Y em sistema fechado. A equipe deve distinguir massa total no recipiente, massa do produto e massa de reagente não consumido. Usar a massa total como massa do produto exige comprovar consumo completo dos reagentes.",
+      "Nas contas com substâncias conhecidas, utilize massas atômicas aproximadas H=1 u, C=12 u e O=16 u. A massa de uma molécula é obtida somando as contribuições dos átomos da fórmula. Para CO₂, cada molécula contém um átomo de carbono e dois de oxigênio.",
+      "Para este treino, adote a constante de Avogadro aproximada como 6,0×10²³ mol⁻¹. A quantidade de matéria n relaciona-se à massa m por n=m/M, sendo M a massa molar. Contar moléculas e contar átomos dentro delas são operações diferentes.",
+      "Uma amostra de 9 g de água pura e outra de 22 g de CO₂ são comparadas. O laboratório não fornece condições para calcular volumes gasosos nem pede inferências sobre toxicidade. A comparação deve limitar-se a massa, quantidade de matéria e entidades especificadas.",
+      "Um elemento fictício tem dois isótopos, de massas aproximadas 10 u e 11 u, com abundâncias de 20% e 80%, respectivamente. A massa atômica média depende das abundâncias. Não se trata de uma mistura na qual cada átomo individual possua a massa média calculada.",
+      "A conclusão precisa informar unidade e entidade: molécula, átomo ou mol. A coincidência numérica entre massa molecular em u e massa molar em g/mol não torna as unidades equivalentes. Explicar uma medida exige preservar a escala microscópica ou macroscópica a que ela se refere."
+    ],
+    "skills": "Ciências da Natureza • EM13CNT101 • conservação e quantidade de matéria.",
+    "careers": "Químicos controlam rendimento; farmacêuticos calculam quantidades; profissionais ambientais delimitam sistemas e resíduos.",
+    "questions": [
+      {
+        "id": "5-1",
+        "stem": "No ensaio com 18 g de X e 8 g de Y, quais massas são esperadas?",
+        "options": [
+          "20 g de produto e 6 g de X restante, totalizando 26 g.",
+          "26 g de produto e nenhum restante, porque o sistema está fechado.",
+          "25 g de produto e 1 g de Y restante, pela maior massa inicial de X.",
+          "20 g de produto e 6 g de Y restante, pois Y tem menor massa inicial.",
+          "26 g de produto e 6 g de X restante, pois a conservação soma ambos."
+        ],
+        "answer": 0,
+        "why": "A proporção 12:8 faz 8 g de Y consumir apenas 12 g de X. Sobram 6 g de X. A massa total 26 g inclui produto e excesso.",
+        "use": "Controle de qualidade distingue rendimento de produto e material residual.",
+        "level": "Difícil"
+      },
+      {
+        "id": "5-2",
+        "stem": "Se a massa medida diminui apenas no sistema aberto, qual interpretação respeita a conservação?",
+        "options": [
+          "O gás que saiu precisa entrar no balanço para comparar o sistema completo.",
+          "Parte da matéria deixa de existir quando o gás perde contato com o recipiente.",
+          "O sistema fechado aumenta sua massa, compensando a perda do sistema aberto.",
+          "A conservação vale para sólidos, enquanto gases têm massa desprezível por definição.",
+          "A reação aberta altera a massa dos átomos para manter a proporção do produto."
+        ],
+        "answer": 0,
+        "why": "A fronteira da medição importa: material saiu do recipiente. Somando o gás disperso ao que permaneceu, o balanço de massa pode ser preservado.",
+        "use": "Engenharia ambiental acompanha entradas e saídas antes de calcular emissões.",
+        "level": "Difícil"
+      },
+      {
+        "id": "5-3",
+        "stem": "Qual massa atômica média corresponde aos isótopos descritos?",
+        "options": [
+          "10,8 u, média ponderada que não descreve a massa de cada átomo.",
+          "10,5 u, pois a média independe da abundância quando há dois isótopos.",
+          "10,2 u, pois o isótopo de massa 10 tem maior participação.",
+          "21 u, pois as massas devem ser somadas sem ponderação.",
+          "10,8 g/mol por átomo, pois a unidade individual é molar."
+        ],
+        "answer": 0,
+        "why": "A média é 10·0,20+11·0,80=10,8 u. Um átomo individual pertence a um dos isótopos; a média caracteriza a composição da amostra.",
+        "use": "Análises isotópicas consideram abundâncias para interpretar massas de amostras.",
+        "level": "Difícil"
+      },
+      {
+        "id": "5-4",
+        "stem": "Comparando as amostras de água e CO₂, qual afirmação é correta?",
+        "options": [
+          "Ambas têm 0,5 mol de moléculas e 1,5 mol de átomos no total.",
+          "A água tem mais moléculas porque sua massa molar é menor, independentemente da massa dada.",
+          "O CO₂ tem mais moléculas porque seus 22 g superam os 9 g de água.",
+          "Ambas têm 0,5 mol de átomos e 1,5 mol de moléculas.",
+          "Ambas têm igual número de moléculas, mas CO₂ tem o dobro de átomos por molécula."
+        ],
+        "answer": 0,
+        "why": "M(H₂O)=18 e M(CO₂)=44 g/mol. As massas dadas representam 0,5 mol de cada. Ambas as moléculas possuem três átomos, logo cada amostra contém 1,5 mol de átomos.",
+        "use": "Laboratórios comparam entidades pela quantidade de matéria, não pela massa isolada.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "5-5",
+        "stem": "Quantos átomos de oxigênio existem nos 22 g de CO₂, usando a aproximação indicada?",
+        "options": [
+          "6,0×10²³ átomos, pois 0,5 mol de CO₂ contém 1 mol de átomos de O.",
+          "3,0×10²³ átomos, pois o número de moléculas coincide com o de oxigênios.",
+          "1,2×10²⁴ átomos, pois toda amostra de CO₂ contém dois mols de oxigênio.",
+          "9,0×10²³ átomos, pois todos os três átomos da molécula são oxigênio.",
+          "6,0×10²² átomos, pois a massa deve ser dividida também pelo número atômico."
+        ],
+        "answer": 0,
+        "why": "22/44=0,5 mol de CO₂. Cada molécula tem dois oxigênios: 1 mol de átomos de O, ou 6,0×10²³. Especificar a entidade evita confusão.",
+        "use": "Química analítica converte fórmula molecular em quantidades de elementos.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "5-6",
+        "stem": "Qual explicação para os valores 44 u e 44 g/mol do CO₂ está correta?",
+        "options": [
+          "44 u descreve a massa molecular; 44 g/mol relaciona massa macroscópica e quantidade de matéria.",
+          "44 u e 44 g/mol são a mesma unidade escrita de duas formas equivalentes.",
+          "44 u descreve um mol de moléculas; 44 g/mol descreve uma molécula isolada.",
+          "44 g/mol representa o número de átomos de carbono em uma molécula.",
+          "44 u representa a média das três massas atômicas, sem considerar quantidades."
+        ],
+        "answer": 0,
+        "why": "A massa molecular soma 12+2·16=44 u. A massa molar correspondente é 44 g/mol. A coincidência numérica não permite trocar unidades ou escalas.",
+        "use": "Farmácia e indústria precisam conferir unidades para evitar erros de dosagem e balanço.",
+        "level": "Superdifícil"
+      }
+    ]
+  },
+  {
+    "name": "Educação Física",
+    "title": "Uma luta pode mudar de regra sem perder sua história",
+    "paragraphs": [
+      "Uma escola organiza um festival fictício de práticas corporais. O projeto reúne capoeira, judô e jogos adaptados, com participação de estudantes que têm experiências corporais diferentes. A proposta é educativa e não reproduz integralmente regulamentos de federações.",
+      "No jogo adaptado de território, cada equipe ganha um ponto ao tocar uma zona-alvo sem contato corporal. Na segunda rodada, só pontua depois que três participantes diferentes tocam a bola. A regra altera quais ações são vantajosas e como o grupo distribui participação.",
+      "Em uma oficina de luta, o professor define interrupção imediata ao sinal combinado, contato controlado e atividades compatíveis com a experiência dos participantes. A vitória não é usada como justificativa para ignorar o sinal de parada. A segurança é condição da prática, não prêmio de quem vence.",
+      "Para apresentar capoeira, a escola convida uma pessoa reconhecida pela comunidade e relaciona movimentos, musicalidade, memória e resistência. Uma proposta alternativa queria exibir apenas golpes, sem discutir sujeitos e trajetórias. As duas escolhas produzem representações culturais diferentes.",
+      "Uma campanha divulga apenas imagens de atletas de alto rendimento e promete que todos alcançarão o mesmo desempenho se tiverem disciplina. Os estudantes lembram diferenças de oportunidade, acesso a treinamento, condições corporais e objetivos de participação.",
+      "Um estudante com limitação de mobilidade deseja participar. A equipe conversa com ele sobre adaptações de espaço, função e regras, preservando desafio e participação significativa. Não considera assistir passivamente como solução automática de inclusão.",
+      "Durante o jogo, uma equipe cumpre literalmente a regra, mas retém deliberadamente a bola para impedir que novatos participem. O grupo discute se legalidade da jogada esgota o compromisso educativo. Fair play e aprendizagem envolvem também respeito e cooperação no contexto definido.",
+      "A avaliação observa decisões táticas, compreensão cultural, cuidado e participação. Nenhum resultado isolado substitui esses critérios. O estudo das práticas corporais pode ser rigoroso sem transformar diferenças entre estudantes em hierarquias de valor pessoal."
+    ],
+    "skills": "Linguagens • EM13LGG302 e EM13LGG304 • contextos de práticas corporais e decisões inclusivas.",
+    "careers": "Professores planejam participação; gestores esportivos organizam regras; profissionais de projetos sociais avaliam inclusão e repertório cultural.",
+    "questions": [
+      {
+        "id": "6-1",
+        "stem": "Qual efeito tático a regra dos três participantes tende a produzir?",
+        "options": [
+          "Torna vantajosa a circulação entre pessoas distintas antes da tentativa de pontuar.",
+          "Torna dispensável alcançar a zona-alvo, pois três passes já equivalem a um ponto.",
+          "Garante participação igual de todos, independentemente das estratégias adotadas.",
+          "Impede qualquer competição, porque a cooperação elimina a disputa entre equipes.",
+          "Preserva as mesmas escolhas da primeira rodada, alterando apenas a contagem final."
+        ],
+        "answer": 0,
+        "why": "A regra cria uma condição para pontuar e favorece circulação. Não garante igualdade completa nem substitui a zona-alvo; regras orientam possibilidades sem determinar cada ação.",
+        "use": "Gestão esportiva prevê como mudanças regulamentares afetam estratégias e participação.",
+        "level": "Difícil"
+      },
+      {
+        "id": "6-2",
+        "stem": "Na oficina, qual conduta preserva a coerência entre luta e segurança?",
+        "options": [
+          "Interromper ao sinal e avaliar o ocorrido antes de retomar o contato controlado.",
+          "Continuar até finalizar a técnica, pois o objetivo competitivo precede a interrupção.",
+          "Deixar que apenas o vencedor decida se o contato ultrapassou o combinado.",
+          "Retirar sinais de interrupção para desenvolver tolerância ao desconforto.",
+          "Manter a atividade sem revisão, desde que nenhuma lesão já tenha sido comprovada."
+        ],
+        "answer": 0,
+        "why": "O sinal pactuado delimita consentimento e segurança. Esperar lesão ou depender do vencedor contraria a regra educativa e o controle da prática.",
+        "use": "Educação corporal organiza critérios preventivos, não apenas reação depois do dano.",
+        "level": "Difícil"
+      },
+      {
+        "id": "6-3",
+        "stem": "Qual escolha amplia a compreensão cultural da capoeira no festival?",
+        "options": [
+          "Relacionar gestos, música e memória com participação de sujeitos ligados à prática.",
+          "Selecionar apenas técnicas eficientes, usando desempenho como síntese de toda a tradição.",
+          "Substituir a história por uma explicação biológica do gasto energético dos movimentos.",
+          "Apresentar a prática como forma fixa, sem mudanças ou disputas ao longo do tempo.",
+          "Excluir a dimensão corporal para priorizar somente uma cronologia escrita."
+        ],
+        "answer": 0,
+        "why": "A prática articula corpo, sentidos e trajetória social. Reduzi-la a técnica ou retirar sua corporalidade empobrece a interpretação; participação comunitária acrescenta perspectiva.",
+        "use": "Produção cultural e educação valorizam conhecimentos dos grupos representados.",
+        "level": "Difícil"
+      },
+      {
+        "id": "6-4",
+        "stem": "Qual crítica à campanha de desempenho é mais consistente com o caso?",
+        "options": [
+          "Esforço importa, mas a promessa de resultados idênticos apaga diferenças de condições e objetivos.",
+          "Esforço não tem relação com desempenho, já que oportunidades são diferentes.",
+          "Resultados iguais seriam garantidos se a campanha mostrasse mais modalidades.",
+          "Diferenças de acesso podem ser deduzidas apenas pela aparência corporal dos estudantes.",
+          "A comparação com atletas profissionais permite avaliar diretamente o valor de cada estudante."
+        ],
+        "answer": 0,
+        "why": "A objeção não nega esforço; questiona sua apresentação como causa suficiente de resultados iguais. Condições, oportunidades e metas precisam integrar a análise.",
+        "use": "Comunicação esportiva responsável evita promessas que culpabilizam quem enfrenta barreiras.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "6-5",
+        "stem": "Qual indicador avaliaria melhor a inclusão do estudante citado?",
+        "options": [
+          "Participação nas decisões e ações do jogo, com desafio acessível e percepção do próprio estudante.",
+          "Presença física no espaço, mesmo sem possibilidade de agir ou escolher.",
+          "Quantidade de regras originais mantidas, independentemente das barreiras resultantes.",
+          "Igualdade de resultados finais, exigida como prova exclusiva de adaptação adequada.",
+          "Número de vezes em que colegas executaram a tarefa no lugar dele."
+        ],
+        "answer": 0,
+        "why": "Inclusão significativa envolve agência e acesso às ações; presença não basta. Adaptar deve preservar desafio possível, não exigir resultado idêntico nem substituir sistematicamente o participante.",
+        "use": "Projetos inclusivos avaliam acesso efetivo e escutam a pessoa envolvida.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "6-6",
+        "stem": "No episódio de retenção da bola, qual conclusão evita confundir regra formal e finalidade educativa?",
+        "options": [
+          "Uma ação permitida pode contrariar o compromisso pedagógico e justificar discussão de critérios e regras.",
+          "A ausência de infração formal prova que todos os objetivos educativos foram cumpridos.",
+          "A exclusão dos novatos torna automaticamente inválido todo resultado esportivo em qualquer contexto.",
+          "O professor deve abolir as regras, pois qualquer regulação favorece exclusão.",
+          "Fair play exige que equipes adversárias terminem necessariamente empatadas."
+        ],
+        "answer": 0,
+        "why": "O contexto escolar define objetivos além da legalidade estrita da jogada. Discutir ajustes pode melhorar participação sem abolir competição ou impor empate.",
+        "use": "Gestores de equipes distinguem conformidade mínima e finalidade de uma atividade.",
+        "level": "Superdifícil"
+      }
+    ]
+  },
+  {
+    "name": "Língua Portuguesa",
+    "title": "O anúncio que pede leitura dupla",
+    "paragraphs": [
+      "Uma exposição escolar reúne textos sobre viagens e consumo. O painel de abertura, escrito para este exercício, diz: “Medir o horizonte não impede sentir o espanto; ordenar a forma pode intensificar a experiência”. A curadoria relaciona o trecho à valorização da medida e de modelos clássicos no Renascimento português.",
+      "Ao lado, um texto autoral de contraste afirma: “Tenho pressa de durar; quanto mais possuo, mais me falta”. O painel propõe discutir tensões entre desejo, limite e permanência. A aproximação com o Barroco é interpretativa; esses versos não são citações de autores históricos.",
+      "A apresentação lembra Camões como referência do Classicismo português e de Os Lusíadas. Contextualizar uma obra não significa reduzir todas as suas passagens a um único traço. Equilíbrio formal pode coexistir com conflito, dúvida e reflexão histórica.",
+      "Um anúncio fictício promete: “Compre liberdade em doze parcelas. Você precisa desta escolha porque todos já escolheram”. O texto associa consumo a autonomia, mas mobiliza a adesão alheia como justificativa. A contradição deve ser examinada pelo sentido produzido, não só pela presença de palavras opostas.",
+      "Na revisão do catálogo, aparecem quatro construções: “Por que a campanha convence?”, “Ela convence porque simplifica”, “O porquê da escolha foi discutido” e “Você escolheu por quê?”. A grafia depende da função e da posição, não de preferência estética.",
+      "Outra passagem informa: “Embora o anúncio prometa autonomia, ele estimula imitação”. A oração iniciada por embora introduz uma concessão. Se o conector for substituído, a relação entre as proposições pode mudar, mesmo quando os fatos mencionados permanecem os mesmos.",
+      "Na frase “A curadora entregou o catálogo aos visitantes”, o verbo organiza dois complementos: um sem preposição obrigatória e outro introduzido por a. Na frase “A curadora chegou cedo”, cedo acrescenta uma circunstância; não é objeto do verbo.",
+      "Ao avaliar os textos, a turma distingue comparação explicitada, metáfora, antítese e paradoxo. Uma oposição pode apenas contrastar ideias; outra pode articular uma contradição aparente interpretável. A escolha de uma figura precisa ser justificada pelo funcionamento do enunciado."
+    ],
+    "skills": "Linguagens • EM13LGG302 • leitura crítica; análise literária e linguística contextualizada no programa fornecido.",
+    "careers": "Revisores conferem relações sintáticas; jornalistas identificam argumentos; publicitários e professores analisam efeitos de linguagem.",
+    "questions": [
+      {
+        "id": "7-1",
+        "stem": "Qual leitura do primeiro painel evita uma oposição simplista entre forma clássica e emoção?",
+        "options": [
+          "A organização formal pode conviver com experiência subjetiva, sem negar a referência à medida.",
+          "A referência à medida comprova ausência de emoção no texto e em toda obra classicista.",
+          "A presença de espanto torna impossível qualquer relação do painel com o Classicismo.",
+          "A organização formal aproxima o painel exclusivamente do Barroco, por excluir modelos antigos.",
+          "O horizonte precisa ser interpretado apenas como medida geográfica literal."
+        ],
+        "answer": 0,
+        "why": "O próprio painel afirma compatibilidade entre ordenar e sentir. Um traço de movimento literário não elimina complexidade ou subjetividade em cada texto.",
+        "use": "Crítica literária contextualiza sem transformar características gerais em regras absolutas.",
+        "level": "Difícil"
+      },
+      {
+        "id": "7-2",
+        "stem": "Em “quanto mais possuo, mais me falta”, qual efeito fundamenta a leitura de paradoxo?",
+        "options": [
+          "A posse crescente intensifica a falta, articulando uma contradição aparente sobre o desejo.",
+          "Os termos são apenas sinônimos, reforçando sem tensão o sentido de abundância.",
+          "A frase compara posse e falta por meio de um conectivo comparativo explícito.",
+          "A falta é reduzida proporcionalmente à posse, mantendo uma relação quantitativa comum.",
+          "A construção informa literalmente um balanço contábil, sem deslocamento de sentido."
+        ],
+        "answer": 0,
+        "why": "A formulação aproxima aumento de posse e aumento de carência. É possível interpretá-la como insatisfação, não como erro lógico acidental ou simples sinonímia.",
+        "use": "Comunicação e literatura usam tensão semântica para representar experiências complexas.",
+        "level": "Difícil"
+      },
+      {
+        "id": "7-3",
+        "stem": "Qual análise sintática corresponde à frase da entrega do catálogo?",
+        "options": [
+          "“O catálogo” é objeto direto; “aos visitantes” é objeto indireto no uso apresentado.",
+          "“O catálogo” é sujeito; “aos visitantes” é objeto direto pelo sentido de destinatário.",
+          "“Aos visitantes” é adjunto de tempo; o verbo tem apenas complemento direto.",
+          "“O catálogo” é predicativo; “aos visitantes” é sujeito posposto.",
+          "Os dois termos são objetos diretos porque ambos completam o sentido da entrega."
+        ],
+        "answer": 0,
+        "why": "Quem entrega entrega algo a alguém. A curadora é sujeito; o catálogo, objeto direto; aos visitantes, indireto. A análise considera o uso efetivo do verbo.",
+        "use": "Redação técnica organiza claramente agente, objeto e destinatário de uma ação.",
+        "level": "Difícil"
+      },
+      {
+        "id": "7-4",
+        "stem": "Qual sequência completa adequadamente “___ aderiu? Não sei o ___. Talvez ___ confiou. Mas confiou ___?”?",
+        "options": [
+          "Por que / porquê / porque / por quê.",
+          "Porque / porquê / por que / por quê.",
+          "Por quê / porque / porquê / por que.",
+          "Por que / por quê / porque / porquê.",
+          "Porquê / por que / porque / por quê."
+        ],
+        "answer": 0,
+        "why": "A pergunta inicial usa por que; o nome substantivado, porquê; a explicação, porque; a locução interrogativa antes de pausa final, por quê.",
+        "use": "Revisão editorial usa função e posição para decidir a grafia, sem decorar apenas a pontuação.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "7-5",
+        "stem": "Qual reescrita preserva a relação central da frase iniciada por “Embora”?",
+        "options": [
+          "O anúncio promete autonomia, mas estimula imitação.",
+          "O anúncio estimula imitação porque promete autonomia.",
+          "O anúncio promete autonomia para estimular imitação.",
+          "O anúncio promete autonomia, portanto estimula imitação.",
+          "O anúncio estimula imitação quando promete autonomia."
+        ],
+        "answer": 0,
+        "why": "Embora estabelece concessão; a construção com mas preserva o contraste central. Porque, para, portanto e quando introduzem relações de causa, finalidade, conclusão e tempo que não são equivalentes.",
+        "use": "Edição de textos precisa preservar relações argumentativas ao simplificar frases.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "7-6",
+        "stem": "Qual interpretação do anúncio articula a metáfora comercial e sua estratégia de persuasão?",
+        "options": [
+          "Transforma liberdade em mercadoria e usa conformidade coletiva para vender uma imagem de autonomia.",
+          "Apresenta uma escolha independente de pressão social porque permite pagamento parcelado.",
+          "Relata um fato verificável sobre toda a população, suficiente para demonstrar a qualidade do produto.",
+          "Usa apenas linguagem literal, pois qualquer bem comprado equivale juridicamente a liberdade.",
+          "Critica explicitamente o consumo por recusar que a adesão de outros influencie decisões."
+        ],
+        "answer": 0,
+        "why": "Comprar liberdade desloca um conceito abstrato para o campo mercantil. A justificativa todos já escolheram apela à adesão coletiva, tensionando a promessa de autonomia.",
+        "use": "Publicidade e educação midiática examinam o que uma promessa oculta e quais argumentos a sustentam.",
+        "level": "Superdifícil"
+      }
+    ]
+  },
+  {
+    "name": "História",
+    "title": "Dois impérios vistos por documentos incompletos",
+    "paragraphs": [
+      "Uma equipe prepara uma mostra sobre colonizações ibéricas na América. Usa documentos fictícios construídos para estudo, inspirados em processos históricos. O dossiê reúne uma instrução administrativa, um registro econômico e um relato de trabalho; nenhum deles pretende representar sozinho toda a experiência colonial.",
+      "O documento A descreve autoridades ligadas à Coroa espanhola, cobrança de tributos e mobilização de trabalhadores indígenas em região mineradora andina. A organização colonial reelaborou relações preexistentes sob novas formas de dominação. A menção ao trabalho indígena não implica ausência de escravização africana em territórios espanhóis.",
+      "O documento B apresenta uma unidade açucareira na América portuguesa, articulada ao comércio atlântico e ao trabalho de africanos escravizados. A centralidade desse trabalho em determinadas regiões e períodos não autoriza apagar a escravização indígena ou outras atividades econômicas.",
+      "O documento C registra conflitos entre autoridades locais, agentes da Coroa e grupos religiosos sobre terra, tributos e trabalho. A existência de instituições metropolitanas não elimina disputas internas, negociações e resistências. Centralização é uma questão a investigar, não sinônimo de controle sem falhas.",
+      "O roteiro lembra capitanias e governo-geral na América portuguesa e vice-reinos em territórios espanhóis. Essas formas administrativas não foram idênticas, nem surgiram todas simultaneamente. A análise deve relacionar instituições a temporalidades, regiões e interesses.",
+      "A Igreja e ordens religiosas atuaram em catequese, ensino e organização social. Suas relações com autoridades e colonos incluíram convergências e conflitos. Não se deve deduzir uma posição única e invariável de todos os agentes religiosos em todos os lugares.",
+      "A sociedade colonial distribuía direitos, prestígio e acesso a recursos de forma hierárquica. Pessoas indígenas e africanas, porém, não foram apenas objetos passivos: houve fugas, negociações, preservação de práticas, conflitos e formas distintas de resistência.",
+      "A mostra propõe comparar sem reduzir Espanha à mineração e Portugal ao açúcar. Esses eixos ajudam a organizar casos, mas não esgotam os territórios ou os séculos de colonização. Para uma explicação consistente, a equipe cruza autoria, finalidade, silêncio documental e contexto."
+    ],
+    "skills": "Ciências Humanas • EM13CHS101 e EM13CHS103 • crítica de fontes e comparação histórica.",
+    "careers": "Historiadores confrontam documentos; museólogos contextualizam objetos; gestores de patrimônio articulam memória e evidência.",
+    "questions": [
+      {
+        "id": "8-1",
+        "stem": "Qual comparação entre A e B respeita os limites do dossiê?",
+        "options": [
+          "Destaca diferentes articulações de trabalho e economia sem transformar cada caso em retrato total do império.",
+          "Demonstra que toda colonização espanhola foi mineradora e toda portuguesa foi açucareira.",
+          "Prova que a Coroa portuguesa não tinha interesse em tributos porque B descreve uma unidade produtiva.",
+          "Permite ordenar os impérios por ausência ou presença de exploração, distinguindo tributo e açúcar.",
+          "Mostra que africanos escravizados existiam apenas em territórios portugueses."
+        ],
+        "answer": 0,
+        "why": "A e B são recortes. Eles ajudam a comparar trabalho e inserção econômica, mas a ausência de um tema em um documento não comprova sua inexistência em todo um império.",
+        "use": "Pesquisa histórica evita generalizações a partir de amostras documentais restritas.",
+        "level": "Difícil"
+      },
+      {
+        "id": "8-2",
+        "stem": "O conflito descrito em C impede qual conclusão?",
+        "options": [
+          "Que a presença de instituições metropolitanas assegurava controle homogêneo e sem disputas.",
+          "Que agentes locais e metropolitanos podiam participar das relações de poder.",
+          "Que administração colonial precisava lidar com interesses diferentes.",
+          "Que documentos podem registrar tensões sobre trabalho e tributação.",
+          "Que as instituições tinham importância na organização da dominação."
+        ],
+        "answer": 0,
+        "why": "O conflito contradiz a ideia de uniformidade absoluta, não a existência de dominação ou instituições. Centralização pode coexistir com negociação e resistência.",
+        "use": "Análise institucional distingue normas formais de funcionamento efetivo.",
+        "level": "Difícil"
+      },
+      {
+        "id": "8-3",
+        "stem": "Qual procedimento contextualiza melhor uma instrução enviada pela Coroa?",
+        "options": [
+          "Identificar autor, destinatário e objetivo e comparar a ordem com evidências de sua execução.",
+          "Tratar o conteúdo ordenado como descrição suficiente do que de fato acontecia.",
+          "Usar apenas o prestígio do emissor para determinar a confiabilidade de todas as afirmações.",
+          "Descartar a fonte por ser oficial, sem avaliar suas informações e interesses.",
+          "Converter cada proibição em prova de inexistência da prática proibida."
+        ],
+        "answer": 0,
+        "why": "Uma norma expressa intenção de ordenar; não comprova cumprimento. Cruzar fontes permite investigar a distância entre regra e prática sem descartar o documento.",
+        "use": "Patrimônio e pesquisa documental distinguem prescrição, relato e evidência de execução.",
+        "level": "Difícil"
+      },
+      {
+        "id": "8-4",
+        "stem": "Qual interpretação da atuação religiosa evita tanto homogeneização quanto apagamento de poder?",
+        "options": [
+          "Reconhecer participação na ordem colonial e examinar divergências concretas entre agentes, lugares e períodos.",
+          "Definir todas as ordens como bloco sem conflitos porque compartilhavam religião.",
+          "Considerar qualquer conflito com colonos prova de oposição integral à colonização.",
+          "Separar religião de educação e trabalho, já que pertencem a esferas conceitualmente distintas.",
+          "Tomar o ensino religioso como evidência suficiente de igualdade social colonial."
+        ],
+        "answer": 0,
+        "why": "O texto aponta atuação estruturante e relações variadas. Conflitos particulares não apagam inserção na ordem colonial nem autorizam atribuir comportamento único a todos os agentes.",
+        "use": "Curadoria histórica apresenta instituições sem ocultar suas tensões internas.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "8-5",
+        "stem": "Como incluir resistência sem minimizar a coerção colonial?",
+        "options": [
+          "Analisar ações dos sujeitos dentro de relações profundamente desiguais, sem confundir agência com liberdade plena.",
+          "Usar a existência de negociação para concluir que o trabalho compulsório era voluntário.",
+          "Tratar fugas como episódios externos ao funcionamento da sociedade colonial.",
+          "Apresentar povos indígenas e africanos como grupos uniformes que reagiam sempre do mesmo modo.",
+          "Suprimir a violência para valorizar exclusivamente contribuições culturais positivas."
+        ],
+        "answer": 0,
+        "why": "Agência é capacidade de agir em condições dadas, não ausência de dominação. Mostrar resistência e coerção conjuntamente evita passividade atribuída e romantização.",
+        "use": "Educação e museologia podem reconhecer sujeitos sem amenizar relações violentas.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "8-6",
+        "stem": "Uma pesquisa quer testar a frase “o açúcar explica sozinho a sociedade colonial portuguesa”. Qual evidência seria mais decisiva contra o termo “sozinho”?",
+        "options": [
+          "Fontes de outras regiões e atividades mostrando relações sociais relevantes não deriváveis apenas da economia açucareira.",
+          "Um novo documento sobre um engenho que reafirme a importância do açúcar.",
+          "Uma descrição detalhada de uma técnica de moagem usada em B.",
+          "Uma lista de exportações de açúcar sem informações sobre outras relações.",
+          "Uma opinião atual de que o açúcar foi culturalmente pouco importante."
+        ],
+        "answer": 0,
+        "why": "Para contestar suficiência exclusiva, é preciso evidenciar dimensões explicativas que o modelo exclui. Confirmar a importância do açúcar não prova nem refuta que ele explique tudo.",
+        "use": "Pesquisa testa hipóteses procurando evidências capazes de contrariá-las.",
+        "level": "Superdifícil"
+      }
+    ]
+  },
+  {
+    "name": "Sociologia",
+    "title": "Diversidade anunciada e oportunidades distribuídas",
+    "paragraphs": [
+      "Uma organização fictícia divulga que pessoas de diferentes origens participam de suas festas e conclui que não há desigualdade racial em suas oportunidades. Uma comissão propõe examinar contratação, promoção, remuneração e relatos de tratamento. Convivência cultural e distribuição de oportunidades são dimensões relacionadas, mas distintas.",
+      "O mito da democracia racial é discutido como narrativa que pode apresentar relações raciais brasileiras como harmoniosas, ocultando conflitos e desigualdades. A crítica à narrativa não nega encontros culturais; questiona usá-los como prova suficiente de igualdade.",
+      "O roteiro menciona pesquisas associadas ao Projeto UNESCO sobre relações raciais no Brasil, realizadas no século XX. Os estudos tiveram diferentes locais, autores e resultados e contribuíram para questionar imagens simplificadoras. Não se tratou de uma lei nem de uma investigação única sem diferenças internas.",
+      "Em um exercício com dados fictícios, dois grupos têm 100 candidatos cada, com os requisitos formais exigidos. O grupo A recebe 40 convites para entrevista; o B, 20. Esses números revelam diferença de taxas, mas não isolam sozinhos todos os mecanismos que a produziram.",
+      "A seleção utiliza indicações internas e disponibilidade para entrevistas em horários sem alternativa. A comissão investiga se essas rotinas reproduzem desigualdades de redes e acesso. Uma regra formulada sem menção à raça pode produzir efeitos desiguais; demonstrar o mecanismo exige pesquisa.",
+      "A Lei nº 7.716/1989, conhecida como Lei Caó, integra a resposta jurídica à discriminação. A análise sociológica distingue a existência de normas, sua aplicação e as condições sociais que permitem denunciar. O exercício não decide o enquadramento jurídico de casos individuais.",
+      "A comissão propõe critérios transparentes, canais de escuta e acompanhamento de taxas por etapa, preservando os dados pessoais. A intenção é examinar processos e seus efeitos, não explicar desigualdades por supostas capacidades naturais de grupos raciais.",
+      "Ao apresentar resultados, a equipe evita duas conclusões apressadas: negar desigualdade porque há diversidade visível e atribuir uma causa única a toda diferença estatística. Trabalha com hipóteses, contexto histórico e evidências para sustentar ou revisar explicações."
+    ],
+    "skills": "Ciências Humanas • EM13CHS101 e EM13CHS103 • examinar narrativas, dados e mecanismos sociais.",
+    "careers": "Pesquisadores sociais analisam desigualdades; RH revisa etapas seletivas; gestores públicos avaliam acesso a serviços e direitos.",
+    "questions": [
+      {
+        "id": "9-1",
+        "stem": "Qual falha está presente na conclusão inicial da organização?",
+        "options": [
+          "Usar convivência cultural como prova suficiente de igualdade na distribuição de oportunidades.",
+          "Reconhecer que práticas culturais podem reunir pessoas de origens diferentes.",
+          "Investigar oportunidades a partir de dimensões como contratação e promoção.",
+          "Admitir que cultura e trabalho podem apresentar relações sociais observáveis.",
+          "Separar indicadores para compreender aspectos distintos de um mesmo contexto."
+        ],
+        "answer": 0,
+        "why": "Uma evidência sobre participação em festas não mede chances de emprego ou promoção. A conclusão extrapola o alcance do indicador observado.",
+        "use": "Auditorias de diversidade distinguem representação simbólica e resultados de processos.",
+        "level": "Difícil"
+      },
+      {
+        "id": "9-2",
+        "stem": "Qual interpretação dos 40 e 20 convites é sustentada pelos dados?",
+        "options": [
+          "As taxas são 40% e 20%; a diferença demanda investigação dos mecanismos de seleção.",
+          "O grupo A tem taxa 20% maior que B, e isso identifica automaticamente uma causa única.",
+          "Os dois grupos têm taxas iguais porque partiram do mesmo número de candidatos.",
+          "O grupo B teve 20 pontos percentuais a mais de sucesso, devido ao denominador comum.",
+          "A diferença demonstra capacidades naturais distintas, pois os requisitos formais eram iguais."
+        ],
+        "answer": 0,
+        "why": "A diferença é 20 pontos percentuais; a taxa de A é o dobro da de B. O resultado merece investigação, mas não identifica sozinho todos os mecanismos causais.",
+        "use": "Pesquisa quantitativa distingue razão, diferença percentual e explicação causal.",
+        "level": "Difícil"
+      },
+      {
+        "id": "9-3",
+        "stem": "O tratamento do Projeto UNESCO no texto favorece qual atitude de pesquisa?",
+        "options": [
+          "Comparar autores, lugares e métodos em vez de atribuir uma conclusão uniforme a todo o conjunto.",
+          "Ler o projeto como norma penal que substituiu a análise das relações sociais.",
+          "Usar a existência do projeto como prova de que a desigualdade terminou naquele período.",
+          "Desconsiderar resultados locais porque uma pesquisa internacional deveria ter achados idênticos.",
+          "Tratar diversidade de resultados como evidência de impossibilidade de qualquer investigação."
+        ],
+        "answer": 0,
+        "why": "Um programa de estudos pode conter abordagens e resultados diversos. Compará-los é mais rigoroso que convertê-los em voz única ou confundi-los com legislação.",
+        "use": "Ciências sociais fazem crítica metodológica e contextualizam produção de conhecimento.",
+        "level": "Difícil"
+      },
+      {
+        "id": "9-4",
+        "stem": "Como investigar a hipótese de reprodução institucional de desigualdades na seleção?",
+        "options": [
+          "Examinar regras, redes de indicação e acesso às entrevistas, relacionando-os às taxas por etapa.",
+          "Buscar apenas insultos explícitos, tomando sua ausência como prova de neutralidade dos processos.",
+          "Concluir pela discriminação de cada avaliador sem examinar procedimentos e evidências.",
+          "Manter somente os requisitos declarados, descartando diferenças de aplicação na prática.",
+          "Substituir dados de processo por uma pergunta genérica sobre intenção de ser imparcial."
+        ],
+        "answer": 0,
+        "why": "A hipótese institucional focaliza funcionamento e efeitos, não apenas intenção declarada. Analisar mecanismos é necessário para sustentar a explicação e orientar mudanças.",
+        "use": "RH e avaliação de políticas podem revisar barreiras incorporadas a rotinas aparentemente neutras.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "9-5",
+        "stem": "Qual afirmação distingue melhor norma jurídica e transformação social?",
+        "options": [
+          "A existência de norma é relevante, mas efeitos dependem também de aplicação, acesso e mudanças de práticas.",
+          "A existência da lei comprova que práticas discriminatórias se tornaram socialmente impossíveis.",
+          "A persistência de desigualdade torna irrelevante qualquer instrumento jurídico.",
+          "A legislação substitui o estudo de cultura e história por uma resposta única.",
+          "A denúncia acessível dispensa apuração, pois toda diferença estatística define um crime."
+        ],
+        "answer": 0,
+        "why": "O texto não oferece julgamento de casos. Ele mostra que norma, aplicação e condições sociais são dimensões diferentes; uma não produz automaticamente todas as outras.",
+        "use": "Gestão pública avalia implementação e acesso efetivo, além da existência formal de regras.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "9-6",
+        "stem": "Após mudanças na seleção, as taxas se aproximam. Qual avaliação é mais rigorosa?",
+        "options": [
+          "Examinar se critérios, perfis e cobertura permaneceram comparáveis e se as barreiras identificadas diminuíram.",
+          "Atribuir toda aproximação ao programa, independentemente de mudanças nos candidatos ou no mercado.",
+          "Declarar encerrado o problema em toda a organização com base em uma única etapa.",
+          "Descartar o resultado porque políticas institucionais não podem alterar oportunidades.",
+          "Considerar igualdade numérica suficiente, mesmo que novas barreiras apareçam depois da entrevista."
+        ],
+        "answer": 0,
+        "why": "A aproximação é informação relevante, mas a avaliação precisa considerar comparabilidade e etapas posteriores. O resultado não prova isoladamente causalidade nem resolução completa.",
+        "use": "Avaliação de impacto combina indicadores, processos e explicações alternativas.",
+        "level": "Superdifícil"
+      }
+    ]
+  },
+  {
+    "name": "Filosofia",
+    "title": "A escolha livre no catálogo personalizado",
+    "paragraphs": [
+      "Uma plataforma fictícia organiza filmes e músicas em catálogos personalizados. A publicidade promete que cada pessoa encontrará uma experiência única. A receita depende de publicidade e do tempo de permanência, o que cria incentivos para selecionar conteúdos capazes de reter atenção.",
+      "Em uma semana, a plataforma oferece quarenta títulos com estruturas narrativas semelhantes, capas diferentes e pequenas variações. A quantidade de opções é grande, mas uma estudante pergunta se variedade numérica equivale a diversidade de experiências e de perspectivas.",
+      "O professor apresenta a crítica da indústria cultural como reflexão sobre produção cultural organizada por lógicas de mercado, padronização e consumo. A análise não depende de declarar que toda obra popular é ruim ou que todo público é incapaz de interpretação.",
+      "Um cartaz afirma: “Se este conteúdo aparece primeiro, é porque as pessoas naturalmente desejam vê-lo”. A turma identifica uma passagem entre uma escolha técnica e comercial e sua apresentação como expressão espontânea de uma natureza humana fixa.",
+      "Um grupo de usuários reorganiza trechos de uma produção comercial para discutir desigualdade local. A circulação original era orientada ao entretenimento, mas a apropriação produz uma leitura crítica. Isso não elimina a estrutura econômica da plataforma nem torna previsível toda recepção.",
+      "Uma reportagem da plataforma destaca o sucesso de uma empresa patrocinadora e deixa trabalhadores e concorrentes fora da narrativa. O exercício pede examinar seleção de fontes, enquadramento e interesses. Identificar interesse não dispensa verificar a consistência de cada afirmação.",
+      "Uma obra artística recusa o formato curto favorecido pelo catálogo e convida o público a uma experiência coletiva demorada. Seu alcance é menor, mas o grupo discute se popularidade, rentabilidade e valor estético são critérios equivalentes. O texto não fornece uma fórmula única para definir arte.",
+      "A turma conclui que autonomia envolve compreender mediações e comparar possibilidades, sem imaginar um sujeito totalmente externo à cultura. A leitura crítica deve perguntar como a escolha é organizada, o que permanece invisível e quais espaços de ação ainda existem."
+    ],
+    "skills": "Ciências Humanas • EM13CHS101 e EM13CHS103 • análise de argumentos e mediações culturais.",
+    "careers": "Profissionais de comunicação avaliam enquadramentos; curadores discutem critérios de valor; designers de plataformas analisam efeitos de recomendação.",
+    "questions": [
+      {
+        "id": "10-1",
+        "stem": "A oferta de quarenta títulos semelhantes permite problematizar principalmente:",
+        "options": [
+          "a diferença entre quantidade de opções e diversidade efetiva de formas e perspectivas.",
+          "a impossibilidade de existir qualquer escolha quando há muitos títulos disponíveis.",
+          "a inferioridade estética automática de toda obra distribuída comercialmente.",
+          "a ausência de interesse econômico em catálogos que aparentam personalização.",
+          "a equivalência necessária entre variedade de capas e autonomia plena do público."
+        ],
+        "answer": 0,
+        "why": "A questão confronta diversidade superficial e estrutural. Muitas opções podem compartilhar a mesma fórmula; isso não prova ausência absoluta de escolha ou valor.",
+        "use": "Curadoria cultural considera variedade de perspectivas, não apenas contagem de produtos.",
+        "level": "Difícil"
+      },
+      {
+        "id": "10-2",
+        "stem": "No cartaz sobre o conteúdo que aparece primeiro, qual operação merece crítica?",
+        "options": [
+          "Apresentar uma seleção historicamente organizada como expressão natural e inevitável de preferências.",
+          "Reconhecer que pessoas podem ter preferências e que elas influenciam escolhas.",
+          "Mostrar que uma plataforma utiliza tecnologias para organizar o catálogo.",
+          "Distinguir interesses de anunciantes das práticas de consumo dos usuários.",
+          "Admitir que escolhas técnicas possam ser examinadas por pesquisadores."
+        ],
+        "answer": 0,
+        "why": "O problema é naturalizar uma mediação: posição no catálogo resulta de decisões, critérios e incentivos. Explicá-la como natureza fixa pode ocultar esses processos.",
+        "use": "Análise de discurso identifica quando decisões sociais são apresentadas como inevitáveis.",
+        "level": "Difícil"
+      },
+      {
+        "id": "10-3",
+        "stem": "Qual leitura da apropriação crítica feita pelos usuários é mais consistente?",
+        "options": [
+          "A recepção pode produzir novos sentidos sem eliminar as condições econômicas de circulação.",
+          "A produção comercial determina integralmente um único sentido recebido pelo público.",
+          "A existência de apropriação prova que incentivos econômicos deixaram de operar.",
+          "O novo uso torna retrospectivamente inexistente a finalidade original de entretenimento.",
+          "A criatividade dos usuários impede qualquer análise das estruturas de mercado."
+        ],
+        "answer": 0,
+        "why": "O caso mostra agência na recepção e persistência de estruturas. Uma leitura crítica evita tanto determinismo completo quanto celebração que apaga condicionantes.",
+        "use": "Educação midiática observa como públicos reinterpretam materiais e negociam sentidos.",
+        "level": "Difícil"
+      },
+      {
+        "id": "10-4",
+        "stem": "Ao analisar a reportagem patrocinada, qual procedimento evita dois extremos igualmente frágeis?",
+        "options": [
+          "Examinar financiamento, fontes omitidas e evidências, sem tomar patrocínio como prova automática de falsidade.",
+          "Aceitar as afirmações como verdadeiras porque a reportagem apresenta linguagem informativa.",
+          "Rejeitar toda afirmação por haver patrocínio, sem conferir dados ou fontes.",
+          "Ignorar quem financia e concentrar a avaliação apenas na qualidade visual.",
+          "Considerar suficiente incluir uma fonte discordante, independentemente de sua evidência."
+        ],
+        "answer": 0,
+        "why": "Interesses orientam perguntas sobre seleção e enquadramento; não substituem a verificação. Tanto aceitar a aparência neutra quanto rejeitar tudo sem exame empobrece a crítica.",
+        "use": "Jornalismo e pesquisa avaliam conflitos de interesse junto da qualidade das evidências.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "10-5",
+        "stem": "O menor alcance da obra coletiva autoriza qual conclusão sobre seu valor?",
+        "options": [
+          "Alcance, rentabilidade e valor estético são critérios distintos; o dado não decide sozinho seu valor.",
+          "Menor alcance comprova menor valor, porque preferência majoritária define qualidade estética.",
+          "Menor alcance comprova maior valor, porque dificuldade de acesso garante autonomia artística.",
+          "A ausência de formato curto demonstra ausência de qualquer interesse do público.",
+          "O valor da obra pode ser medido apenas pelo tempo gasto em sua produção."
+        ],
+        "answer": 0,
+        "why": "A discussão distingue métricas de circulação e juízos estéticos. Baixa popularidade não comprova nem inferioridade nem superioridade; é preciso explicitar critérios e contexto.",
+        "use": "Crítica e produção cultural justificam critérios em vez de trocar avaliação por métricas de audiência.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "10-6",
+        "stem": "Qual intervenção na plataforma expressaria melhor a autonomia crítica discutida?",
+        "options": [
+          "Explicitar critérios de recomendação e ampliar contato com perspectivas diferentes, preservando escolha informada.",
+          "Substituir toda escolha do usuário por uma lista obrigatória definida pela plataforma.",
+          "Multiplicar capas de conteúdos semelhantes para aumentar a sensação de variedade.",
+          "Eliminar informações sobre publicidade para tornar a experiência aparentemente neutra.",
+          "Classificar apenas por receita, apresentando essa ordem como hierarquia universal de qualidade."
+        ],
+        "answer": 0,
+        "why": "Autonomia crítica depende de compreender mediações e ampliar alternativas significativas. Não equivale a ocultar critérios, impor uma única lista ou ampliar variedade apenas superficial.",
+        "use": "Design responsável pode dar transparência e opções de exploração sem prometer neutralidade absoluta.",
+        "level": "Superdifícil"
+      }
+    ]
+  },
+  {
+    "name": "Língua Inglesa",
+    "title": "What a fashion claim can and cannot prove",
+    "paragraphs": [
+      "A fictional clothing company publishes a report about one collection. It states: “In our sample of 200 jackets, 120 contained recycled fibres.” The sample description is available, but no full life-cycle assessment is provided. The report does not cover every product sold by the company.",
+      "An advertisement translates the report into a broader slogan: “Our collection is the most sustainable choice.” The slogan contains an evaluation and a comparison. Neither the competitors being compared nor the criteria for “most sustainable” are identified.",
+      "A student writes: “Recycled content may be relevant, but transport, durability, labour conditions and disposal also matter.” The comment does not deny the reported number. It questions whether one indicator supports the broader claim made by the advertisement.",
+      "Two students discuss purchasing. Lia says, “I prefer durable clothes.” Noah answers, “So do I.” Later, Lia says, “I don't buy clothes just because an influencer recommends them.” Noah replies, “Neither do I.” The auxiliary and word order matter in these short agreements.",
+      "Another exchange uses different structures. “Maya checks the labels, and Jo does too.” “Maya hasn't read the full report, and Jo hasn't either.” Similar agreement can be expressed without copying the complete sentence, but polarity and auxiliary must remain compatible.",
+      "The company interviews only customers who bought from its online store and concludes that “young people everywhere want weekly fashion releases.” The survey may describe its respondents, but the sampling method does not automatically represent all young people.",
+      "A designer argues that personal expression is possible within social influences, rather than completely independent from them. Fashion can communicate identity while also reflecting marketing, working conditions and unequal purchasing power. Recognising influence does not make individual choices meaningless.",
+      "For this exercise, distinguish a checkable claim from a proven claim. A statement can be testable and still need evidence. Critical reading asks what was measured, who was included and how far the conclusion goes beyond the available information."
+    ],
+    "skills": "Linguagens • EM13LGG302 • leitura crítica de discursos; compreensão em inglês e concordância conforme o programa.",
+    "careers": "Comércio exterior interpreta relatórios; marketing compara alegações; tradução preserva sentido, polaridade e alcance de afirmações.",
+    "questions": [
+      {
+        "id": "11-1",
+        "stem": "Which conclusion is directly supported by the reported sample?",
+        "options": [
+          "Sixty percent of the sampled jackets contained recycled fibres.",
+          "Sixty percent of every product sold by the company was recycled material.",
+          "The collection had sixty percent less environmental impact than its competitors.",
+          "All sampled jackets were made entirely from recycled fibres.",
+          "The whole collection was more sustainable because the sample contained recycled fibres."
+        ],
+        "answer": 0,
+        "why": "120/200=60% refere-se às jaquetas amostradas que continham fibras recicladas. Não informa percentual da massa reciclada nem impacto total de toda a coleção.",
+        "use": "Compras e comércio exterior precisam preservar universo e indicador de relatórios.",
+        "level": "Difícil"
+      },
+      {
+        "id": "11-2",
+        "stem": "Which reply correctly agrees with “I don't buy clothes just because an influencer recommends them”?",
+        "options": [
+          "Neither do I.",
+          "So do I.",
+          "Neither I do.",
+          "I don't too.",
+          "Neither am I."
+        ],
+        "answer": 0,
+        "why": "A concordância negativa usa Neither + auxiliar + sujeito. A frase original utiliza do; am não corresponde ao verbo buy. So do I indicaria concordância afirmativa.",
+        "use": "Tradução e negociação precisam conservar a polaridade para não inverter uma posição.",
+        "level": "Difícil"
+      },
+      {
+        "id": "11-3",
+        "stem": "Which sentence preserves the meaning of “Jo hasn't either”?",
+        "options": [
+          "Jo has not read the full report either.",
+          "Jo has read the full report too.",
+          "Jo does not read the full report too.",
+          "Jo had already read the full report.",
+          "Jo is not reading the full report now."
+        ],
+        "answer": 0,
+        "why": "O present perfect negativo hasn't read mantém a ação e a estrutura temporal. Either acrescenta concordância negativa; too, nesse padrão, não substitui either.",
+        "use": "Comunicação profissional usa auxiliares para evitar repetir frases sem alterar seu sentido.",
+        "level": "Difícil"
+      },
+      {
+        "id": "11-4",
+        "stem": "Why is “the most sustainable choice” insufficiently supported by the sample alone?",
+        "options": [
+          "The comparative evaluation requires defined criteria and evidence beyond recycled content in the sample.",
+          "The statement cannot be evaluated because environmental comparisons are inherently meaningless.",
+          "The sample proves the slogan false because only 120 jackets contained recycled fibres.",
+          "The slogan becomes a verified fact once it is printed next to a numerical report.",
+          "The claim is fully supported if the company repeats the percentage in every advertisement."
+        ],
+        "answer": 0,
+        "why": "Um número verdadeiro pode não sustentar uma conclusão mais ampla. Faltam critérios, comparadores e outras dimensões; insuficiência de prova não equivale automaticamente a falsidade comprovada.",
+        "use": "Análise de publicidade confronta alcance da promessa e alcance da evidência.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "11-5",
+        "stem": "What is the main limitation of the conclusion about “young people everywhere”?",
+        "options": [
+          "The selected customers may differ from young people outside the online store.",
+          "The respondents cannot express opinions because they have already purchased products.",
+          "An online questionnaire necessarily produces false answers regardless of its design.",
+          "The conclusion would become representative simply by using more persuasive language.",
+          "Weekly releases can only be studied through a company's sales revenue."
+        ],
+        "answer": 0,
+        "why": "Clientes de uma loja formam um grupo selecionado. Generalizar para todos os jovens exige desenho amostral adequado; o problema não torna toda resposta falsa.",
+        "use": "Pesquisa de mercado distingue público entrevistado e população sobre a qual se quer concluir.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "11-6",
+        "stem": "Which interpretation best combines the designer's argument with the final paragraph?",
+        "options": [
+          "Choices may express identity under social influences, while testable claims still require evidence.",
+          "Social influence proves that individual choices have no meaning and all reports are opinions.",
+          "Personal identity makes consumer choices independent from marketing and working conditions.",
+          "A checkable statement is already true, whereas opinions cannot be examined critically.",
+          "Acknowledging influence requires accepting advertisements as the best evidence of personal agency."
+        ],
+        "answer": 0,
+        "why": "O texto evita negar agência e evita confundir verificabilidade com verdade comprovada. Reconhecer influência amplia a análise; não obriga aceitar marketing como evidência.",
+        "use": "Comunicação intercultural compara argumentos sem transformar nuances em oposições absolutas.",
+        "level": "Superdifícil"
+      }
+    ]
+  },
+  {
+    "name": "Arte",
+    "title": "Quem decide o que pode aparecer na praça",
+    "paragraphs": [
+      "Uma mostra fictícia ocupa uma praça e uma sala de exposição. Seu primeiro trabalho apresenta uma cadeira industrial retirada de circulação, acompanhada de um texto sobre quem pode sentar em espaços públicos. A cadeira não foi fabricada pelo artista; sua seleção e deslocamento integram a proposta.",
+      "Um segundo trabalho utiliza fotografias de um bairro ameaçado de remoção. As imagens foram escolhidas e legendadas por um coletivo em diálogo com moradores. A câmera registra elementos do mundo, mas enquadramento, seleção e circulação também constroem sentidos.",
+      "Uma intervenção usa estêncil para repetir silhuetas junto a trajetos cotidianos. A repetição chama atenção para deslocamentos de trabalhadores. O sentido da obra depende de sua relação com lugar, público e circulação, não apenas da capacidade técnica de recortar a matriz.",
+      "Em uma apresentação teatral, espectadores podem discutir soluções para um conflito encenado. A proposta distribui oportunidades de fala e registra divergências. Participação do público não equivale, automaticamente, a consenso ou transformação efetiva fora do evento.",
+      "Um grupo apresenta rap autoral sobre acesso à cidade. Ritmo, rimas, voz e narrativa articulam crítica social. Reduzir a apresentação a uma mensagem verbal isolada apagaria as escolhas formais que também produzem experiência e significado.",
+      "O debate curatorial relaciona arte conceitual, ready-made e gestos de antiarte à problematização de convenções. Questionar critérios de beleza ou autoria não significa que qualquer objeto tenha o mesmo sentido em qualquer situação. Contextualização e proposição continuam importantes.",
+      "O patrocinador aceita a mostra, mas pede retirar referências à remoção urbana. O coletivo discute como financiamento, visibilidade e conteúdo se relacionam. A obra pode ter dimensão política tanto pelo tema quanto pelas condições que definem o que ganha espaço público.",
+      "Ao final, a avaliação compara formas, ideias, processos e efeitos documentados. A intenção de transformar a sociedade é relevante, mas não comprova sozinha que a transformação ocorreu. O exercício convida a justificar interpretações com elementos concretos de cada proposta."
+    ],
+    "skills": "Linguagens • EM13LGG302 e EM13LGG304 • interpretar linguagens artísticas e suas relações sociais.",
+    "careers": "Curadores contextualizam escolhas; fotógrafos assumem enquadramentos; produtores culturais negociam circulação; designers articulam forma e propósito.",
+    "questions": [
+      {
+        "id": "12-1",
+        "stem": "O que aproxima a cadeira da lógica de um ready-made?",
+        "options": [
+          "A seleção e o deslocamento de um objeto cotidiano passam a integrar uma proposição artística.",
+          "A fabricação manual exclusiva pelo artista assegura a originalidade material do objeto.",
+          "A presença da cadeira na sala elimina a necessidade de considerar o texto e o contexto.",
+          "A utilidade do objeto impede qualquer discussão de autoria e instituição.",
+          "O preço industrial da cadeira determina diretamente seu valor estético."
+        ],
+        "answer": 0,
+        "why": "A operação artística envolve escolher, deslocar e propor uma leitura. Não depende de fabricar artesanalmente o objeto nem permite ignorar contexto e instituição.",
+        "use": "Curadoria analisa relações entre objeto, gesto, espaço e interpretação.",
+        "level": "Difícil"
+      },
+      {
+        "id": "12-2",
+        "stem": "Qual leitura das fotografias evita tratá-las como espelhos neutros?",
+        "options": [
+          "Elas registram aspectos do bairro e produzem sentidos por enquadramento, seleção e legenda.",
+          "As fotografias são necessariamente falsas porque passaram por escolhas de enquadramento.",
+          "O registro visual dispensa conhecer quem escolheu as imagens e onde elas circulam.",
+          "A participação dos moradores garante que todas as interpretações posteriores serão iguais.",
+          "A legenda é externa ao sentido e pode ser ignorada sem alterar a leitura da mostra."
+        ],
+        "answer": 0,
+        "why": "Registrar não é copiar integralmente o mundo. Escolhas visuais e editoriais constroem leitura, sem tornar automaticamente falso o registro.",
+        "use": "Fotografia documental e jornalismo explicitam escolhas e contexto de circulação.",
+        "level": "Difícil"
+      },
+      {
+        "id": "12-3",
+        "stem": "Qual análise do rap preserva a relação entre forma e crítica social?",
+        "options": [
+          "Examinar como ritmo, voz, rimas e narrativa organizam a experiência e o argumento.",
+          "Transcrever apenas o tema e tratar os recursos sonoros como decoração sem efeito.",
+          "Avaliar exclusivamente a quantidade de denúncias, independentemente de sua articulação.",
+          "Classificar o trabalho apenas pelo local de apresentação, sem escutar suas escolhas.",
+          "Separar completamente técnica e sentido para evitar interpretações sobre linguagem."
+        ],
+        "answer": 0,
+        "why": "O texto apresenta recursos sonoros e verbais como constitutivos. A crítica social é construída pela forma, não apenas anexada a ela.",
+        "use": "Produção musical e comunicação analisam como escolhas formais sustentam mensagens.",
+        "level": "Difícil"
+      },
+      {
+        "id": "12-4",
+        "stem": "Se o estêncil for transferido para uma sala sem referência aos trajetos, qual conclusão é mais consistente?",
+        "options": [
+          "A técnica pode permanecer, enquanto relações com lugar e público mudam e exigem nova interpretação.",
+          "A obra preserva necessariamente todos os sentidos, pois a matriz de recorte continua a mesma.",
+          "A transferência elimina automaticamente qualquer possibilidade de sentido político.",
+          "A mudança transforma o estêncil em fotografia porque altera o suporte institucional.",
+          "A intenção original garante que todos os públicos terão experiência idêntica."
+        ],
+        "answer": 0,
+        "why": "Material e técnica não esgotam a obra. O local e a circulação participam do sentido; mudança não significa perda automática de toda dimensão política.",
+        "use": "Design urbano e curadoria consideram como contexto modifica recepção.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "12-5",
+        "stem": "O pedido do patrocinador revela qual dimensão política da arte?",
+        "options": [
+          "As condições de financiamento e visibilidade também participam da disputa sobre o que pode ser mostrado.",
+          "A política só começa se a obra mencionar diretamente um partido ou uma eleição.",
+          "O financiamento torna impossível qualquer interpretação estética do trabalho.",
+          "A aceitação inicial da mostra prova ausência de interferência nas escolhas posteriores.",
+          "A retirada do tema preserva necessariamente a mesma proposta, pois a técnica permanece."
+        ],
+        "answer": 0,
+        "why": "A disputa não se limita ao assunto representado. Decisões sobre circulação e seleção podem alterar o que ganha visibilidade, mesmo mantendo técnicas e materiais.",
+        "use": "Produção cultural negocia recursos e autonomia examinando efeitos sobre o conteúdo.",
+        "level": "Superdifícil"
+      },
+      {
+        "id": "12-6",
+        "stem": "Qual evidência sustentaria melhor a afirmação de que o teatro produziu efeitos além do evento?",
+        "options": [
+          "Registros posteriores de iniciativas e mudanças ligadas à participação, analisados junto de outras influências.",
+          "A intenção declarada do grupo, tomada como prova suficiente de transformação social.",
+          "O número de aplausos, usado como medida direta de mudanças permanentes na comunidade.",
+          "A existência de discordância entre espectadores, interpretada como fracasso necessário.",
+          "A duração da apresentação, tomada isoladamente como indicador de participação efetiva."
+        ],
+        "answer": 0,
+        "why": "Efeitos posteriores exigem evidências posteriores e análise de vínculos. Intenção, aplauso e duração não comprovam por si transformação; discordância pode integrar o processo.",
+        "use": "Avaliação de projetos culturais distingue objetivos, experiência e resultados documentados.",
+        "level": "Superdifícil"
+      }
+    ]
+  }
+];
+const Engine = (()=>{
+ const duration=10800000;
+ function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+ function create(name,email,n,now=Date.now()){const slots=shuffle(Array.from({length:n},(_,i)=>i%5));return {version:1,name,email,deadline:now+duration,started:now,index:0,answers:Array(n).fill(null),orders:slots.map(slot=>{const a=shuffle([1,2,3,4]);a.splice(slot,0,0);return a;}),reminders:[],messages:shuffle(Array.from({length:25},(_,i)=>i)),messageIndex:0,done:false};}
+ function choose(a,slot,now=Date.now()){if(a.done||now>=a.deadline)return false;if(!Number.isInteger(slot)||slot<0||slot>4)return false;a.answers[a.index]=slot;return true;}
+ function advance(a,now=Date.now()){if(a.done)return false;if(now>=a.deadline){finish(a,now);return true;}if(a.answers[a.index]===null)return false;if(a.index===a.answers.length-1)finish(a,now);else a.index++;return true;}
+ function finish(a,now=Date.now()){a.done=true;a.finished=Math.min(now,a.deadline);}
+ function grade(a){return a.answers.map((s,i)=>s!==null&&a.orders[i][s]===0);}
+ function due(a,now=Date.now()){return [30,60,90,120,150].filter(m=>now>=a.started+m*60000&&!a.reminders.includes(m));}
+ return {duration,shuffle,create,choose,advance,finish,grade,due};
+})();
+if(typeof module!=='undefined')module.exports=Engine;
+
+const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const KEY='entre-saberes-simula-campeao-v1', questions=BANK.flatMap((m,mi)=>m.questions.map(q=>({...q,mi})));let attempt=null;
+const messages=['Seu sonho merece o esforço de hoje.','Uma questão de cada vez: concentre-se no próximo passo.','Resiliência é continuar aprendendo quando o caminho fica difícil.','Respire, releia e procure as evidências.','A dedicação transforma dúvidas em descobertas.','Você não precisa saber tudo para continuar aprendendo.','O estudo de hoje amplia suas escolhas de amanhã.','Confie no processo: atenção vale mais que pressa.','Seu esforço tem valor, mesmo quando ninguém está olhando.','Uma pausa para respirar pode clarear seu raciocínio.','Encare o desafio com curiosidade e coragem.','A persistência cresce a cada tentativa consciente.','Seu futuro se constrói com pequenos passos constantes.','Leia as condições antes de aceitar uma conclusão.','Aprender também é reconhecer o que ainda precisa de treino.','Mantenha o foco no que você pode fazer agora.','Esforço e descanso fazem parte de uma caminhada sustentável.','Se uma alternativa parece fácil demais, volte ao texto.','Busque seu sonho com dedicação e respeito ao seu ritmo.','Seu raciocínio merece tempo e atenção.','Dificuldade não define seu potencial.','Compare as alternativas com calma e critério.','Você está treinando habilidades que vão além da prova.','A coragem de estudar abre novos caminhos.','Continue: cada leitura atenta fortalece sua autonomia.'];
+function save(){try{localStorage.setItem(KEY,JSON.stringify(attempt));}catch(e){$('storageWarning').hidden=false;}}
+try{const a=JSON.parse(localStorage.getItem(KEY));if(a&&a.version===1&&a.answers.length===72&&a.orders.length===72)attempt=a;}catch(e){}
+function time(){let n=Math.max(0,Math.ceil((attempt.deadline-Date.now())/1000));return [Math.floor(n/3600),Math.floor(n/60)%60,n%60].map(v=>String(v).padStart(2,'0')).join(':');}
+function motivation(){if(!attempt)return '';let i=attempt.messageIndex%25;return messages[attempt.messages[i]];}
+function welcome(){ $('app').innerHTML=`<div class="eyebrow">Desafio de interpretação • 12 disciplinas</div><div class="grid"><section><h1>Simula<br>Campeão<span style="color:var(--gold)">.</span></h1><p style="font-size:21px">Onde os fortes tremem e os estudiosos vencem.</p><p class="muted">Raciocínio, leitura e coragem para enfrentar problemas complexos. Aqui, cada resposta precisa se sustentar em evidências.</p><div class="stats"><div><strong>72</strong>questões</div><div><strong>3 h</strong>de prova</div><div><strong>A–E</strong>alternativas</div></div></section><form id="start" class="card"><h2>Seu próximo desafio começa aqui</h2><label>Nome completo<input name="name" type="text" autocomplete="name" required maxlength="120"></label><label>E-mail<input name="email" type="email" autocomplete="email" required maxlength="254"></label><small>Dados salvos apenas neste navegador, junto com a tentativa. Nenhuma mensagem será enviada.</small><p><button type="submit">Iniciar prova de 3 horas</button></p></form></div><div class="card"><h2>Antes de começar</h2><p>Cada disciplina apresenta um texto-base de <b>oito parágrafos</b> e seis questões: três difíceis e três superdifíceis. O mesmo texto permanece disponível nas seis questões. As linhas se ajustam ao tamanho da tela.</p><ul><li>Escolha uma alternativa para avançar. Depois de confirmar, não será possível voltar.</li><li>As alternativas são embaralhadas, mas cada questão tem uma única resposta correta.</li><li>O relógio continua se você fechar a aba. Use o mesmo navegador e equipamento para retomar.</li><li>Há lembretes a cada 30 minutos. Ao completar três horas, a prova termina automaticamente; questões em branco não pontuam.</li><li>O gabarito, as explicações e os gráficos aparecem somente no final.</li></ul><p>Reserve cerca de 15 minutos por disciplina, incluindo a leitura. Tenha papel e lápis à mão.</p></div>`;$('start').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target),name=f.get('name').trim();if(!name){e.target.elements.name.focus();return;}attempt=Engine.create(name,f.get('email').trim(),72);save();render();};}
+function exam(){const q=questions[attempt.index],m=BANK[q.mi];$('app').innerHTML=`<div class="toolbar"><span>${esc(attempt.name)}<br>Questão ${attempt.index+1} de 72</span><span>Tempo restante<br><b id="clock" class="clock">${time()}</b></span></div><progress max="72" value="${attempt.index}" aria-label="Questões confirmadas"></progress><p id="reminder" role="status" class="notice" hidden></p><div id="encourage" class="encourage" role="status">${esc(motivation())}</div><div class="eyebrow">${esc(m.name)} · ${esc(q.level)}</div><details ${attempt.index%6===0?'open':''}><summary>Texto-base · ${esc(m.title)} · 8 parágrafos</summary>${m.paragraphs.map((p,i)=>`<p class="paragraph"><span>${String(i+1).padStart(2,'0')}</span>${esc(p)}</p>`).join('')}</details><section class="card"><div class="eyebrow">Questão ${attempt.index%6+1} / 6 da disciplina</div><h2 id="stem">${esc(q.stem)}</h2><div role="radiogroup" aria-labelledby="stem">${attempt.orders[attempt.index].map((n,i)=>`<label class="option"><input type="radio" name="answer" value="${i}" ${attempt.answers[attempt.index]===i?'checked':''}><span><b>${'ABCDE'[i]}.</b> ${esc(q.options[n])}</span></label>`).join('')}</div><div class="actions"><small>A resposta será confirmada ao avançar.</small><button id="next" ${attempt.answers[attempt.index]===null?'disabled':''}>${attempt.index===71?'Finalizar e ver devolutiva':'Confirmar e avançar'}</button></div></section>`;document.querySelectorAll('[name=answer]').forEach(r=>r.onchange=()=>{if(Engine.choose(attempt,+r.value)){save();$('next').disabled=false;}else tick();});$('next').onclick=()=>{if(Engine.advance(attempt)){if(attempt.index%3===0)attempt.messageIndex++;save();render();window.scrollTo(0,0);}};}
+function results(){const grades=Engine.grade(attempt),total=grades.filter(Boolean).length,answered=attempt.answers.filter(x=>x!==null).length;const scores=BANK.map((m,i)=>grades.slice(i*6,i*6+6).filter(Boolean).length);$('app').innerHTML=`<div class="eyebrow">Prova concluída • sua devolutiva</div><h1>Do resultado ao<br>próximo passo.</h1><p>${esc(attempt.name)}, use esta leitura para orientar o próximo ciclo de estudo.</p><div class="card stats"><div><strong>${total}/72</strong>acertos</div><div><strong>${Math.round(total/72*100)}%</strong>aproveitamento</div><div><strong>${72-answered}</strong>em branco</div><div><strong>${Math.round((attempt.finished-attempt.started)/60000)} min</strong>tempo utilizado</div></div><div class="grid"><section class="card"><h2>Desempenho por disciplina</h2><p class="muted">Cada barra representa os acertos em seis questões.</p>${BANK.map((m,i)=>`<div class="resultrow"><span>${esc(m.name)}</span><div class="bar" role="img" aria-label="${esc(m.name)}: ${scores[i]} de 6 acertos"><i style="width:${scores[i]/6*100}%"></i></div><b>${scores[i]}/6</b></div>`).join('')}</section><section class="card"><h2>Resultado esperado</h2><p>A meta inicial deste treino é <b>4 acertos em 6 por disciplina</b> (aproximadamente 67%). É uma meta pedagógica proposta, não uma média de alunos nem um padrão oficial.</p><p><b>${scores.filter(s=>s>=4).length} de 12 disciplinas</b> atingiram essa meta.</p><h3>Como continuar</h3><p>Com 0–2 acertos, retome o texto e explique os conceitos em voz alta. Com 3, compare suas escolhas com as condições do enunciado. Com 4–6, experimente aplicar o raciocínio em uma situação nova.</p><p>Priorize: <b>${BANK.filter((m,i)=>scores[i]<4).map(m=>esc(m.name)).join(', ')||'aprofundar os temas e justificar suas soluções'}</b>.</p></section></div><div class="actions"><button id="print">Imprimir / salvar PDF</button><button id="export" class="secondary">Baixar resultado em texto</button><button id="reset" class="secondary">Apagar tentativa e recomeçar</button></div><h2>Gabarito comentado e aplicações</h2><p>Abra cada disciplina para comparar sua resposta com o raciocínio esperado. As letras correspondem à ordem sorteada na sua tentativa.</p>${BANK.map((m,mi)=>`<details class="review"><summary>${esc(m.name)} · ${scores[mi]}/6 · ${scores[mi]>=4?'meta atingida':'retomar e praticar'}</summary><p><b>Habilidades mobilizadas:</b> ${esc(Array.isArray(m.skills)?m.skills.join('; '):m.skills)}</p><p><b>Conexões profissionais:</b> ${esc(Array.isArray(m.careers)?m.careers.join(', '):m.careers)}</p><details><summary>Reler os oito parágrafos</summary>${m.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}</details>${m.questions.map((q,j)=>{let n=mi*6+j,chosen=attempt.answers[n],correct=attempt.orders[n].indexOf(0);return `<article class="card"><h3>${n+1}. ${esc(q.stem)}</h3><p class="${grades[n]?'good':'bad'}"><b>${grades[n]?'Acerto':'Revisar'}.</b> Sua resposta: ${chosen===null?'em branco':`${'ABCDE'[chosen]}. ${esc(q.options[attempt.orders[n][chosen]])}`}</p><p><b>Resposta esperada: ${'ABCDE'[correct]}. ${esc(q.options[0])}</b></p><p><b>Raciocínio:</b> ${esc(q.why)}</p><p><b>Na prática profissional:</b> ${esc(q.use)}</p></article>`;}).join('')}</details>`).join('')}`;$('print').onclick=()=>{document.querySelectorAll('.review, .review details').forEach(d=>d.open=true);window.print();};$('reset').onclick=()=>{if(confirm('Apagar nome, e-mail e todas as respostas desta tentativa neste navegador? Salve o resultado antes de continuar.')){try{localStorage.removeItem(KEY);}catch(e){}attempt=null;render();window.scrollTo(0,0);}};$('export').onclick=()=>{let text=`SIMULA CAMPEÃO\n${attempt.name}\n${attempt.email}\nResultado: ${total}/72\nMeta proposta: 4/6 por disciplina\n\n`+BANK.map((m,i)=>`${m.name}: ${scores[i]}/6`).join('\n')+'\n\n'+questions.map((q,n)=>{let s=attempt.answers[n],c=attempt.orders[n].indexOf(0);return `${n+1}. ${q.stem}\nSua resposta: ${s===null?'Em branco':'ABCDE'[s]+'. '+q.options[attempt.orders[n][s]]}\nEsperada: ${'ABCDE'[c]}. ${q.options[0]}\n${q.why}\nAplicação: ${q.use}`;}).join('\n\n');let url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='simula-campeao-resultado.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};}
+function render(){if(!attempt)return welcome();if(!attempt.done&&Date.now()>=attempt.deadline){Engine.finish(attempt);save();}attempt.done?results():exam();}
+function tick(){if(!attempt||attempt.done)return;if(Date.now()>=attempt.deadline){Engine.finish(attempt);save();render();return;}$('clock').textContent=time();const due=Engine.due(attempt);if(due.length){attempt.reminders.push(...due);save();$('reminder').hidden=false;$('reminder').textContent=`Lembrete: ${due[due.length-1]} minutos de prova transcorridos. Tempo restante: ${time()}. Respire e organize seu ritmo.`;}}
+setInterval(tick,1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();});window.addEventListener('focus',tick);render();
+
+</script></body></html>
