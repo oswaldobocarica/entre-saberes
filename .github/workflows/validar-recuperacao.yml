@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - recuperacao-neon-cloudflare
+      - integracao-neon-homologacao-20261027
   workflow_dispatch:
 
 permissions:
@@ -22,11 +23,17 @@ jobs:
           node-version: '22'
       - name: Instalar dependencias
         run: npm install --no-audit --no-fund
-      - name: Executar testes obrigatorios
+      - name: Executar todos os testes obrigatorios
         run: npm test
-      - name: Validar sintaxe JavaScript do painel e Worker
+      - name: Validar sintaxe JavaScript
         run: |
           node --check admin/admin.js
           node --check _worker.js
-      - name: Preparar pacote sem publicar no Cloudflare
+          node --check portal.js
+          node --check cms-public.js
+          node --check neon-public-client.js
+          node --check neon/worker.js
+      - name: Preparar pacote original sem publicar
         run: npx wrangler deploy --dry-run --outdir /tmp/entre-saberes-validation
+      - name: Preparar homologacao Neon sem publicar
+        run: npx wrangler deploy --config wrangler.homologacao.jsonc --dry-run --outdir /tmp/entre-saberes-neon-validation

@@ -1,6 +1,7 @@
 # Cloudflare: exclude non-public sources from Worker static asset uploads.
 _worker.js
 wrangler.jsonc
+wrangler*.jsonc
 wrangler.toml
 package.json
 package-lock.json

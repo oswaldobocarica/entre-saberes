@@ -1,8 +1,9 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "entre-saberes-homologacao",
-  "main": "_worker.js",
+  "main": "neon/worker.js",
   "compatibility_date": "2026-10-02",
+  "workers_dev": true,
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
